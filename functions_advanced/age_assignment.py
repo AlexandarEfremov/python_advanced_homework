@@ -1,7 +1,7 @@
 def age_assignment(*args, **kwargs):
     user_info = [(user, kwargs[user[0]]) for user in args]
     sorted_info = sorted(user_info, key=lambda x: x)
-    formatted_result =  [f"{item[0]} is {item[1]} years old." for item in sorted_info]
+    formatted_result = [f"{item[0]} is {item[1]} years old." for item in sorted_info]
     final = "\n".join(formatted_result)
     return final
 
