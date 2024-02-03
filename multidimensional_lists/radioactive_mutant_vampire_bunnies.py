@@ -24,3 +24,5 @@ for command in commands:
     if initial_lair[r][c] == "B":
         break
     current_position = [r, c]
+
+
