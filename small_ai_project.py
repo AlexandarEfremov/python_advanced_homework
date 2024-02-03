@@ -22,7 +22,7 @@ def get_image_url():
     payload = {
         "providers": "openai",
         "text": input_field.get(),
-        "resolution": "256x256",
+        "resolution": "512x512",
         "fallback_providers": ""
     }
 
@@ -33,12 +33,20 @@ def get_image_url():
 
 def render_image():
     print("Clicked")
-    image_url = get_image_url()
-    display_image(image_url)
+    try:
+        error_label.place_forget()
+        image_url = get_image_url()
+    except KeyError:
+        error_label.place(x=175, y=50)
+    else:
+        display_image(image_url)
+
 
 window = tk.Tk()
 window.title("AI Image Gen")
 window.geometry("500x350")
+
+error_label =tk.Label(window, text="Prompt cannot be empty!", fg="red")
 input_field = tk.Entry(window, width=14)
 input_field.place(x=190, y=20)
 
