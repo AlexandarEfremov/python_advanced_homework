@@ -37,27 +37,35 @@ def bunny_mutation(lair, **directions_dict):
     return lair
 
 
+dead_or_alive = ''
+game_over = False
+
+
 current_row, current_col = current_position[0], current_position[1]
 for command in commands:
     moved_row, moved_col = current_row + directions[command][0], current_col + directions[command][1]
     if 0 <= moved_row < rows and 0 <= moved_col < cols:
         if mutated_lair[moved_row][moved_col] == "B":
-            mutated_lair = bunny_mutation(initial_lair, **directions)
-            [print("".join(element), sep="\n") for element in mutated_lair]
-            print(f"dead: {moved_row} {moved_col}")
-            exit()
+            dead_or_alive = "dead"
+            game_over = True
         else:
-            mutated_lair = bunny_mutation(initial_lair, **directions)
-            if mutated_lair[moved_row][moved_col] == "B":
-                mutated_lair = bunny_mutation(initial_lair, **directions)
-                [print("".join(element), sep="\n") for element in mutated_lair]
-                print(f"dead: {moved_row} {moved_col}")
-                exit()
+            mutated_lair[current_row][current_col] = "."
+            current_row, current_col = moved_row, moved_col
+        mutated_lair = bunny_mutation(mutated_lair, **directions)
+        if mutated_lair[current_row][current_col] == "B":
+            dead_or_alive = "dead"
+            game_over = True
     else:
-        mutated_lair = bunny_mutation(initial_lair, **directions)
-        [print("".join(element), sep="\n") for element in mutated_lair]
-        print(f"won: {current_row} {current_col}")
-        exit()
+        mutated_lair = bunny_mutation(mutated_lair, **directions)
+        dead_or_alive = "alive"
+        game_over = True
 
-    mutated_lair[current_row][current_col] = "."
-    current_row, current_col = moved_row, moved_col
+    if game_over:
+        break
+if dead_or_alive == "alive":
+    [print("".join(element), sep="\n") for element in mutated_lair]
+    print(f"won: {current_row} {current_col}")
+else:
+    [print("".join(element), sep="\n") for element in mutated_lair]
+    print(f"dead: {moved_row} {moved_col}")
+
