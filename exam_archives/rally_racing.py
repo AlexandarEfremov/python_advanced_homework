@@ -12,11 +12,10 @@ directions = {
     "down": (1, 0)
 }
 
-tunnel_start = []
 tunnel_end = []
 
 for row in range(size_of_matrix):
-    line = [x for x in input().split()]
+    line = input().split()
     racing_matrix.append(line)
 
 
@@ -27,13 +26,19 @@ def find_end(matrix):
             return position
 
 
-command_input = input()
 finish = False
-while command_input != "End":
+
+while True:
+    command_input = input()
+    if command_input == "End":
+        racing_matrix[current_row][current_col] = "C"
+        break
+
     move_row, move_col = current_row + directions[command_input][0], current_col + directions[command_input][1]
+
     if racing_matrix[move_row][move_col] == "F":
+        racing_matrix[move_row][move_col] = "C"
         km_passed += 10
-        print(f"Racing car {racing_number} finished the stage!")
         finish = True
         break
     if racing_matrix[move_row][move_col] == ".":
@@ -43,19 +48,17 @@ while command_input != "End":
         racing_matrix[move_row][move_col] = "."
         current_row, current_col = find_end(racing_matrix)
         racing_matrix[current_row][current_col] = "."
-        command_input = input()
         continue
 
-
     current_row, current_col = move_row, move_col
-    command_input = input()
 
-racing_matrix[move_row][move_col] = "C"
-if not finish:
+
+if finish:
+    print(f"Racing car {racing_number} finished the stage!")
+else:
     print(f"Racing car {racing_number} DNF.")
 print(f"Distance covered {km_passed} km.")
 
-racing_matrix = ["".join(el) for el in racing_matrix]
-print("\n".join(racing_matrix))
+[print(''.join(el)) for el in racing_matrix]
 
 
