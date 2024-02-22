@@ -1,7 +1,3 @@
-numbers = [int(x) for x in input().split()]
-target = int(input())
-
-
 def binary_search(numbers, target):
     left = 0
     right = len(numbers) - 1
@@ -19,5 +15,8 @@ def binary_search(numbers, target):
 
     return -1
 
+
+numbers = [int(x) for x in input().split()]
+target = int(input())
 
 print(binary_search(numbers, target))
