@@ -1,9 +1,12 @@
+from typing import List
+
+
 class Task:
 
     def __init__(self, name, due_date):
         self.name = name
         self.due_date = due_date
-        self.comments = []
+        self.comments: List[str] = []
         self.completed = False
 
     def change_name(self, new_name):
@@ -15,7 +18,7 @@ class Task:
     def change_due_date(self, new_date):
         if new_date != self.due_date:
             self.due_date = new_date
-            return new_date
+            return self.due_date
         return "Date cannot be the same."
 
     def add_comment(self, comment):
