@@ -1,4 +1,4 @@
-from oop_projects.project import Pokemon
+from project.pokemon import Pokemon
 from typing import List
 
 
