@@ -15,6 +15,8 @@ class Player:
         return "Skill already added"
 
     def player_info(self):
-        player_details = f"\n".join(f'==={k} - {v}' for k, v in self.skills_dict[self.name].items())
-        return f"Name: {self.name}\nGuild: {self.guild}\nHP: {self.hp}\nMP: {self.mp}\n" \
-               f"{player_details}"
+        if self.name in self.skills_dict:
+            player_details = f"\n".join(f'==={k} - {v}' for k, v in self.skills_dict[self.name].items())
+            return f"Name: {self.name}\nGuild: {self.guild}\nHP: {self.hp}\nMP: {self.mp}\n" \
+                   f"{player_details}"
+        return f"Name: {self.name}\nGuild: {self.guild}\nHP: {self.hp}\nMP: {self.mp}\n"
