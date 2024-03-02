@@ -1,2 +1,6 @@
+from project.animal import Animal
+
+
 class Dog(Animal):
-    def __init__(self):
+    def bark(self):
+        return "barking..."
