@@ -20,4 +20,32 @@ class Zoo:
 
     def hire_worker(self, worker):
         if self._worker_capacity != 0:
-            return "{name} the {type(Keeper/Vet/Caretaker)} hired successfully"
+            self.workers.append(worker)
+            self._worker_capacity -= 1
+            return f"{self.name} the {worker} hired successfully"
+        else:
+            return "Not enough space for worker"
+
+    def fire_worker(self, worker_name):
+        if worker_name in self.workers:
+            self.workers.remove(worker_name)
+            self._worker_capacity += 1
+            return f"{worker_name} fired successfully"
+        else:
+            return f"There is no {worker_name} in the zoo"
+
+    def pay_workers(self):
+        total_wages = sum([worker.salary for worker in self.workers])
+        if self._budget >= total_wages:
+            self._budget -= total_wages
+            return f"You payed your workers. They are happy. Budget left: {self._budget}"
+        else:
+            return "You have no budget to pay your workers. They are unhappy"
+
+    def tend_animals(self):
+        total_care_amount = sum([animal.money_for_care for animal in self.animals])
+        if self._budget >= total_care_amount:
+            self._budget -= total_care_amount
+            return f"You tended all the animals. They are happy. Budget left: {self._budget}"
+        else:
+            "You have no budget to tend the animals. They are unhappy."
