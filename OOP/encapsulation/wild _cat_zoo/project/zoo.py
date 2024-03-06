@@ -31,11 +31,11 @@ class Zoo:
             return "Not enough space for worker"
 
     def fire_worker(self, worker_name):
-        if worker_name in self.workers:
-            self.workers.remove(worker_name)
-            self.__worker_capacity += 1
+        try:
+            worker = [w for w in self.workers if w.name == worker_name]
+            self.workers.remove(worker)
             return f"{worker_name} fired successfully"
-        else:
+        except IndexError:
             return f"There is no {worker_name} in the zoo"
 
     def pay_workers(self):
@@ -58,8 +58,11 @@ class Zoo:
         self.__budget += amount
 
     def animals_status(self):
-        info = f"You have {len(self.animals)} animals\n"\
-               f"----- {len([lion for lion in self.animals if lion == 'lion'])} Lions:\n"\
-               f"{['\n'.join([el for el in self.animals if el == 'lion'])]}"
-        return info
+        info = f"You have {len(self.animals)} animals\n"
+        total_lions = [lion for lion in self.animals if lion.__class__.__name__ == "Lion"]
+        amount_of_lions = sum(total_lions)
+        info += f"----- {amount_of_lions} Lions:"
+        for lion in total_lions:
+            info += f"{lion}\n"
+
 
