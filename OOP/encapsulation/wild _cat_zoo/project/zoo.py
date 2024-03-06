@@ -49,3 +49,13 @@ class Zoo:
             return f"You tended all the animals. They are happy. Budget left: {self._budget}"
         else:
             "You have no budget to tend the animals. They are unhappy."
+
+    def profit(self, amount):
+        self._budget += amount
+
+    def animals_status(self):
+        info = f"You have {len(self.animals)} animals\n"\
+               f"----- {len([lion for lion in self.animals if lion == 'lion'])} Lions:\n"\
+               f"{['\n'.join([el for el in self.animals if el == 'lion'])]}"
+        return info
+
