@@ -32,7 +32,7 @@ class Zoo:
 
     def fire_worker(self, worker_name):
         try:
-            worker = [w for w in self.workers if w.name == worker_name]
+            worker = [w for w in self.workers if w.name == worker_name][0]
             self.workers.remove(worker)
             return f"{worker_name} fired successfully"
         except IndexError:
@@ -61,36 +61,36 @@ class Zoo:
         info = f"You have {len(self.animals)} animals\n"
         total_lions = [lion for lion in self.animals if lion.__class__.__name__ == "Lion"]
         amount_of_lions = len(total_lions)
-        info += f"----- {amount_of_lions} Lions:"
+        info += f"----- {amount_of_lions} Lions:\n"
         for lion in total_lions:
             info += f"{lion}\n"
         total_tigers = [tiger for tiger in self.animals if tiger.__class__.__name__ == "Tiger"]
         amount_of_tigers = len(total_tigers)
-        info += f"----- {amount_of_tigers} Tigers:"
+        info += f"----- {amount_of_tigers} Tigers:\n"
         for tiger in total_tigers:
             info += f"{tiger}\n"
         total_cheetahs = [cheetah for cheetah in self.animals if cheetah.__class__.__name__ == "Cheetah"]
         amount_of_cheetahs = len(total_cheetahs)
-        info += f"----- {amount_of_cheetahs} Cheetahs:"
+        info += f"----- {amount_of_cheetahs} Cheetahs:\n"
         for cheetah in total_cheetahs:
-            info += f"{cheetah}"
+            info += f"{cheetah}\n"
         return info
 
     def worker_status(self):
         worker_info = f"You have {len(self.workers)} workers"
         total_keepers = [keeper for keeper in self.workers if keeper.__class__.__name__ == "Keeper"]
         amount_of_keepers = len(total_keepers)
-        worker_info += f"----- {amount_of_keepers} Keepers:"
+        worker_info += f"----- {amount_of_keepers} Keepers:\n"
         for keeper in total_keepers:
-            worker_info += f"{keeper}"
+            worker_info += f"{keeper}\n"
         total_caretaker = [c for c in self.workers if c.__class__.__name__ == "Caretaker"]
         amount_of_caretakers = len(total_caretaker)
-        worker_info += f"----- {amount_of_caretakers} Caretakers:"
+        worker_info += f"----- {amount_of_caretakers} Caretakers:\n"
         for care in total_caretaker:
-            worker_info += f"{care}"
+            worker_info += f"{care}\n"
         total_vets = [vet for vet in self.workers if vet.__class__.__name__ == "Vet"]
         amount_of_vetes = len(total_vets)
-        worker_info += f"----- {amount_of_vetes} Vets:"
+        worker_info += f"----- {amount_of_vetes} Vets:\n"
         for vet in total_vets:
-            worker_info += f"{vet}"
+            worker_info += f"{vet}\n"
         return worker_info
