@@ -6,31 +6,31 @@ class Dough:
 
     @property
     def flour_type(self):
-        return self.flour_type
+        return self._flour_type
 
     @flour_type.setter
     def flour_type(self, value):
         if value.strip() == "":
             raise ValueError("The flour type cannot be an empty string")
-        self.flour_type = value
+        self._flour_type = value
 
     @property
     def baking_technique(self):
-        return self.baking_technique
+        return self._baking_technique
 
     @baking_technique.setter
     def baking_technique(self, value):
         if value.strip() == "":
             raise ValueError("The baking technique cannot be an empty string")
-        self.baking_technique = value
+        self._baking_technique = value
 
     @property
     def weight(self):
-        return self.weight
+        return self._weight
 
     @weight.setter
     def weight(self, value):
         if value <= 0:
             raise ValueError("The weight cannot be less or equal to zero")
-        self.weight = value
+        self._weight = value
 

@@ -5,21 +5,21 @@ class Topping:
 
     @property
     def topping_type(self):
-        return self.topping_type
+        return self._topping_type
 
     @topping_type.setter
     def topping_type(self, value):
         if value.strip() == "":
             raise ValueError("The topping type cannot be an empty string")
-        self.topping_type = value
+        self._topping_type = value
 
     @property
     def weight(self):
-        return self.weight
+        return self._weight
 
     @weight.setter
     def weight(self, value):
         if value <= 0:
             raise ValueError("The weight cannot be less or equal to zero")
-        self.weight = value
+        self._weight = value
 
