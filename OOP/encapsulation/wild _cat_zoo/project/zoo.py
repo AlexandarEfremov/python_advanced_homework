@@ -64,5 +64,16 @@ class Zoo:
         info += f"----- {amount_of_lions} Lions:"
         for lion in total_lions:
             info += f"{lion}\n"
+        total_tigers = [tiger for tiger in self.animals if tiger.__class__.__name__ == "Tiger"]
+        amount_of_tigers = sum(total_tigers)
+        info += f"----- {amount_of_tigers} Tigers:"
+        for tiger in total_tigers:
+            info += f"{tiger}\n"
+        total_cheetahs = [cheetah for cheetah in self.animals if cheetah.__class__.__name__ == "Cheetah"]
+        amount_of_cheetahs = sum(total_cheetahs)
+        info += f"----- {amount_of_cheetahs} Cheetahs:"
+        for cheetah in total_cheetahs:
+            info += f"{cheetah}"
+
 
 
