@@ -7,15 +7,14 @@ class Zoo:
         self.name = name
         self.__budget = budget
         self.__animal_capacity = animal_capacity
-        self.__worker_capacity = worker_capacity
+        self.__workers_capacity = worker_capacity
         self.animals = []
         self.workers = []
 
     def add_animal(self, animal: Animal, price):
-        if self.__budget >= price and self.__animal_capacity != 0:
+        if self.__budget >= price and self.__animal_capacity > len(self.animals):
             self.animals.append(animal)
             self.__budget -= price
-            self.__animal_capacity -= 1
             return f"{animal.name} the {animal.__class__.__name__} added to the zoo"
         elif self.__animal_capacity != 0 and self.__budget <= price:
             return "Not enough budget"
@@ -23,9 +22,8 @@ class Zoo:
             return f"Not enough space for animal"
 
     def hire_worker(self, worker: Worker):
-        if self.__worker_capacity != 0:
+        if self.__workers_capacity > len(self.workers):
             self.workers.append(worker)
-            self.__worker_capacity -= 1
             return f"{worker.name} the {worker.__class__.__name__} hired successfully"
         else:
             return "Not enough space for worker"
@@ -51,8 +49,8 @@ class Zoo:
         if self.__budget >= total_care_amount:
             self.__budget -= total_care_amount
             return f"You tended all the animals. They are happy. Budget left: {self.__budget}"
-        else:
-            "You have no budget to tend the animals. They are unhappy."
+        if self.__budget < total_care_amount:
+            return "You have no budget to tend the animals. They are unhappy."
 
     def profit(self, amount):
         self.__budget += amount
@@ -74,10 +72,10 @@ class Zoo:
         info += f"----- {amount_of_cheetahs} Cheetahs:\n"
         for cheetah in total_cheetahs:
             info += f"{cheetah}\n"
-        return info
+        return info[:-1]
 
-    def worker_status(self):
-        worker_info = f"You have {len(self.workers)} workers"
+    def workers_status(self):
+        worker_info = f"You have {len(self.workers)} workers\n"
         total_keepers = [keeper for keeper in self.workers if keeper.__class__.__name__ == "Keeper"]
         amount_of_keepers = len(total_keepers)
         worker_info += f"----- {amount_of_keepers} Keepers:\n"
@@ -93,4 +91,4 @@ class Zoo:
         worker_info += f"----- {amount_of_vetes} Vets:\n"
         for vet in total_vets:
             worker_info += f"{vet}\n"
-        return worker_info
+        return worker_info[:-1]
