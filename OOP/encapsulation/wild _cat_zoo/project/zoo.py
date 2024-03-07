@@ -60,20 +60,37 @@ class Zoo:
     def animals_status(self):
         info = f"You have {len(self.animals)} animals\n"
         total_lions = [lion for lion in self.animals if lion.__class__.__name__ == "Lion"]
-        amount_of_lions = sum(total_lions)
+        amount_of_lions = len(total_lions)
         info += f"----- {amount_of_lions} Lions:"
         for lion in total_lions:
             info += f"{lion}\n"
         total_tigers = [tiger for tiger in self.animals if tiger.__class__.__name__ == "Tiger"]
-        amount_of_tigers = sum(total_tigers)
+        amount_of_tigers = len(total_tigers)
         info += f"----- {amount_of_tigers} Tigers:"
         for tiger in total_tigers:
             info += f"{tiger}\n"
         total_cheetahs = [cheetah for cheetah in self.animals if cheetah.__class__.__name__ == "Cheetah"]
-        amount_of_cheetahs = sum(total_cheetahs)
+        amount_of_cheetahs = len(total_cheetahs)
         info += f"----- {amount_of_cheetahs} Cheetahs:"
         for cheetah in total_cheetahs:
             info += f"{cheetah}"
+        return info
 
-
-
+    def worker_status(self):
+        worker_info = f"You have {len(self.workers)} workers"
+        total_keepers = [keeper for keeper in self.workers if keeper.__class__.__name__ == "Keeper"]
+        amount_of_keepers = len(total_keepers)
+        worker_info += f"----- {amount_of_keepers} Keepers:"
+        for keeper in total_keepers:
+            worker_info += f"{keeper}"
+        total_caretaker = [c for c in self.workers if c.__class__.__name__ == "Caretaker"]
+        amount_of_caretakers = len(total_caretaker)
+        worker_info += f"----- {amount_of_caretakers} Caretakers:"
+        for care in total_caretaker:
+            worker_info += f"{care}"
+        total_vets = [vet for vet in self.workers if vet.__class__.__name__ == "Vet"]
+        amount_of_vetes = len(total_vets)
+        worker_info += f"----- {amount_of_vetes} Vets:"
+        for vet in total_vets:
+            worker_info += f"{vet}"
+        return worker_info
