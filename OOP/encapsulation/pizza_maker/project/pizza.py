@@ -11,37 +11,40 @@ class Pizza:
 
     @property
     def name(self):
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, value):
         if value.strip() == "":
             raise ValueError("The name cannot be an empty string")
-        self._name = value
+        self.__name = value
 
     @property
     def dough(self):
-        return self._dough
+        return self.__dough
 
     @dough.setter
     def dough(self, value):
         if value is None:
             raise ValueError("You should add dough to the pizza")
-        self._dough = value
+        self.__dough = value
 
     @property
     def max_number_of_toppings(self):
-        return self._max_number_of_toppings
+        return self.__max_number_of_toppings
 
     @max_number_of_toppings.setter
     def max_number_of_toppings(self, value):
         if value <= 0:
             raise ValueError("The maximum number of toppings cannot be less or equal to zero")
-        self._max_number_of_toppings = value
+        self.__max_number_of_toppings = value
 
     def add_topping(self, topping: Topping):
         if self.max_number_of_toppings > len(self.toppings.keys()):
-            self.toppings[topping] = 0
+            if topping.topping_type in self.toppings:
+                self.toppings[topping.topping_type] += topping.weight
+            else:
+                self.toppings[topping.topping_type] = topping.weight
         else:
             raise ValueError("Not enough space for another topping")
 
