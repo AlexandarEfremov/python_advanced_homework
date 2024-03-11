@@ -1,5 +1,4 @@
 from typing import List
-
 from project.room import Room
 
 
@@ -17,19 +16,27 @@ class Hotel:
         self.rooms.append(room)
 
     def take_room(self, room_number, people):
-        for room in self.rooms:
-            if room.number == room_number and not room.is_taken:
-                room.is_taken = True
-                self.guests += people
-                room.guests += people
+        try:
+            room = next(filter(lambda r: r.number == room_number, self.rooms))
+        except StopIteration:
+            return
+
+        result = room.take_room(people)
+
+        if not result:
+            self.guests += people
 
     def free_room(self, room_number):
-        for room in self.rooms:
-            if room.number == room_number:
-                to_go = room.guests
-                self.guests -= to_go
-                room.guests = 0
-                room.is_taken = False
+        try:
+            room = next(filter(lambda r: r.number == room_number, self.rooms))
+        except StopIteration:
+            return
+
+        people = room.guests
+        result = room.free_room()
+
+        if not result:
+            self.guests -= people
 
     def status(self):
         return f"Hotel {self.name} has {self.guests} total guests\n" \

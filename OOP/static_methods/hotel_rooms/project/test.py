@@ -1,27 +1,88 @@
 from project.hotel import Hotel
-
 from project.room import Room
+import unittest
 
-hotel = Hotel.from_stars(5)
 
-first_room = Room(1, 3)
+class Tests(unittest.TestCase):
+    def setUp(self):
+        self.room = Room(1, 3)
+        self.hotel = Hotel("Some Hotel")
 
-second_room = Room(2, 2)
+    def test_init_creates_all_attributes(self):
+        self.assertEqual(self.room.number, 1)
+        self.assertEqual(self.room.capacity, 3)
+        self.assertEqual(self.room.guests, 0)
+        self.assertEqual(self.room.is_taken, False)
 
-third_room = Room(3, 1)
+    def test_take_room_success(self):
+        self.room.take_room(2)
+        self.assertEqual(self.room.is_taken, True)
+        self.assertEqual(self.room.guests, 2)
 
-hotel.add_room(first_room)
+    def test_take_room_not_enough_capacity(self):
+        result = self.room.take_room(4)
+        self.assertEqual(self.room.is_taken, False)
+        self.assertEqual(self.room.guests, 0)
+        self.assertEqual(result, "Room number 1 cannot be taken")
 
-hotel.add_room(second_room)
+    def test_take_room_not_free(self):
+        self.room.take_room(1)
+        result = self.room.take_room(1)
+        self.assertEqual(self.room.is_taken, True)
+        self.assertEqual(self.room.guests, 1)
+        self.assertEqual(result, "Room number 1 cannot be taken")
 
-hotel.add_room(third_room)
+    def test_free_room_success(self):
+        self.room.take_room(1)
+        self.room.free_room()
+        self.assertEqual(self.room.is_taken, False)
+        self.assertEqual(self.room.guests, 0)
 
-hotel.take_room(1, 4)
+    def test_free_room_not_taken(self):
+        result = self.room.free_room()
+        self.assertEqual(self.room.is_taken, False)
+        self.assertEqual(self.room.guests, 0)
+        self.assertEqual(result, "Room number 1 is not taken")
 
-hotel.take_room(1, 2)
+    def test_init_creates_all_attributes(self):
+        self.assertEqual(self.hotel.name, "Some Hotel")
+        self.assertEqual(self.hotel.rooms, [])
+        self.assertEqual(self.hotel.guests, 0)
 
-hotel.take_room(3, 1)
+    def test_class_methods_creates_a_hotel(self):
+        hotel = Hotel.from_stars(3)
+        self.assertEqual(hotel.name, "3 stars Hotel")
+        self.assertEqual(self.hotel.rooms, [])
+        self.assertEqual(self.hotel.guests, 0)
 
-hotel.take_room(3, 1)
+    def test_add_room(self):
+        room = Room(1, 3)
+        self.hotel.add_room(room)
+        self.assertEqual(self.hotel.rooms, [room])
 
-print(hotel.status())
+    def test_take_room(self):
+        room = Room(1, 3)
+        self.hotel.add_room(room)
+        self.hotel.take_room(1, 3)
+        self.assertEqual(self.hotel.rooms[0].is_taken, True)
+
+    def test_free_room(self):
+        room = Room(1, 3)
+        self.hotel.add_room(room)
+        self.hotel.take_room(1, 3)
+        self.hotel.free_room(1)
+        self.assertEqual(self.hotel.guests, 0)
+        self.assertEqual(self.hotel.rooms[0].is_taken, False)
+        self.assertEqual(self.hotel.rooms[0].guests, 0)
+
+    def test_print_status(self):
+        room = Room(1, 3)
+        self.hotel.add_room(room)
+        self.hotel.take_room(1, 3)
+        res = self.hotel.status().strip()
+        actual = 'Hotel Some Hotel has 3 total guests\nFree rooms: \nTaken rooms: 1'
+        self.assertEqual(res, actual)
+
+
+if __name__ == "__main__":
+    unittest.main()
