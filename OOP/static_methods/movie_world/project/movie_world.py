@@ -1,21 +1,23 @@
+from typing import List
+
 from project.customer import Customer
 from project.dvd import DVD
 
 
 class MovieWorld:
-    CAPACITY = 15
-    CUS_CAPACITY = 10
 
     def __init__(self, name: str):
         self.name = name
-        self.customers = []
-        self.dvds = []
+        self.customers: List[Customer] = []
+        self.dvds: List[DVD] = []
 
+    @staticmethod
     def dvd_capacity(self):
-        return MovieWorld.CAPACITY
+        return 15
 
+    @staticmethod
     def customer_capacity(self):
-        return MovieWorld.CUS_CAPACITY
+        return 10
 
     def add_customer(self, customer: Customer):
         if len(self.customers) < self.customer_capacity():
