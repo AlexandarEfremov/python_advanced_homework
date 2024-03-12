@@ -20,6 +20,7 @@ class ExercisePlan:
     def from_hours(cls, trainer_id: int, equipment_id: int, hours: int):
         return cls(trainer_id, equipment_id, hours)
 
-
+    def __repr__(self):
+        return f"Plan <{self.id}> with duration {self.duration} minutes"
 
 
