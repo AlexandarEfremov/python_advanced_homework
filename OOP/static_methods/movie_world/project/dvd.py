@@ -1,0 +1,16 @@
+class DVD:
+    def __init__(self, name: str, dvd_id: int, creation_year: int, creation_month: str, age_restriction: int):
+        self.name = name
+        self.dvd_id = dvd_id
+        self.creation_year = creation_year
+        self.creation_month = creation_month
+        self.age_restriction = age_restriction
+        self.is_rented = False
+
+    @classmethod
+    def from_date(cls, movie_id: int, name: str, date: str, age_restriction: int):
+        return cls(movie_id, name, date, age_restriction)
+
+    def __repr__(self):
+        return f"{self.dvd_id}: {self.name} ({self.creation_month} {self.creation_year}) has age restriction \
+{self.age_restriction}. Status: {'rented' if self.is_rented else 'not rented'}"
