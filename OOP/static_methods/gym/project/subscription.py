@@ -1,5 +1,6 @@
 class Subscription:
     id = 1
+
     def __init__(self, date: str, customer_id: int, trainer_id: int, exercise_id: int):
         self.date = date
         self.customer_id = customer_id
