@@ -1,3 +1,6 @@
+import calendar
+
+
 class DVD:
     def __init__(self, name: str, dvd_id: int, creation_year: int, creation_month: str, age_restriction: int):
         self.name = name
@@ -9,7 +12,9 @@ class DVD:
 
     @classmethod
     def from_date(cls, movie_id: int, name: str, date: str, age_restriction: int):
-        return cls(movie_id, name, date, age_restriction)
+        day, month, year = [int(x) for x in date.split(".")]
+        month_name = calendar.month_name[month]
+        return cls(name, movie_id, year, month_name, age_restriction)
 
     def __repr__(self):
         return f"{self.dvd_id}: {self.name} ({self.creation_month} {self.creation_year}) has age restriction \
