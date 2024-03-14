@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class Vehicle(ABC):
-    def __init__(self, fuel_capacity: float, fuel_consumption: float):
-        self.fuel_capacity = fuel_capacity
+    def __init__(self, fuel_quantity: float, fuel_consumption: float):
+        self.fuel_quantity = fuel_quantity
         self.fuel_consumption = fuel_consumption
 
     @abstractmethod
@@ -20,6 +20,11 @@ class Car(Vehicle):
 
     def drive(self, distance):
         consumption = (Car.CONDITIONER_ON + self.fuel_consumption) * distance
+        if consumption <= self.fuel_quantity:
+            self.fuel_quantity -= consumption
+
+    def refuel(self, fuel):
+        self.fuel_quantity += fuel
 
 
 class Truck(Vehicle):
@@ -27,5 +32,23 @@ class Truck(Vehicle):
     TANK_CAPACITY = 0.95
 
     def drive(self, distance):
+        consumption = (Truck.CONDITIONER_ON + self.fuel_consumption) * distance
+
+        if consumption <= self.fuel_quantity:
+            self.fuel_quantity -= consumption
+
+    def refuel(self, fuel):
+        self.fuel_quantity += fuel * self.TANK_CAPACITY
+
+
+truck = Truck(100, 15)
+
+truck.drive(5)
+
+print(truck.fuel_quantity)
+
+truck.refuel(50)
+
+print(truck.fuel_quantity)
 
 
