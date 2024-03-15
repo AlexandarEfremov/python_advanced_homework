@@ -10,11 +10,20 @@ class RedBullTeam(FormulaTeam):
     def calculate_revenue_after_race(self, race_pos: int):
         if race_pos == 1:
             revenue = 1500000 - self.EXPENSE_PER_RACE
+            self.budget += revenue
+            return f"The revenue after the race is {revenue}$. Current budget {self.budget}$"
         elif race_pos == 2:
             revenue = 800000 - self.EXPENSE_PER_RACE
+            self.budget += revenue
+            return f"The revenue after the race is {revenue}$. Current budget {self.budget}$"
         elif race_pos == 8:
             revenue = 20000 - self.EXPENSE_PER_RACE
+            self.budget += revenue
+            return f"The revenue after the race is {revenue}$. Current budget {self.budget}$"
         elif race_pos == 9 or race_pos == 10:
             revenue = 10000 - self.EXPENSE_PER_RACE
-        self.budget += revenue
-        return f"The revenue after the race is { revenue }$. Current budget {self.budget}$"
+            self.budget += revenue
+            return f"The revenue after the race is {revenue}$. Current budget {self.budget}$"
+
+
+
