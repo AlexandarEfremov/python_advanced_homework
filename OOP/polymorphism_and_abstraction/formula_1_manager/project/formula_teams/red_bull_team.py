@@ -7,13 +7,13 @@ class RedBullTeam(FormulaTeam):
     def __init__(self, budget: int):
         super().__init__(budget)
 
-    def calculate_revenue_after_race(self, race_pos: int):
+    def calculate_revenue_after_race(self, race_pos: int) -> object:
         if race_pos == 1:
-            revenue = 1500000 - self.EXPENSE_PER_RACE
+            revenue = 1_500_000 - self.EXPENSE_PER_RACE + 20_000
             self.budget += revenue
             return f"The revenue after the race is {revenue}$. Current budget {self.budget}$"
         elif race_pos == 2:
-            revenue = 800000 - self.EXPENSE_PER_RACE
+            revenue = 800000 - self.EXPENSE_PER_RACE + 20_000
             self.budget += revenue
             return f"The revenue after the race is {revenue}$. Current budget {self.budget}$"
         elif race_pos == 8:
