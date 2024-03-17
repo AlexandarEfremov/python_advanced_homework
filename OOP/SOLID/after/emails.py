@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-from abc import ABC, abstractmethod
 
 class IContent(ABC):
     def __init__(self, text: str):
@@ -10,26 +9,32 @@ class IContent(ABC):
     def format(self):
         pass
 
+
 class MyMl(IContent):
     def format(self):
         return '\n'.join(['<myML>', self.text, '</myML>'])
 
+
 class HTML(IContent):
     def format(self):
         return '\n'.join(['<html>', self.text, '</html>'])
+
 
 class Modifier(ABC):
     @abstractmethod
     def modify(self, data: str) -> str:
         pass
 
+
 class NoModification(Modifier):
     def modify(self, data: str) -> str:
         return data
 
+
 class IMModifier(Modifier):
     def modify(self, data: str) -> str:
         return "I'm " + data
+
 
 class IEmail(ABC):
     @abstractmethod
@@ -43,6 +48,7 @@ class IEmail(ABC):
     @abstractmethod
     def set_content(self, content):
         pass
+
 
 class Email(IEmail):
     def __init__(self, protocol):
@@ -66,7 +72,8 @@ class Email(IEmail):
         template = "Sender: {sender}\nReceiver: {receiver}\nContent:\n{content}"
         return template.format(sender=self.__sender, receiver=self.__receiver, content=self.__content)
 
-# Usage
+
+
 email = Email('IM')
 email.set_sender('qmal')
 email.set_receiver('james')
