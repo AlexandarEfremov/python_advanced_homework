@@ -4,3 +4,4 @@ def squares(number: int):
 
 
 print(list(squares(5)))
+
