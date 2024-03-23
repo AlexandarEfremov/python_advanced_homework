@@ -20,8 +20,10 @@ class Laptop(Computer):
             raise ValueError(f"{ram}GB RAM is not compatible with laptop {self.manufacturer} {self.model}!")
         self.processor = processor
         self.ram = ram
+        price = self.AVAILABLE_PROCESSORS[processor] + (math.log(2, self.ram)) * 100
+        self.price = price
         return (f"Created {self.manufacturer} {self.model} with {self.processor} and"
-                f" {self.ram}GB RAM for {self.AVAILABLE_PROCESSORS[processor]}$.")
+                f" {self.ram}GB RAM for {price}$.")
 
 
 
