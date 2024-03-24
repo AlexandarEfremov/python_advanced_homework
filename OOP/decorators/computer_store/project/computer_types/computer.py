@@ -1,7 +1,5 @@
 import math
 from abc import ABC, abstractmethod
-from project.computer_types.desktop_computer import DesktopComputer
-from project.computer_types.laptop import Laptop
 
 
 class Computer(ABC):
@@ -15,7 +13,7 @@ class Computer(ABC):
     @property
     def manufacturer(self):
         return self.__manufacturer
-    
+
     @manufacturer.setter
     def manufacturer(self, value):
         if value.strip() == "":
@@ -32,6 +30,11 @@ class Computer(ABC):
             raise ValueError("Model name cannot be empty.")
         self.__model = value
 
+    @property
+    @abstractmethod
+    def type(self):
+        ...
+
     @abstractmethod
     def available_processors(self):
         ...
@@ -41,18 +44,19 @@ class Computer(ABC):
         ...
 
     def configure_computer(self, processor: str, ram: int):
-        if processor not in self.available_processors():
-            raise ValueError(f"{processor} is not compatible with laptop {self.manufacturer} {self.model}!")
-        if ram not in self.available_ram():
-            raise ValueError(f"{ram}GB RAM is not compatible with laptop {self.manufacturer} {self.model}!")
+        if processor not in self.available_processors:
+            raise ValueError(f"{processor} is not compatible with {self.type} {self.manufacturer} {self.model}!")
+        if ram not in self.available_ram:
+            raise ValueError(f"{ram}GB RAM is not compatible with {self.type} {self.manufacturer} {self.model}!")
 
+        self.set(processor, ram)
+        return f"Created {self.__repr__()} for {self.price}$."
+
+    def set(self, processor: str, ram: int):
         self.processor = processor
         self.ram = ram
-        price = self.available_processors()[processor] + (math.log(2, self.ram)) * 100
-        self.price = price
-        return f"Created {self.manufacturer} {self.model} with {self.processor} and {self.ram}GB RAM for {self.price}$."
+        self.price += self.available_processors[processor]
+        self.price += (math.log(2, self.ram)) * 100
 
     def __repr__(self):
         return f"{self.manufacturer} {self.model} with {self.processor} and {self.ram}GB RAM"
-
-
