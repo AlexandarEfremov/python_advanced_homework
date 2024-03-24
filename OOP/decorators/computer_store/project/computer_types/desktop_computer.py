@@ -1,6 +1,7 @@
 from project.computer_types.computer import Computer
 import math
 
+
 class DesktopComputer(Computer):
     AVAILABLE_PROCESSORS = {
         "AMD Ryzen 7 5700G": 500,

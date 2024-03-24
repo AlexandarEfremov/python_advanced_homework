@@ -22,5 +22,16 @@ class ComputerStoreApp:
         raise ValueError(f"{type_computer} is not a valid type computer!")
 
     def sell_computer(self, client_budget: int, wanted_processor: str, wanted_ram: int):
-        pass
+        for pc in self.warehouse:
+            for computer in self.warehouse:
+                if computer.price <= client_budget \
+                        and \
+                        wanted_processor == computer.processor \
+                        and \
+                        computer.ram >= wanted_ram:
+                    self.profits += client_budget - computer.price
+                    self.warehouse.remove(computer)
 
+                    return f"{computer} sold for {client_budget}$."
+
+            raise Exception("Sorry, we don't have a computer for you.")
