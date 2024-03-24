@@ -50,13 +50,14 @@ class Computer(ABC):
             raise ValueError(f"{ram}GB RAM is not compatible with {self.type} {self.manufacturer} {self.model}!")
 
         self.set(processor, ram)
-        return f"Created {self.__repr__()} for {self.price}$."
+        return f"Created {self.__repr__()} for {int(self.price)}$."
 
     def set(self, processor: str, ram: int):
         self.processor = processor
         self.ram = ram
         self.price += self.available_processors[processor]
-        self.price += (math.log(2, self.ram)) * 100
+        ram_price = (math.log(self.ram, 2)) * 100
+        self.price += ram_price
 
     def __repr__(self):
         return f"{self.manufacturer} {self.model} with {self.processor} and {self.ram}GB RAM"

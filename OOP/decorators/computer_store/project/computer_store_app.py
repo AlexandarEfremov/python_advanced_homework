@@ -8,16 +8,16 @@ class ComputerStoreApp:
         self.profits = 0
 
     def build_computer(self, type_computer: str, manufacturer: str, model: str, processor: str, ram: int):
-        if type_computer == "Laptop" or type_computer == "Desktop Computer":
-
-            if type_computer == "Laptop":
-                result = Laptop(manufacturer, model)
-                result.configure_computer(processor, ram)
-                self.warehouse.append(result)
-            else:
-                result = DesktopComputer(manufacturer, model)
-                result.configure_computer(processor, ram)
-                self.warehouse.append(result)
+        if type_computer == "Laptop":
+            result = Laptop(manufacturer, model)
+            configuration = result.configure_computer(processor, ram)
+            self.warehouse.append(result)
+            return configuration
+        elif type_computer == "Desktop Computer":
+            result = DesktopComputer(manufacturer, model)
+            configuration = result.configure_computer(processor, ram)
+            self.warehouse.append(result)
+            return configuration
 
         raise ValueError(f"{type_computer} is not a valid type computer!")
 
