@@ -1,5 +1,5 @@
 from unittest import TestCase, main
-from testing.projects.list import IntegerList
+# from testing.projects.list import IntegerList
 
 
 class TestList(TestCase):
@@ -54,6 +54,22 @@ class TestList(TestCase):
             self.i_list.insert(1, 5.5)
 
         self.assertEqual("Element is not Integer", str(ve.exception))
+
+    def test_insert_on_valid_index(self):
+        expected_list = self.i_list.get_data().copy()
+        expected_list.insert(0, 5)
+        self.i_list.insert(0, 5)
+
+        self.assertEqual(expected_list, self.i_list.get_data())
+
+    def test_get_biggest_num(self):
+        result = self.i_list.get_biggest()
+        self.assertEqual(3, result)
+
+    def test_get_index(self):
+        result = self.i_list.get_index(1)
+        self.assertEqual(0, result)
+
 
 if __name__ == "__main__":
     main()
