@@ -31,9 +31,18 @@ class TestList(TestCase):
     def test_remove_valid_index(self):
         self.i_list.remove_index(1)
 
-        self.i_list.remove_index(1)
-
         self.assertEqual([1, 3], self.i_list.get_data())
+
+    def test_get_out_of_range(self):
+        with self.assertRaises(IndexError) as ie:
+            self.i_list.get(1000)
+
+        self.assertEqual("Index is out of range", str(ie.exception))
+
+    def test_get_valid_index(self):
+        self.i_list.get(1)
+        self.assertEqual(2, self.i_list.get(1))
+
 
 
 if __name__ == "__main__":
