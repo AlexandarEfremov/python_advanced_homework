@@ -1,5 +1,5 @@
 from unittest import TestCase, main
-from testing.projects.worker import Worker
+# from testing.projects.worker import Worker
 
 
 class TestWorker(TestCase):
@@ -30,6 +30,23 @@ class TestWorker(TestCase):
             self.worker.work()
 
         self.assertEqual('Not enough energy.', str(ex.exception))
+
+    def test_if_salary_is_increased_after_calling_work(self):
+        expected_money = self.worker.money + self.worker.salary
+
+        self.worker.work()
+
+        self.assertEqual(expected_money, self.worker.money)
+
+    def test_energy_decrease_after_work(self):
+        expected_energy = self.worker.energy - 1
+
+        self.worker.work()
+
+        self.assertEqual(expected_energy, self.worker.energy)
+
+    def test_get_info(self):
+        self.assertEqual("TestAlex has saved 0 money.", self.worker.get_info())
 
 
 if __name__ == "__main__":
