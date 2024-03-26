@@ -43,7 +43,17 @@ class TestList(TestCase):
         self.i_list.get(1)
         self.assertEqual(2, self.i_list.get(1))
 
+    def test_insert_on_invalid_index(self):
+        with self.assertRaises(IndexError) as ie:
+            self.i_list.insert(10000, 5)
 
+        self.assertEqual("Index is out of range", str(ie.exception))
+
+    def test_insert_valid_index_object_which_is_non_int_type(self):
+        with self.assertRaises(ValueError) as ve:
+            self.i_list.insert(1, 5.5)
+
+        self.assertEqual("Element is not Integer", str(ve.exception))
 
 if __name__ == "__main__":
     main()
