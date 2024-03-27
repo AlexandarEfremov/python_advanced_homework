@@ -5,19 +5,19 @@ from project.hero import Hero
 
 class TestHero(TestCase):
     def setUp(self):
-        self.hero = Hero("Alex", 5, 200, 100)
-        self.enemy = Hero("Enemy", 4, 100, 50)
+        self.hero = Hero("Alex", 1, 100, 100)
+        self.enemy = Hero("Enemy", 1, 50, 50)
 
     def test_correct_init(self):
         self.assertEqual("Alex", self.hero.username)
-        self.assertEqual(5, self.hero.level)
-        self.assertEqual(200, self.hero.health)
+        self.assertEqual(1, self.hero.level)
+        self.assertEqual(100, self.hero.health)
         self.assertEqual(100, self.hero.damage)
 
     def test_enemy_correct_init(self):
         self.assertEqual("Enemy", self.enemy.username)
-        self.assertEqual(4, self.enemy.level)
-        self.assertEqual(100, self.enemy.health)
+        self.assertEqual(1, self.enemy.level)
+        self.assertEqual(50, self.enemy.health)
         self.assertEqual(50, self.enemy.damage)
 
     def test_battle_exception_if_fighting_self(self):
@@ -44,50 +44,42 @@ class TestHero(TestCase):
 
         self.assertEqual(expected_string, str(ve.exception))
 
-    def test_hero_health_after_damage(self):
-        expected_health = self.hero.health - (self.enemy.damage * self.enemy.level)
-        self.hero.battle(self.enemy)
+    def test_battle_returns_draw_and_decreases_health_for_both(self):
+        self.hero.health = 50
 
+        result = self.hero.battle(self.enemy)
+
+        self.assertEqual("Draw", result)
+        self.assertEqual(-50, self.enemy.health)
+        self.assertEqual(0, self.hero.health)
+
+    def test_fight_enemy_and_win(self):
+        expected_level = self.hero.level + 1
+        expected_health = self.hero.health - self.enemy.damage + 5
+        expected_damage = self.hero.damage + 5
+
+        result = self.hero.battle(self.enemy)
+
+        self.assertEqual("You win", result)
+        self.assertEqual(expected_level, self.hero.level)
         self.assertEqual(expected_health, self.hero.health)
+        self.assertEqual(expected_damage, self.hero.damage)
 
-    def test_enemy_health_after_damage(self):
-        expected_health = self.enemy.health - (self.hero.damage * self.hero.level)
-        self.enemy.battle(self.hero)
+    def test_fight_enemy_and_lose(self):
+        self.enemy.health = 200
+        expected_level = self.enemy.level + 1
+        expected_health = self.enemy.health - self.hero.damage + 5
+        expected_damage = self.enemy.damage + 5
 
+        result = self.hero.battle(self.enemy)
+
+        self.assertEqual("You lose", result)
+        self.assertEqual(expected_level, self.enemy.level)
         self.assertEqual(expected_health, self.enemy.health)
-
-    def test_draw_scenario(self):
-        self.hero.health = 1
-        self.enemy.health = 1
-
-        self.assertEqual("Draw",self.hero.battle(self.enemy))
-
-    def test_hero_wins_battle(self):
-        self.hero.health = 10000
-        self.assertEqual("You win", self.hero.battle(self.enemy))
-
-    def test_hero_attributes_after_victory(self):
-        self.hero.health = 10000
-        self.hero.battle(self.enemy)
-
-        self.assertEqual(6, self.hero.level)
-        self.assertEqual(9805, self.hero.health)
-        self.assertEqual(105, self.hero.damage)
-
-    def test_enemy_wins_battle(self):
-        self.enemy.health = 10000
-        self.assertEqual("You win", self.enemy.battle(self.hero))
-
-    def test_enemy_attributes_after_victory(self):
-        self.enemy.health = 10000
-        self.enemy.battle(self.hero)
-
-        self.assertEqual(5, self.enemy.level)
-        self.assertEqual(9505, self.enemy.health)
-        self.assertEqual(55, self.enemy.damage)
+        self.assertEqual(expected_damage, self.enemy.damage)
 
     def test_correct_string_return(self):
-        expected_string = f"Hero Alex: 5 lvl\nHealth: 200\nDamage: 100\n"
+        expected_string = f"Hero Alex: 1 lvl\nHealth: 100\nDamage: 100\n"
 
         self.assertEqual(expected_string, self.hero.__str__())
 
