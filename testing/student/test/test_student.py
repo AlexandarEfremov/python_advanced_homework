@@ -33,5 +33,39 @@ class TestStudent(TestCase):
             {"math": ["z + y = j"]}, self.student.courses
         )
 
+    def test_enroll_new_course_with_y_note_added(self):
+        result = self.student.enroll(
+            "math",
+            ["x + y = z"],
+            "Y"
+        )
+
+        self.assertEqual(
+            "Course and course notes have been added.",
+            result
+        )
+
+        self.assertEqual(
+            {"math": ["x + y = z"]},
+            self.student.courses
+        )
+
+    def test_enroll_new_course_with_no_note_added(self):
+        result = self.student.enroll(
+            "math",
+            ["x + y = z"],
+            "n"
+        )
+
+        self.assertEqual(
+            "Course has been added.",
+            result
+        )
+
+        self.assertEqual(
+            {"math": []},
+            self.student.courses
+        )
+
 if __name__ == "__main__":
     main()
