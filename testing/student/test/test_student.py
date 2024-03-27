@@ -78,6 +78,15 @@ class TestStudent(TestCase):
 
         self.assertEqual("Cannot add notes. Course not found.", str(ex.exception))
 
+    def test_successful_course_removal(self):
+        result = self.student_with_courses.leave_course("math")
+        self.assertEqual("Course has been removed", result)
+
+    def test_if_course_not_in_list(self):
+        with self.assertRaises(Exception) as ex:
+            self.student_with_courses.leave_course("Geo")
+
+        self.assertEqual("Cannot remove course. Course not found.", str(ex.exception))
 
 
 if __name__ == "__main__":
