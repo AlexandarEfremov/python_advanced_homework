@@ -1,0 +1,22 @@
+from project.climbers.base_climber import BaseClimber
+from project.peaks.base_peak import BasePeak
+
+
+class SummitClimber(BaseClimber):
+    INITIAL_STRENGTH = 150
+
+    def __init__(self, name: str, conquered_peaks: list, is_prepared: bool):
+        super().__init__(name, self.INITIAL_STRENGTH, conquered_peaks, is_prepared)
+
+    def can_climb(self):
+        if self.strength >= 75:
+            return True
+
+    def climb(self, peak: BasePeak):
+        if peak.difficulty_level == "Advanced":
+            self.strength -= 30
+            self.strength *= 1.3
+        else:
+            self.strength -= 30
+            self.strength *= 2.5
+        self.conquered_peaks.append(peak)
