@@ -15,7 +15,23 @@ class TestStudent(TestCase):
         self.assertEqual({}, self.student.courses)
         self.assertEqual({"math": ["x + y = z"]}, self.student_with_courses.courses)
 
+    def test_enroll_existing_course_note_added(self):
+        result = self.student_with_courses.enroll("math", ["1 + 2 = 3"])
 
+        self.assertEqual("Course already added. Notes have been updated.",
+                         result)
+
+        self.assertEqual(["x + y = z", "1 + 2 = 3"],
+                         self.student_with_courses.courses["math"])
+
+    def test_enroll_new_course_note_added(self):
+        result = self.student.enroll("math", ["z + y = j"])
+
+        self.assertEqual("Course and course notes have been added.", result)
+
+        self.assertEqual(
+            {"math": ["z + y = j"]}, self.student.courses
+        )
 
 if __name__ == "__main__":
     main()
