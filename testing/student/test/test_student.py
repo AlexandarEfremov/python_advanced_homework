@@ -67,5 +67,18 @@ class TestStudent(TestCase):
             self.student.courses
         )
 
+    def test_add_notes_to_existing_course(self):
+        result = self.student_with_courses.add_notes("math", "abcd")
+
+        self.assertEqual("Notes have been updated", result)
+
+    def test_add_notes_to_non_exist_course(self):
+        with self.assertRaises(Exception) as ex:
+            self.student.add_notes("POPO", "abcd")
+
+        self.assertEqual("Cannot add notes. Course not found.", str(ex.exception))
+
+
+
 if __name__ == "__main__":
     main()
