@@ -13,6 +13,10 @@ class BaseClimber(ABC):
         self.conquered_peaks = conquered_peaks
         self.is_prepared: is_prepared = True
 
+    @staticmethod
+    def climber_types():
+        return ["Arctic "]
+
     @property
     def name(self):
         return self.__name
