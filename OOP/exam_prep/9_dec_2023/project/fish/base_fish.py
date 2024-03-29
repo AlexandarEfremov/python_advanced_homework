@@ -27,3 +27,8 @@ class BaseFish(ABC):
             raise ValueError("Points should be a value ranging from 1 to 10!")
         self.__points = value
 
+    @abstractmethod
+    def fish_details(self):
+        ...
+
+
