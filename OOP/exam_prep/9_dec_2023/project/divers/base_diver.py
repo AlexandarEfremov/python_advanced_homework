@@ -55,6 +55,8 @@ class BaseDiver(ABC):
             self.has_health_issue = True
             return self.has_health_issue
 
-
+    def __str__(self):
+        return (f"{self.__class__.__name__}: [Name: {self.name}, Oxygen level left: {self.oxygen_level}, "
+                f"Fish caught: {len(self.catch)}, Points earned: {self.competition_points}]")
 
 
