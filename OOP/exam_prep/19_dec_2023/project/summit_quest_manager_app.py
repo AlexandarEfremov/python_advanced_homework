@@ -77,11 +77,12 @@ class SummitQuestManagerApp:
         return f"{climber_name} conquered {peak_name} whose difficulty level is {peak.difficulty_level}."
 
     def get_statistics(self):
-        climbers_with_success = filter(lambda c: len(c.conquered_peaks) > 0, self.climbers)
-        climbers = sorted(climbers_with_success, key=lambda c: (-len(c.conquered_peaks), c.name))
+        sorted_climbers = sorted([climber for climber in self.climbers if climber.conquered_peaks],
+                                 key=lambda climber: (-len(climber.conquered_peaks), climber.name))
+        climbers = sorted(sorted_climbers, key=lambda c: (-len(c.conquered_peaks), c.name))
 
         total_peaks = len({p for c in climbers for p in c.conquered_peaks})
 
         return f"Total climbed peaks: {total_peaks}\n" + \
             "**Climber's statistics:**\n" + \
-            "\n".join(str(c) for c in climbers)
+            "\n".join(str(c) for c in sorted_climbers)

@@ -8,4 +8,7 @@ class SummitPeak(BasePeak):
         return SummitPeak.RECOMMENDED_GEAR
 
     def calculate_difficulty_level(self):
-        return "Extreme" if self.elevation > 2500 else "Advanced"
+        if self.elevation > 2500:
+            return "Extreme"
+        elif 1500 <= self.elevation <= 2500:
+            return "Advanced"

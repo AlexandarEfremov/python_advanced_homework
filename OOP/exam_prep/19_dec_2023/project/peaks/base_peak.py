@@ -21,13 +21,13 @@ class BasePeak(ABC):
         
     @property
     def elevation(self):
-        return self.__name
+        return self.__elevation
     
     @elevation.setter
     def elevation(self, value):
         if value < BasePeak.PEAK_ELEVATION:
             raise ValueError("Peak elevation cannot be below 1500m.")
-        self.__name = value
+        self.__elevation = value
 
     @abstractmethod
     def get_recommended_gear(self):
