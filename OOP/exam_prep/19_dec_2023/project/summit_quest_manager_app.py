@@ -1,15 +1,17 @@
 from typing import List
 
 from project.climbers.arctic_climber import ArcticClimber
+from project.climbers.base_climber import BaseClimber
 from project.climbers.summit_climber import SummitClimber
 from project.peaks.arctic_peak import ArcticPeak
+from project.peaks.base_peak import BasePeak
 from project.peaks.summit_peak import SummitPeak
 
 
 class SummitQuestManagerApp:
     CLIMBER_TYPES = {
         "ArcticClimber": ArcticClimber,
-        "SummitClimber": SummitClimber
+        "SummitClimber": SummitClimber,
     }
 
     PEAK_TYPES = {
@@ -18,8 +20,8 @@ class SummitQuestManagerApp:
     }
 
     def __init__(self):
-        self.climbers = []
-        self.peaks = []
+        self.climbers: List[BaseClimber] = []
+        self.peaks: List[BasePeak] = []
 
     def register_climber(self, climber_type: str, climber_name: str):
         try:
@@ -74,6 +76,7 @@ class SummitQuestManagerApp:
             return f"{climber_name} needs more strength to climb {peak_name} and is therefore taking some rest."
 
         climber.climb(peak)
+
         return f"{climber_name} conquered {peak_name} whose difficulty level is {peak.difficulty_level}."
 
     def get_statistics(self) -> str:
@@ -83,5 +86,5 @@ class SummitQuestManagerApp:
         total_peaks_climbed = len({p for c in climbers for p in c.conquered_peaks})
 
         return f"Total climbed peaks: {total_peaks_climbed}\n" + \
-                "**Climber's statistics:**\n" + \
-                "\n".join(str(c) for c in climbers)
+            "**Climber's statistics:**\n" + \
+            "\n".join(str(c) for c in climbers)
