@@ -7,7 +7,7 @@ class TestClimbingRobot(TestCase):
     ALLOWED_CATEGORIES = ['Mountain', 'Alpine', 'Indoor', 'Bouldering']
 
     def setUp(self):
-        self.robot = ClimbingRobot("Mountain", "usb", 10, 32)
+        self.robot = ClimbingRobot("Mountain", "usb", 100, 320)
 
         self.robot_with_software = ClimbingRobot(
             "Mountain",
@@ -24,8 +24,8 @@ class TestClimbingRobot(TestCase):
     def test_init(self):
         self.assertEqual("Mountain", self.robot.category)
         self.assertEqual("usb", self.robot.part_type)
-        self.assertEqual(10, self.robot.capacity)
-        self.assertEqual(32, self.robot.memory)
+        self.assertEqual(100, self.robot.capacity)
+        self.assertEqual(320, self.robot.memory)
         self.assertEqual([], self.robot.installed_software)
 
     def test_category_not_in_allowed(self):
@@ -59,6 +59,54 @@ class TestClimbingRobot(TestCase):
 
         self.assertEqual(expect, result)
 
+    def test_successful_installation(self):
+        result = self.robot.install_software(
+            {"name": "Pycharm", "capacity_consumption": 50, "memory_consumption": 49}
+        )
+
+        self.assertEqual("Software 'Pycharm' successfully installed on Mountain part.",
+                         result
+                         )
+
+        self.assertEqual(
+            self.robot.installed_software, [{"name": "Pycharm", "capacity_consumption": 50, "memory_consumption": 49}]
+        )
+
+    def test_installation_with_double_max_values_expect_success(self):
+        result = self.robot.install_software(
+            {"name": "Pycharm", "capacity_consumption": 100, "memory_consumption": 320}
+        )
+
+        self.assertEqual("Software 'Pycharm' successfully installed on Mountain part.",
+                         result
+                         )
+
+        self.assertEqual(
+            self.robot.installed_software, [{"name": "Pycharm", "capacity_consumption": 100, "memory_consumption": 320}]
+        )
+    def test_installation_with_not_enough_capacity_expect_fail(self):
+        result = self.robot.install_software(
+            {"name": "Pycharm", "capacity_consumption": 101, "memory_consumption": 49}
+        )
+
+        self.assertEqual("Software 'Pycharm' cannot be installed on Mountain part.", result)
+
+        self.assertEqual(
+            self.robot.installed_software,
+            []
+        )
+
+    def test_installation_with_not_enough_memory_expect_fail(self):
+        result = self.robot.install_software(
+            {"name": "Pycharm", "capacity_consumption": 10, "memory_consumption": 490}
+        )
+
+        self.assertEqual("Software 'Pycharm' cannot be installed on Mountain part.", result)
+
+        self.assertEqual(
+            self.robot.installed_software,
+            []
+        )
 
 if __name__ == "__main__":
     main()
