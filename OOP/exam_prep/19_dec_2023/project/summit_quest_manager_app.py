@@ -34,7 +34,6 @@ class SummitQuestManagerApp:
             self.climbers.append(climber)
             return f"{climber_name} is successfully registered as a {climber_type}."
 
-
     def peak_wish_list(self, peak_type: str, peak_name: str, peak_elevation: int):
         try:
             peak = self.PEAK_TYPES[peak_type](peak_name, peak_elevation)
@@ -68,6 +67,14 @@ class SummitQuestManagerApp:
         if not climber.can_climb():
             return "{climber_name} needs more strength to climb {peak_name} and is therefore taking some rest."
 
+        climber.climb(peak)
         return f"{climber_name} conquered {peak_name} whose difficulty level is {peak.calculate_difficulty_level()}."
 
+    def get_statistics(self):
+        climbers_with_success = filter(lambda c: len(c.conquered_peaks) > 0, self.climbers)
+        climbers = sorted(climbers_with_success, key=lambda c: (-len(c.conquered_peaks), c.name))
 
+        total_peaks = len({p for c in climbers for p in c.conquered_peaks})
+        return f"Total climbed peaks: {total_peaks}\n" + \
+            "**Climber's statistics:**\n" + \
+            "\n".join(str(c) for c in climbers)

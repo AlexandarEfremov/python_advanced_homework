@@ -7,11 +7,11 @@ class BaseClimber(ABC):
     MIN_STRENGTH = 0
     STRENGTH_INCREASE = 15
 
-    def __init__(self, name: str, strength: float, conquered_peaks: list, is_prepared: bool):
+    def __init__(self, name: str, strength: float):
         self.name = name
         self.strength = strength
-        self.conquered_peaks = conquered_peaks
-        self.is_prepared: is_prepared = True
+        self.conquered_peaks = []
+        self.is_prepared = True
 
     @staticmethod
     def climber_types():
