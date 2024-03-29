@@ -17,9 +17,9 @@ class SummitQuestManagerApp:
         "SummitPeak": SummitPeak
     }
 
-    def __init__(self, climbers: list, peaks: list):
-        self.climbers = climbers
-        self.peaks = peaks
+    def __init__(self):
+        self.climbers = []
+        self.peaks = []
 
     def register_climber(self, climber_type: str, climber_name: str):
         try:
@@ -49,7 +49,9 @@ class SummitQuestManagerApp:
 
         if gear == peak.get_recommended_gear():
             return f"{climber_name} is prepared to climb {peak_name}."
+
         climber.is_prepared = False
+
         return (f"{climber_name} is not prepared to climb {peak_name}. Missing gear: "
                 f"{', '.join(g for g in sorted(peak.get_recommended_gear()) if g not in gear)}.")
 
@@ -64,17 +66,22 @@ class SummitQuestManagerApp:
         except StopIteration:
             return f"Peak {peak_name} is not part of the wish list."
 
+        if not climber.is_prepared:
+            return f"{climber_name} will need to be better prepared next time."
+
         if not climber.can_climb():
-            return "{climber_name} needs more strength to climb {peak_name} and is therefore taking some rest."
+            climber.rest()
+            return f"{climber_name} needs more strength to climb {peak_name} and is therefore taking some rest."
 
         climber.climb(peak)
-        return f"{climber_name} conquered {peak_name} whose difficulty level is {peak.calculate_difficulty_level()}."
+        return f"{climber_name} conquered {peak_name} whose difficulty level is {peak.difficulty_level}."
 
     def get_statistics(self):
         climbers_with_success = filter(lambda c: len(c.conquered_peaks) > 0, self.climbers)
         climbers = sorted(climbers_with_success, key=lambda c: (-len(c.conquered_peaks), c.name))
 
         total_peaks = len({p for c in climbers for p in c.conquered_peaks})
+
         return f"Total climbed peaks: {total_peaks}\n" + \
             "**Climber's statistics:**\n" + \
             "\n".join(str(c) for c in climbers)

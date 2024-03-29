@@ -13,10 +13,6 @@ class BaseClimber(ABC):
         self.conquered_peaks = []
         self.is_prepared = True
 
-    @staticmethod
-    def climber_types():
-        return ["Arctic "]
-
     @property
     def name(self):
         return self.__name
@@ -42,11 +38,11 @@ class BaseClimber(ABC):
         ...
 
     @abstractmethod
-    def climb(self, peak : BasePeak):
+    def climb(self, peak: BasePeak):
         ...
 
     def rest(self):
-        self.strength += self.STRENGTH_INCREASE
+        self.strength += BaseClimber.STRENGTH_INCREASE
 
     def __str__(self):
         return (f"{self.__class__.__name__}: /// Climber name: {self.name} * Left strength: "
