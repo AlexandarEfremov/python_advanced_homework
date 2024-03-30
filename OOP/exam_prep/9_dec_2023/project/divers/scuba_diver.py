@@ -23,8 +23,7 @@ class ScubaDiver(BaseDiver):
             else:
                 self.oxygen_level = 0
 
-
-def renew_oxy(self):
-    add = self.original_ox()
-    self.oxygen_level += add
+    def renew_oxy(self):
+        add = self.original_ox()
+        self.oxygen_level += add
 
