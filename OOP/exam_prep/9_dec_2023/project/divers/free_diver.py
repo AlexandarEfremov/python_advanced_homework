@@ -20,6 +20,9 @@ class FreeDiver(BaseDiver):
             else:
                 self.oxygen_level = 0
 
+    def original_ox(self):
+        return 120
 
     def renew_oxy(self):
-        pass
+        add = self.original_ox()
+        self.oxygen_level += add

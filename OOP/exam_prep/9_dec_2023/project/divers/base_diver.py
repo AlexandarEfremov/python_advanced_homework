@@ -32,6 +32,10 @@ class BaseDiver(ABC):
         self.__oxygen_level = value
 
     @abstractmethod
+    def original_ox(self):
+        ...
+
+    @abstractmethod
     def miss(self, time_to_catch: int):
         ...
 
