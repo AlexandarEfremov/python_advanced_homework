@@ -41,7 +41,7 @@ class NauticalCatchChallengeApp:
             return f"{fish_type} is forbidden for chasing in our competition."
 
         try:
-            next(filter(lambda  f: f.name == fish_name, self.fish_list))
+            next(filter(lambda f: f.name == fish_name, self.fish_list))
             return f"{fish_name} is already permitted."
         except StopIteration:
             self.fish_list.append(fish)
@@ -63,21 +63,26 @@ class NauticalCatchChallengeApp:
 
         if diver.oxygen_level < fish.time_to_catch:
             diver.miss(fish.time_to_catch)
+            if diver.oxygen_level == 0:
+                diver.update_health_status()
             return f"{diver_name} missed a good {fish_name}."
 
         if diver.oxygen_level == fish.time_to_catch:
             if is_lucky:
                 diver.hit(fish)
+                if diver.oxygen_level == 0:
+                    diver.update_health_status()
                 return f"{diver_name} hits a {fish.points}pt. {fish_name}."
 
             else:
                 diver.miss(fish.time_to_catch)
+                if diver.oxygen_level == 0:
+                    diver.update_health_status()
                 return f"{diver_name} missed a good {fish_name}."
 
         if diver.oxygen_level > fish.time_to_catch:
             diver.hit(fish)
             return f"{diver_name} hits a {fish.points}pt. {fish_name}."
-
 
     def health_recovery(self):
         divers_with_health_conditions = [div for div in self.divers if div.has_health_issue is True]
@@ -88,13 +93,11 @@ class NauticalCatchChallengeApp:
 
     def diver_catch_report(self, diver_name: str):
         diver = next(filter(lambda d: d.name == diver_name, self.divers))
-        return (f"**{diver_name} Catch Report**\n"
-                f"\n".join(str(c) for c in diver.catch))
+        return f"**{diver_name} Catch Report**\n" + '\n'.join(c.fish_details() for c in diver.catch)
 
     def competition_statistics(self):
         divers_in_good_health_list = filter(lambda d: not d.has_health_issue, self.divers)
         divers = sorted(divers_in_good_health_list, key=lambda d: (-d.competition_points, -len(d.catch), d.name))
-        return (f"**Nautical Catch Challenge Statistics**"
-                f"\n".join(str(d) for d in divers))
+        return f"**Nautical Catch Challenge Statistics**\n" + "\n".join(d.__str__() for d in divers)
 
 
