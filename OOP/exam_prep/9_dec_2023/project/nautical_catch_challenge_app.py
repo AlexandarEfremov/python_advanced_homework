@@ -62,6 +62,7 @@ class NauticalCatchChallengeApp:
             return f"{diver_name} will not be allowed to dive, due to health issues."
 
         if diver.oxygen_level < fish.time_to_catch:
+            diver.miss(fish.time_to_catch)
             return f"{diver_name} missed a good {fish_name}."
 
         if diver.oxygen_level == fish.time_to_catch:
@@ -77,8 +78,6 @@ class NauticalCatchChallengeApp:
             diver.hit(fish)
             return f"{diver_name} hits a {fish.points}pt. {fish_name}."
 
-        if diver.oxygen_level == 0:
-            diver.has_health_issue = True
 
     def health_recovery(self):
         divers_with_health_conditions = [div for div in self.divers if div.has_health_issue is True]

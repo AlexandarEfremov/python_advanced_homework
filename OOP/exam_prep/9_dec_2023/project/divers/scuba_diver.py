@@ -17,11 +17,13 @@ class ScubaDiver(BaseDiver):
                 self.oxygen_level -= ceil(number)
             else:
                 self.oxygen_level = 0
+                self.has_health_issue = True
         else:
             if self.oxygen_level >= number:
                 self.oxygen_level -= number
             else:
                 self.oxygen_level = 0
+                self.has_health_issue = True
 
     def renew_oxy(self):
         add = self.original_ox()

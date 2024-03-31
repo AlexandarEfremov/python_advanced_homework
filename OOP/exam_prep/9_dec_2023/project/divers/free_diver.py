@@ -14,11 +14,13 @@ class FreeDiver(BaseDiver):
                 self.oxygen_level -= ceil(number)
             else:
                 self.oxygen_level = 0
+                self.has_health_issue = True
         else:
             if self.oxygen_level >= number:
                 self.oxygen_level -= number
             else:
                 self.oxygen_level = 0
+                self.has_health_issue = True
 
     def original_ox(self):
         return 120
