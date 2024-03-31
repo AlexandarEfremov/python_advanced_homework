@@ -76,10 +76,14 @@ class NauticalCatchChallengeApp:
             return f"{diver_name} hits a {fish.points}pt. {fish_name}."
 
         if diver.oxygen_level == 0:
-            diver.has_health_issues = True
+            diver.has_health_issue = True
 
     def health_recovery(self):
-        pass
+        divers_with_health_conditions = next(filter(lambda d: d.has_health_issue is True, self.divers))
+        for diver in divers_with_health_conditions:
+            diver.has_health_issue = False
+            diver.renew_oxy()
+        return f"Divers recovered: {len(divers_with_health_conditions)}"
 
     def diver_catch_report(self, diver_name: str):
         pass
