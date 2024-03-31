@@ -88,3 +88,4 @@ class SummitQuestManagerApp:
         return f"Total climbed peaks: {total_peaks_climbed}\n" + \
             "**Climber's statistics:**\n" + \
             "\n".join(str(c) for c in climbers)
+fish
