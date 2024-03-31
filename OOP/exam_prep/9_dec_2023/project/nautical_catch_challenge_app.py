@@ -82,12 +82,14 @@ class NauticalCatchChallengeApp:
 
         if diver.oxygen_level > fish.time_to_catch:
             diver.hit(fish)
+            if diver.oxygen_level == 0:
+                diver.update_health_status()
             return f"{diver_name} hits a {fish.points}pt. {fish_name}."
 
     def health_recovery(self):
         divers_with_health_conditions = [div for div in self.divers if div.has_health_issue is True]
         for diver in divers_with_health_conditions:
-            diver.has_health_issue = False
+            diver.update_health_status()
             diver.renew_oxy()
         return f"Divers recovered: {len(divers_with_health_conditions)}"
 
@@ -96,7 +98,7 @@ class NauticalCatchChallengeApp:
         return f"**{diver_name} Catch Report**\n" + '\n'.join(c.fish_details() for c in diver.catch)
 
     def competition_statistics(self):
-        divers_in_good_health_list = filter(lambda d: not d.has_health_issue, self.divers)
+        divers_in_good_health_list = filter(lambda d: d.has_health_issue is False, self.divers)
         divers = sorted(divers_in_good_health_list, key=lambda d: (-d.competition_points, -len(d.catch), d.name))
         return f"**Nautical Catch Challenge Statistics**\n" + "\n".join(d.__str__() for d in divers)
 
