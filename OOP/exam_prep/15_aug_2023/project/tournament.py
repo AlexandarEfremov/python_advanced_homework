@@ -52,3 +52,34 @@ class Tournament:
         else:
             return "Not enough tournament capacity."
 
+    def sell_equipment(self, equipment_type: str, team_name: str):
+
+        equip = filter(lambda eq: eq.__class__.__name__ == equipment_type, self.equipment)
+        team = filter(lambda t: t.name == team_name, self.teams)
+
+        if team.budget - equip.price > 0:
+            team.budget -= equip.price
+
+            self.equipment.reverse()
+            self.equipment.remove(equip)
+            self.equipment.reverse()
+
+            team.equipment.append(equip)
+        else:
+            return "Budget is not enough!"
+
+    def remove_team(self, team_name: str):
+        try:
+            team = next(filter(lambda t: t.name == team_name, self.teams))
+        except StopIteration:
+            return "No such team!"
+
+        if team.wins:
+            raise Exception(f"The team has {team.wins} wins! Removal is impossible!")
+        else:
+            self.teams.remove(team)
+            return f"Successfully removed {team_name}."
+
+
+
+
