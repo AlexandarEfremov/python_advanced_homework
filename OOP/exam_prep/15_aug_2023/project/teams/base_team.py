@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from math import floor
+from typing import List
 
 from project.equipment.base_equipment import BaseEquipment
 
@@ -11,7 +12,7 @@ class BaseTeam(ABC):
         self.advantage = advantage
         self.budget = budget
         self.wins = 0
-        self.equipment = []
+        self.equipment: List[BaseEquipment] = []
 
     @property
     def name(self):
@@ -30,7 +31,7 @@ class BaseTeam(ABC):
     @country.setter
     def country(self, value):
         if len(value.strip()) < 2:
-            raise ValueError("Team name cannot be empty!")
+            raise ValueError("Team country should be at least 2 symbols long!")
         self.__country = value
 
     @property
@@ -39,8 +40,8 @@ class BaseTeam(ABC):
 
     @advantage.setter
     def advantage(self, value):
-        if value < 0:
-            raise ValueError("Team name cannot be empty!")
+        if value <= 0:
+            raise ValueError("Advantage must be greater than zero!")
         self.__advantage = value
 
     @abstractmethod
@@ -49,8 +50,11 @@ class BaseTeam(ABC):
 
     def get_statistics(self):
         eq_price_formula = sum([x.price for x in self.equipment])
-        eq_formula = floor(sum([x.protection for x in self.equipment]) / len(self.equipment))
-        return (f"Name: {self.name}\nCountry: {self.country}\nAdvantage: {self.advantage} points\n"
-                f"Budget: {self.budget}EUR\nWins: {self.wins}\n"
+        eq_formula = floor(sum(x.protection for x in self.equipment) / len(self.equipment)) if self.equipment else 0
+        return (f"Name: {self.name}\n"
+                f"Country: {self.country}\n"
+                f"Advantage: {self.advantage} points\n"
+                f"Budget: {self.budget:.2f}EUR\n"
+                f"Wins: {self.wins}\n"
                 f"Total Equipment Price: {eq_price_formula:.2f}\n"
                 f"Average Protection: {eq_formula}")

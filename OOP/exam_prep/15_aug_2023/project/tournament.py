@@ -1,5 +1,9 @@
+from typing import List
+
+from project.equipment.base_equipment import BaseEquipment
 from project.equipment.knee_pad import KneePad
 from project.equipment.elbow_pad import ElbowPad
+from project.teams.base_team import BaseTeam
 from project.teams.indoor_team import IndoorTeam
 from project.teams.outdoor_team import OutdoorTeam
 
@@ -18,8 +22,8 @@ class Tournament:
     def __init__(self, name: str, capacity: int):
         self.name = name
         self.capacity = capacity
-        self.equipment = []
-        self.teams = []
+        self.equipment: List[BaseEquipment] = []
+        self.teams: List[BaseTeam] = []
 
     @property
     def name(self):
@@ -27,13 +31,13 @@ class Tournament:
 
     @name.setter
     def name(self, value):
-        if not value.isalphanum():
+        if not value.isalnum():
             raise ValueError("Tournament name should contain letters and digits only!")
         self.__name = value
 
     def add_equipment(self, equipment_type: str):
         try:
-            eq = self.VALID_EQUIPMENT[equipment_type]
+            eq = self.VALID_EQUIPMENT[equipment_type]()
         except KeyError:
             return "Invalid equipment type!"
 
@@ -53,20 +57,16 @@ class Tournament:
             return "Not enough tournament capacity."
 
     def sell_equipment(self, equipment_type: str, team_name: str):
+        equip = next((e for e in reversed(self.equipment) if e.__class__.__name__ == equipment_type), None)
+        team = next(filter(lambda t: t.name == team_name, self.teams))
 
-        equip = filter(lambda eq: eq.__class__.__name__ == equipment_type, self.equipment)
-        team = filter(lambda t: t.name == team_name, self.teams)
+        if team.budget < equip.price:
+            raise Exception("Budget is not enough!")
 
-        if team.budget - equip.price > 0:
-            team.budget -= equip.price
-
-            self.equipment.reverse()
-            self.equipment.remove(equip)
-            self.equipment.reverse()
-
-            team.equipment.append(equip)
-        else:
-            return "Budget is not enough!"
+        self.equipment.remove(equip)
+        team.equipment.append(equip)
+        team.budget -= equip.price
+        return f"Successfully sold {equipment_type} to {team_name}."
 
     def remove_team(self, team_name: str):
         try:
