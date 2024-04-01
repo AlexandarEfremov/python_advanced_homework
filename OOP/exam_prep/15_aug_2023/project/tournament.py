@@ -104,6 +104,11 @@ class Tournament:
         else:
             return "No winner in this game."
 
+    def get_statistics(self):
+        return (f"Tournament: {self.name}\nNumber of Teams: {len(self.teams)}\nTeams:\n"
+                f"\n".join(t.get_statistics() for t in self.teams))
+
+
 
 
 
