@@ -80,6 +80,30 @@ class Tournament:
             self.teams.remove(team)
             return f"Successfully removed {team_name}."
 
+    def increase_equipment_price(self, equipment_type: str):
+        eq_len = len([eq for eq in self.equipment if eq.__class__.__name__ == equipment_type])
+        self.equipment = [eq.increase_price() for eq in self.equipment if eq.__class__.__name__ == equipment_type]
+        return f"Successfully changed {eq_len}pcs of equipment."
+
+    def play(self, team_name1: str, team_name2: str):
+        team_one = filter(lambda t1: t1.name == team_name1, self.teams)
+        team_two = filter(lambda t2: t2.name == team_name2, self.teams)
+
+        if team_one.__class__.__name__ != team_two.__class__.__name__:
+            raise Exception("Game cannot start! Team types mismatch!")
+
+        team_one_result = sum(team_one.advantage + team_one.protection)
+        team_two_result = sum(team_two.advantage + team_two.protection)
+
+        if team_one_result > team_two_result:
+            team_one.win()
+            return f"The winner is {team_one.name}."
+        elif team_one_result < team_two_result:
+            team_two.win()
+            return f"The winner is {team_two.name}."
+        else:
+            return "No winner in this game."
+
 
 
 
