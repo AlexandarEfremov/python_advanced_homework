@@ -11,8 +11,8 @@ class TestRailwayStation(TestCase):
 
     def test_correct__init__(self):
         self.assertEqual("Alex", self.train.name)
-        self.assertEqual(["a", "b", "c"], self.train.arrival_trains)
-        self.assertEqual(["x", "y", "z"], self.train.departure_trains)
+        self.assertEqual(deque(['a', 'b', 'c']), self.train.arrival_trains)
+        self.assertEqual(deque(['x', 'y', 'z']), self.train.departure_trains)
 
     def test_name_setter_expect_error(self):
         with self.assertRaises(Exception) as ex:
@@ -22,11 +22,11 @@ class TestRailwayStation(TestCase):
     def test_new_arrival_on_board(self):
         train_info = "Ewcia"
         self.train.new_arrival_on_board(train_info)
-        self.assertEqual(['a', 'b', 'c', 'Ewcia'], self.train.arrival_trains)
+        self.assertEqual(deque(['a', 'b', 'c', 'Ewcia']), self.train.arrival_trains)
 
     def test_append_new_train(self):
         self.train.arrival_trains.append("d")
-        self.assertEqual(["a", "b", "c", "d"], self.train.arrival_trains)
+        self.assertEqual(deque(['a', 'b', 'c', 'd']), self.train.arrival_trains)
 
     def test_other_trains_before_info(self):
         train_info = "c"
@@ -37,6 +37,15 @@ class TestRailwayStation(TestCase):
         train_info = "a"
         self.assertEqual(f"{train_info} is on the platform and will leave in 5 minutes.",
                          self.train.train_has_arrived(train_info))
+
+    def test_departed_train_good_case(self):
+        train_info = "x"
+        self.assertTrue(self.train.train_has_left(train_info))
+
+    def test_departed_train_bad_case(self):
+        train_info = "y"
+        self.assertFalse(self.train.train_has_left(train_info))
+
 
 if __name__ == "__main__":
     main()
