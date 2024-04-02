@@ -49,7 +49,7 @@ class BaseTeam(ABC):
         ...
 
     def get_statistics(self):
-        eq_price_formula = sum([x.price for x in self.equipment])
+        eq_price_formula = sum(x.price for x in self.equipment)
         eq_formula = floor(sum(x.protection for x in self.equipment) / len(self.equipment)) if self.equipment else 0
         return (f"Name: {self.name}\n"
                 f"Country: {self.country}\n"
