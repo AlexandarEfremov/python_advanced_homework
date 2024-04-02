@@ -52,8 +52,8 @@ class Tournament:
         return f"{team_type} was successfully added."
 
     def sell_equipment(self, equipment_type: str, team_name: str):
+        team = next((t for t in self.teams if t.name == team_name), None)
         equip = next((e for e in reversed(self.equipment) if e.__class__.__name__ == equipment_type), None)
-        team = next(filter(lambda t: t.name == team_name, self.teams))
 
         if team.budget < equip.price:
             raise Exception("Budget is not enough!")
@@ -64,10 +64,9 @@ class Tournament:
         return f"Successfully sold {equipment_type} to {team_name}."
 
     def remove_team(self, team_name: str):
-        try:
-            team = next(filter(lambda t: t.name == team_name, self.teams))
-        except StopIteration:
-            return "No such team!"
+        team = next((t for t in self.teams if t.name == team_name), None)
+        if team is None:
+            raise Exception("No such team!")
 
         if team.wins > 0:
             raise Exception(f"The team has {team.wins} wins! Removal is impossible!")
@@ -76,13 +75,16 @@ class Tournament:
             return f"Successfully removed {team_name}."
 
     def increase_equipment_price(self, equipment_type: str):
-        eq_len = len([eq for eq in self.equipment if eq.__class__.__name__ == equipment_type])
-        self.equipment = [eq.increase_price() for eq in self.equipment if eq.__class__.__name__ == equipment_type]
-        return f"Successfully changed {eq_len}pcs of equipment."
+        number_of_eq = 0
+        for e in self.equipment:
+            if e.__class__.__name__ == equipment_type:
+                e.increase_price()
+                number_of_eq += 1
+        return f"Successfully changed {number_of_eq}pcs of equipment."
 
     def play(self, team_name1: str, team_name2: str):
-        team_one = next(t for t in self.teams if t.name == team_name1)
-        team_two = next(t for t in self.teams if t.name == team_name2)
+        team_one = next((t for t in self.teams if t.name == team_name1), None)
+        team_two = next((t for t in self.teams if t.name == team_name2), None)
 
         if team_one.__class__.__name__ != team_two.__class__.__name__:
             raise Exception("Game cannot start! Team types mismatch!")
@@ -104,12 +106,13 @@ class Tournament:
 
     def get_statistics(self):
         teams = sorted(self.teams, key=lambda x: -x.wins)
-        result = (f"Tournament: {self.name}\n"
+        result = [f"Tournament: {self.name}\n"
                   f"Number of Teams: {len(self.teams)}\n"
-                  f"Teams:\n")
-        result += f"\n".join(t.get_statistics() for t in teams)
+                  f"Teams:"]
 
-        return result
+        [result.append(t.get_statistics()) for t in teams]
+
+        return "\n".join(result)
 
 
 
