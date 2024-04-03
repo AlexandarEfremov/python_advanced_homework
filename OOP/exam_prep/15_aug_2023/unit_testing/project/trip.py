@@ -1,5 +1,7 @@
 class Trip:
-    DESTINATION_PRICES_PER_PERSON = {'New Zealand': 7500, 'Australia': 5700, 'Brazil': 6200, 'Bulgaria': 500}
+    DESTINATION_PRICES_PER_PERSON = {
+        'New Zealand': 7500, 'Australia': 5700, 'Brazil': 6200, 'Bulgaria': 500
+    }
 
     def __init__(self, budget: float, travelers_number: int, is_family: bool):
         self.budget = budget
