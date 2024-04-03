@@ -40,4 +40,16 @@ class BankApp:
         self.clients.append(client)
         return f"{client_type} was successfully added."
 
+    def grant_loan(self, loan_type: str, client_id: str):
+        client = next((c for c in self.clients if c.client_id == client_id), None)
+        loan = next((l for l in self.loans if c.__class__.__name__ == loan_type), None)
+
+        if ((client.__class__.__name__ == "Student" and loan_type != "StudentLoan")
+                or (client.__class__.__name__ == "Adult" and loan_type != "MortgageLoan")):
+            raise Exception("Inappropriate loan type!")
+        self.loans.remove(loan)
+        client.loans.append(loan)
+
+        return f"Successfully granted {loan_type} to {client.name} with ID {client_id}."
+
 
