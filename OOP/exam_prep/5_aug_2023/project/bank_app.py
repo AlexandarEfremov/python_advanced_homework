@@ -52,4 +52,15 @@ class BankApp:
 
         return f"Successfully granted {loan_type} to {client.name} with ID {client_id}."
 
+    def remove_client(self, client_id: str):
+        client = next((c for c in self.clients if c.client_id == client_id), None)
+        if client is None:
+            raise Exception("No such client!")
+        if client.loans:
+            raise Exception("The client has loans! Removal is impossible!")
+        self.clients.remove(client)
+        return f"Successfully removed {client.name} with ID {client_id}."
+
+
+
 
