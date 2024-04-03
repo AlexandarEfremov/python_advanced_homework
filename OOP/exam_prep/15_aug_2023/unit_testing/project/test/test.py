@@ -28,6 +28,31 @@ class TestTrip(TestCase):
         self.trip.is_family = True
         self.assertTrue(self.trip.is_family)
 
+    def test_book_a_trip_for_destination_not_in_list_expect_decline(self):
+        ex_res = 'This destination is not in our offers, please choose a new one!'
+        self.assertEqual(ex_res, self.trip.book_a_trip("Colorado"))
+
+    def test_required_budget_not_enough_for_all_people(self):
+        self.trip.travelers = 1
+        self.trip.is_family = True
+        ex_res = 'Your budget is not enough!'
+        self.assertEqual(ex_res, self.trip.book_a_trip("Brazil"))
+
+    def test_required_budget_not_enough_for_family(self):
+        ex_res = 'Your budget is not enough!'
+        self.assertEqual(ex_res, self.trip.book_a_trip("Brazil"))
+
+    def test_budget_enough_for_all_people(self):
+        self.trip.travelers = 1
+        self.trip.is_family = True
+        ex_res = 'Successfully booked destination Bulgaria! Your budget left is 500.00'
+        self.assertEqual(ex_res, self.trip.book_a_trip("Bulgaria"))
+
+    def test_budget_for_a_family(self):
+        self.trip.budget = 10_000
+        ex_res = 'Successfully booked destination Bulgaria! Your budget left is 8200.00'
+        self.assertEqual(ex_res, self.trip.book_a_trip("Bulgaria"))
+
 
 if __name__ == "__main__":
     main()
