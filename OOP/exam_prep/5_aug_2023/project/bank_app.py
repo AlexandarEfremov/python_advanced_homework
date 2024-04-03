@@ -42,7 +42,7 @@ class BankApp:
 
     def grant_loan(self, loan_type: str, client_id: str):
         client = next((c for c in self.clients if c.client_id == client_id), None)
-        loan = next((l for l in self.loans if c.__class__.__name__ == loan_type), None)
+        loan = next((l for l in self.loans if l.__class__.__name__ == loan_type), None)
 
         if ((client.__class__.__name__ == "Student" and loan_type != "StudentLoan")
                 or (client.__class__.__name__ == "Adult" and loan_type != "MortgageLoan")):
@@ -79,3 +79,14 @@ class BankApp:
                 counter += 1
         return f"Number of clients affected: {counter}."
 
+    def get_statistics(self):
+        client = next((c for c in self.clients if c.loans), None)
+        client_income = sum((c.income for c in self.clients))
+        granted_loans = sum(len(c.loans) for c in self.clients)
+        granted_amount = sum([sum([loan.amount for loan in client.loans]) for client in self.clients])
+        average_interest = sum((c.interest for c in self.clients)) / len(self.clients) if len(self.clients) > 0 else 0
+        return (f"Active Clients: {len(self.clients)}\n"
+                f"Total Income: {client_income:.2f}\n"
+                f"Granted Loans: {granted_loans}, Total Sum: {granted_amount:.2f}\n"
+                f"Available Loans: {len(self.loans)}, Total Sum: {sum(l.amount for l in self.loans):.2f}\n"
+                f"Average Client Interest Rate: {average_interest:.2f}")
