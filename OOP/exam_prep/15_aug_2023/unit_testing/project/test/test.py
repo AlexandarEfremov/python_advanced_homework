@@ -53,6 +53,24 @@ class TestTrip(TestCase):
         ex_res = 'Successfully booked destination Bulgaria! Your budget left is 8200.00'
         self.assertEqual(ex_res, self.trip.book_a_trip("Bulgaria"))
 
+    def test_no_bookings_made(self):
+        ex_res = 'No bookings yet. Budget: 1000.00'
+        self.assertEqual(ex_res, self.trip.booking_status())
+
+    def test_booking_status(self):
+        self.trip.budget = 50_000
+        self.trip.book_a_trip("Bulgaria")
+        self.trip.book_a_trip("New Zealand")
+
+        ex_result = (f"Booked Destination: Bulgaria\n"
+                     f"Paid Amount: 1800.00\n"
+                     f"Booked Destination: New Zealand\n"
+                     f"Paid Amount: 27000.00\n"
+                     f"Number of Travelers: 4\n"
+                     f"Budget Left: 21200.00")
+
+        self.assertEqual(ex_result,self.trip.booking_status())
+
 
 if __name__ == "__main__":
     main()
