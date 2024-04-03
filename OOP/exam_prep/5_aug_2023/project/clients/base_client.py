@@ -1,5 +1,4 @@
-from abc import ABC
-from typing import List
+from abc import ABC, abstractmethod
 
 
 class BaseClient(ABC):
@@ -40,3 +39,6 @@ class BaseClient(ABC):
             raise ValueError("Income must be greater than zero!")
         self.__income = value
 
+    @abstractmethod
+    def increase_clients_interest(self):
+        ...
