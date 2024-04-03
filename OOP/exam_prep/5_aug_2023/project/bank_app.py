@@ -80,7 +80,6 @@ class BankApp:
         return f"Number of clients affected: {counter}."
 
     def get_statistics(self):
-        client = next((c for c in self.clients if c.loans), None)
         client_income = sum((c.income for c in self.clients))
         granted_loans = sum(len(c.loans) for c in self.clients)
         granted_amount = sum([sum([loan.amount for loan in client.loans]) for client in self.clients])
