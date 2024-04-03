@@ -61,6 +61,21 @@ class BankApp:
         self.clients.remove(client)
         return f"Successfully removed {client.name} with ID {client_id}."
 
+    def increase_loan_interest(self, loan_type: str):
+        number_of_loans = 0
 
+        for loan in self.loans:
+            if loan.__class__.__name__ == loan_type:
+                loan.increase_interest_rate()
+                number_of_loans += 1
 
+        return f"Successfully changed {number_of_loans} loans."
+
+    def increase_clients_interest(self, min_rate: float):
+        counter = 0
+        for client in self.clients:
+            if client.interest < min_rate:
+                client.increase_clients_interest()
+                counter += 1
+        return f"Number of clients affected: {counter}."
 
