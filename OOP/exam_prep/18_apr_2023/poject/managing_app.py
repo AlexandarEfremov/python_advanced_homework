@@ -57,5 +57,27 @@ class ManagingApp:
         self.routes.append(new_route)
         return f"{start_point}/{end_point} - {length} km is unlocked and available to use."
 
+    def make_trip(self, driving_license_number: str, license_plate_number: str,
+                  route_id: int, is_accident_happened: bool):
+        user = next((u for u in self.users if u.driving_license_number == driving_license_number), None)
+        if user.is_blocked:
+            return f"User {driving_license_number} is blocked in the platform! This trip is not allowed."
+        vehicle = next((v for v in self.vehicles if v.license_plate_number == license_plate_number), None)
+        if vehicle.is_damaged:
+            return f"Vehicle {license_plate_number} is damaged! This trip is not allowed."
+        route = next((r for r in self.routes if r.route_id == route_id), None)
+        if route.is_locked:
+            return f"Route {route_id} is locked! This trip is not allowed."
+
+        vehicle.drive(route.length)
+        if is_accident_happened:
+            vehicle.is_damaged = True
+            user.decrease_rating()
+        else:
+            user.increase_rating()
+
+        return vehicle.__str__()
+
+
 
 
