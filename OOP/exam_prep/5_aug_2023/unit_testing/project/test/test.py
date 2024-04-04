@@ -6,7 +6,8 @@ from project.second_hand_car import SecondHandCar
 class TestSecondHandCar(TestCase):
     def setUp(self):
         self.car = SecondHandCar("Ford", "hatchback", 1_000_000, 10_000.00)
-
+        self.other = SecondHandCar("Volvo", "combi", 500_000, 20_000.00)
+        self.other_hatchback = SecondHandCar("Seat", "hatchback", 400_000, 8_000.00)
     def test_correct__init__(self):
         self.assertEqual("Ford", self.car.model)
         self.assertEqual("hatchback", self.car.car_type)
@@ -43,6 +44,17 @@ class TestSecondHandCar(TestCase):
     def test_repair_if_price_is_less_than_half_expect_success(self):
         self.assertEqual('Price has been increased due to repair charges.',
                          self.car.need_repair(4_001.00, "wheels"))
+
+    def test__gt__expect_negative(self):
+        self.assertEqual('Cars cannot be compared. Type mismatch!', self.car > self.other)
+
+    def test__gt__expect_positive(self):
+        self.assertTrue(self.car > self.other_hatchback)
+
+    def test_str_representation(self):
+        expect = "Model Ford | Type hatchback | Milage 1000000km\nCurrent price: 10000.00 | Number of Repairs: 0"
+
+        self.assertEqual(expect, self.car.__str__())
 
 
 if __name__ == "__main__":
