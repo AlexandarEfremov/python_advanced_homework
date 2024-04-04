@@ -1,10 +1,10 @@
 from typing import List
 
-from poject.route import Route
-from poject.user import User
-from poject.vehicles.base_vehicle import BaseVehicle
-from poject.vehicles.cargo_van import CargoVan
-from poject.vehicles.passenger_car import PassengerCar
+from project.route import Route
+from project.user import User
+from project.vehicles.base_vehicle import BaseVehicle
+from project.vehicles.cargo_van import CargoVan
+from project.vehicles.passenger_car import PassengerCar
 
 
 class ManagingApp:
@@ -24,6 +24,7 @@ class ManagingApp:
             return f"{driving_license_number} has already been registered to our platform."
         new_user = User(first_name, last_name, driving_license_number)
         self.users.append(new_user)
+        return f"{first_name} {last_name} was successfully registered under DLN-{driving_license_number}"
 
     def upload_vehicle(self, vehicle_type: str, brand: str, model: str, license_plate_number: str):
         if vehicle_type not in self.VEHICLE_TYPES:
@@ -49,7 +50,7 @@ class ManagingApp:
             return f"{start_point}/{end_point} shorter route had already been added to our platform."
 
         check_if_greater_length = next((r for r in self.routes if r.start_point == start_point
-                                        and r.end_point == end_point and r.length > length))
+                                        and r.end_point == end_point and r.length > length), None)
         if check_if_greater_length:
             check_if_greater_length.is_locked = True
 
@@ -94,4 +95,5 @@ class ManagingApp:
         all_users = [u for u in self.users]
         ordered_users = sorted(all_users, key=lambda u: (-u.rating))
         [result.append(u.__str__()) for u in ordered_users]
+        return "\n".join(result)
 
