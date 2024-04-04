@@ -47,3 +47,4 @@ class SecondHandCar:
     def __str__(self):
         return f"""Model {self.model} | Type {self.car_type} | Milage {self.mileage}km
 Current price: {self.price:.2f} | Number of Repairs: {len(self.repairs)}"""
+
