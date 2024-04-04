@@ -35,5 +35,27 @@ class ManagingApp:
         self.vehicles.append(car)
         return f"{brand} {model} was successfully uploaded with LPN-{license_plate_number}."
 
+    def allow_route(self, start_point: str, end_point: str, length: float):
+        route_id = len(self.routes) + 1
+
+        route_check = next((r for r in self.routes if r.start_point == start_point and r.end_point == end_point and
+                            r.length == length), None)
+        if route_check:
+            return f"{start_point}/{end_point} - {length} km had already been added to our platform."
+
+        second_check = next((r for r in self.routes if r.start_point == start_point and r.end_point == end_point and
+                             r.length < length), None)
+        if second_check:
+            return f"{start_point}/{end_point} shorter route had already been added to our platform."
+
+        check_if_greater_length = next((r for r in self.routes if r.start_point == start_point
+                                        and r.end_point == end_point and r.length > length))
+        if check_if_greater_length:
+            check_if_greater_length.is_locked = True
+
+        new_route = Route(start_point, end_point, length, route_id)
+        self.routes.append(new_route)
+        return f"{start_point}/{end_point} - {length} km is unlocked and available to use."
+
 
 
