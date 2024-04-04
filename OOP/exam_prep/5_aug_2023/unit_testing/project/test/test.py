@@ -14,5 +14,19 @@ class TestSecondHandCar(TestCase):
         self.assertEqual(10_000.00, self.car.price)
         self.assertEqual([], self.car.repairs)
 
+    def test_minimum_price_expect_error(self):
+        with self.assertRaises(Exception) as ex:
+            self.car.price = 1.0
+
+        self.assertEqual('Price should be greater than 1.0!', str(ex.exception))
+
+    def test_min_mileage_expect_error(self):
+        with self.assertRaises(Exception) as ex:
+            self.car.mileage = 100
+
+        self.assertEqual('Please, second-hand cars only! Mileage must be greater than 100!',
+                         str(ex.exception))
+
+
 if __name__ == "__main__":
     main()
