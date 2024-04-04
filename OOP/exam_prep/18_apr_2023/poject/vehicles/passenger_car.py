@@ -7,5 +7,5 @@ class PassengerCar(BaseVehicle):
 
     def drive(self, mileage: float):
         percent_reduction = (mileage / self.max_mileage) * 100
-        self.battery_level -= percent_reduction
+        self.battery_level -= round(percent_reduction)
 
