@@ -40,3 +40,17 @@ class BaseVehicle(ABC):
             raise ValueError("License plate number is required!")
         self.__license_plate_number = value
 
+    @abstractmethod
+    def drive(self, mileage: float):
+        ...
+
+    def recharge(self):
+        self.battery_level = 100
+
+    def change_status(self):
+        self.is_damaged = not self.is_damaged
+
+    def __str__(self):
+        return (f"{self.brand} {self.model} License plate: {self.license_plate_number} "
+                f"Battery: {self.battery_level}% Status: {'Damaged' if self.is_damaged else 'OK'}")
+
