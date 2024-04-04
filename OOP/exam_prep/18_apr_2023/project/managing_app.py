@@ -83,7 +83,7 @@ class ManagingApp:
         damaged_vehicles = [v for v in self.vehicles if v.is_damaged is True]
         ordered_vehicles = sorted(damaged_vehicles, key=lambda v: (v.brand, v.model))
 
-        if count > len(damaged_vehicles):
+        if count >= len(damaged_vehicles):
             [(v.change_status(), v.recharge()) for v in ordered_vehicles]
             return f"{len(damaged_vehicles)} vehicles were successfully repaired!"
         else:
@@ -91,9 +91,9 @@ class ManagingApp:
             return f"{count} vehicles were successfully repaired!"
 
     def users_report(self):
-        result = ["*** E-Drive-Rent ***"]
+        result = "*** E-Drive-Rent ***\n"
         all_users = [u for u in self.users]
         ordered_users = sorted(all_users, key=lambda u: (-u.rating))
-        [result.append(u.__str__()) for u in ordered_users]
-        return "\n".join(result)
-
+        for user in ordered_users:
+            result += f"{user.__str__()}\n"
+        return result[:-1]
