@@ -47,5 +47,33 @@ class TestRobot(TestCase):
 
         self.assertEqual(250.0, self.robot.price)
 
+    def test_version_software_update_which_is_lower_cap_lower_expect_bad_case(self):
+        self.robot.update(1.5, 5)
+        result = self.robot.update(1.0, 5)
+
+        self.assertEqual("Robot R2D2 was not updated.", result)
+
+    def test_version_soft_update_version_higher_cap_higher(self):
+        self.robot.update(1.5, 5)
+        result = self.robot.update(1.8, 11)
+
+        self.assertEqual("Robot R2D2 was not updated.", result)
+
+    def test_successful_update_check_list(self):
+        self.robot.update(1.5, 5)
+
+        self.assertEqual([1.5], self.robot.software_updates)
+
+    def test_successful_update_leftover_capacity(self):
+        self.robot.update(1.5, 5)
+
+        self.assertEqual(5, self.robot.available_capacity)
+
+    def test_successful_update_correct_message(self):
+        self.assertEqual("Robot R2D2 was updated to version 1.5.", self.robot.update(1.5, 5))
+
+
+
+
 if __name__ == "__main__":
     main()

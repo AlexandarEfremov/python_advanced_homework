@@ -38,7 +38,8 @@ class Robot:
         return f'Robot {self.robot_id} was upgraded with {hardware_component}.'
 
     def update(self, version: float, needed_capacity: int):
-        if (self.software_updates and version <= max(self.software_updates)) or self.available_capacity < needed_capacity:
+        if ((self.software_updates and version <= max(self.software_updates)) or
+                self.available_capacity < needed_capacity):
             return f"Robot {self.robot_id} was not updated."
         self.software_updates.append(version)
         self.available_capacity -= needed_capacity
