@@ -17,6 +17,20 @@ class TestRobot(TestCase):
         self.assertEqual([], self.robot.hardware_upgrades)
         self.assertEqual([], self.robot.software_updates)
 
+    def test_wrong_category_expect_error(self):
+        with self.assertRaises(Exception) as ex:
+            self.robot.category = "Alex"
+
+        self.assertEqual(f"Category should be one of '{self.ALLOWED_CATEGORIES}'", str(ex.exception))
+
+    def test_negative_price_value_expect_error(self):
+        with self.assertRaises(Exception) as ex:
+            self.robot.price = -22
+
+        self.assertEqual("Price cannot be negative!", str(ex.exception))
+
+
+
 
 if __name__ == "__main__":
     main()
