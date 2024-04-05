@@ -8,6 +8,7 @@ class TestRobot(TestCase):
 
     def setUp(self):
         self.robot = Robot("R2D2", "Military", 10, 100.00)
+        self.other_robot = Robot("C3", "Education", 20, 200.00)
 
     def test_correct_init_(self):
         self.assertEqual("R2D2", self.robot.robot_id)
@@ -16,6 +17,14 @@ class TestRobot(TestCase):
         self.assertEqual(100.00, self.robot.price)
         self.assertEqual([], self.robot.hardware_upgrades)
         self.assertEqual([], self.robot.software_updates)
+
+    def test_correct_init_other(self):
+        self.assertEqual("C3", self.other_robot.robot_id)
+        self.assertEqual("Education", self.other_robot.category)
+        self.assertEqual(20, self.other_robot.available_capacity)
+        self.assertEqual(200.00, self.other_robot.price)
+        self.assertEqual([], self.other_robot.hardware_upgrades)
+        self.assertEqual([], self.other_robot.software_updates)
 
     def test_wrong_category_expect_error(self):
         with self.assertRaises(Exception) as ex:
@@ -72,7 +81,23 @@ class TestRobot(TestCase):
     def test_successful_update_correct_message(self):
         self.assertEqual("Robot R2D2 was updated to version 1.5.", self.robot.update(1.5, 5))
 
+    def test_greater_than(self):
+        result = self.robot.__gt__(self.other_robot)
+        self.assertEqual('Robot with ID R2D2 is cheaper than Robot with ID C3.', result)
 
+    def test_equal_price(self):
+        self.robot.price = 100.0
+        self.other_robot.price = 100.0
+
+        result = self.robot.__gt__(self.other_robot)
+        self.assertEqual('Robot with ID R2D2 costs equal to Robot with ID C3.', result)
+
+    def test_more_expensive(self):
+        self.robot.price = 200.0
+        self.other_robot.price = 100.0
+
+        result = self.robot.__gt__(self.other_robot)
+        self.assertEqual('Robot with ID R2D2 is more expensive than Robot with ID C3.', result)
 
 
 if __name__ == "__main__":
