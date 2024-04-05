@@ -29,8 +29,23 @@ class TestRobot(TestCase):
 
         self.assertEqual("Price cannot be negative!", str(ex.exception))
 
+    def test_upgrade_if_component_in_hardware_list(self):
+        self.robot.hardware_upgrades.append("usb")
+        result = self.robot.upgrade("usb", 100)
 
+        self.assertEqual(f"Robot R2D2 was not upgraded.", result)
 
+    def test_new_hardware_if_present_in_list(self):
+        hardware_component = "light"
+        self.robot.upgrade(hardware_component, 100)
+
+        self.assertEqual(["light"], self.robot.hardware_upgrades)
+
+    def test_price_after_hardware_upgrade(self):
+        hardware_component = "light"
+        self.robot.upgrade(hardware_component, 100)
+
+        self.assertEqual(250.0, self.robot.price)
 
 if __name__ == "__main__":
     main()
