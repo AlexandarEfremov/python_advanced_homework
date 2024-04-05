@@ -80,14 +80,21 @@ class ManagingApp:
         return vehicle.__str__()
 
     def repair_vehicles(self, count: int):
-        damaged_vehicles = [v for v in self.vehicles if v.is_damaged is True]
+        damaged_vehicles = [v for v in self.vehicles if v.is_damaged]
         ordered_vehicles = sorted(damaged_vehicles, key=lambda v: (v.brand, v.model))
 
         if count >= len(damaged_vehicles):
             [(v.change_status(), v.recharge()) for v in ordered_vehicles]
-            return f"{len(damaged_vehicles)} vehicles were successfully repaired!"
+            return f"{len(ordered_vehicles)} vehicles were successfully repaired!"
         else:
-            [(v.change_status(), v.recharge()) for _ in range(count) for v in ordered_vehicles]
+            counter = count
+            for v in ordered_vehicles:
+                if counter == 0:
+                    break
+                else:
+                    v.change_status()
+                    v.recharge()
+                counter -= 1
             return f"{count} vehicles were successfully repaired!"
 
     def users_report(self):
