@@ -56,6 +56,10 @@ class TestRobot(TestCase):
 
         self.assertEqual(f"Robot R2D2 was not upgraded.", result)
 
+    def test_if_upgraded(self):
+        result = self.robot.upgrade("wire", 40)
+        self.assertEqual('Robot R2D2 was upgraded with wire.', result)
+
     def test_new_hardware_if_present_in_list(self):
         hardware_component = "light"
         self.robot.upgrade(hardware_component, 100)
