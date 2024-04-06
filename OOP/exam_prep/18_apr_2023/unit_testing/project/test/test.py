@@ -32,6 +32,18 @@ class TestRobot(TestCase):
 
         self.assertEqual(f"Category should be one of '{self.ALLOWED_CATEGORIES}'", str(ex.exception))
 
+    def test_wrong_other_robot(self):
+        with self.assertRaises(Exception) as ex:
+            self.other_robot.category = "Alex"
+
+        self.assertEqual(f"Category should be one of '{self.ALLOWED_CATEGORIES}'", str(ex.exception))
+
+    def test_correct_category(self):
+        self.assertEqual("Military", self.robot.category)
+
+    def test_correct_value(self):
+        self.assertEqual(100, self.robot.price)
+
     def test_negative_price_value_expect_error(self):
         with self.assertRaises(Exception) as ex:
             self.robot.price = -22
@@ -98,7 +110,6 @@ class TestRobot(TestCase):
 
         result = self.robot.__gt__(self.other_robot)
         self.assertEqual('Robot with ID R2D2 is more expensive than Robot with ID C3.', result)
-
 
 if __name__ == "__main__":
     main()
