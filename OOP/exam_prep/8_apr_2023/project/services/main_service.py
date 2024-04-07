@@ -7,8 +7,7 @@ class MainService(BaseService):
 
     def details(self):
         if self.robots:
-            return (f"{self.name} Main Service:\n"
-                    f"Robots: {' '.join(el.name for el in self.robots)}")
+            return f"{self.name} Main Service:\nRobots: {' '.join(el.name for el in self.robots)}"
         else:
-            return (f"{self.name} Main Service:\n"
-                    f"Robots: none")
+            return f"{self.name} Main Service:\nRobots: none"
+

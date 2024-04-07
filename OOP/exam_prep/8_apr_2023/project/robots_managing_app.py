@@ -53,8 +53,8 @@ class RobotsManagingApp:
         return f"Successfully added {robot.name} to {service.name}."
 
     def remove_robot_from_service(self, robot_name: str, service_name: str):
-        robot = next((r for r in self.robots if r.name == robot_name), None)
         service = next((s for s in self.services if s.name == service_name), None)
+        robot = next((r for r in service.robots if r.name == robot_name), None)
         if robot is None:
             raise Exception("No such robot in this service!")
 
@@ -69,6 +69,22 @@ class RobotsManagingApp:
             robot.eating()
             robots_fed += 1
         return f"Robots fed: {robots_fed}."
+
+    def service_price(self, service_name: str):
+        service = next((s for s in self.services if s.name == service_name), None)
+        price = 0
+        for robot in service.robots:
+            price += robot.price
+        return f"The value of service {service.name} is {price:.2f}."
+
+    def __str__(self):
+        result = []
+
+        for service in self.services:
+            result.append(service.details())
+
+        return "\n".join(result)
+
 
 
 
