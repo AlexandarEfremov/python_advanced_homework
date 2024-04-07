@@ -36,3 +36,18 @@ class RobotsManagingApp:
         robot = self.VALID_ROBOT_TYPES[robot_type](name, kind, price)
         self.robots.append(robot)
         return f"{robot_type} is successfully added."
+
+    def add_robot_to_service(self, robot_name: str, service_name: str):
+        robot = next(r for r in self.robots if r.name == robot_name)
+        service = next(s for s in self.services if s.name == service_name)
+
+        if ((robot.__class__.__name__ == "FemaleRobot" and service.__class__.__name__ != "SecondaryService")
+                or (robot.__class__.__name__ == "MaleRobot" and service.__class__.__name__ != "MainService")):
+            return "Unsuitable service."
+
+        if service.capacity == len(service.robots):
+            raise Exception("Not enough capacity for this robot!")
+
+        self.robots.remove(robot)
+        service.robots.append(robot)
+        return f"Successfully added {robot.name} to {service.name}."

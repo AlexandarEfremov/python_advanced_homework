@@ -41,4 +41,3 @@ class BaseRobot(ABC):
     @abstractmethod
     def eating(self):
         ...
-
