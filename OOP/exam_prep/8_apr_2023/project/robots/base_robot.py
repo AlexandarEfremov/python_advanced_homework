@@ -38,4 +38,7 @@ class BaseRobot(ABC):
             raise ValueError("Robot price cannot be less than or equal to 0.0!")
         self.__price = value
 
+    @abstractmethod
+    def eating(self):
+        ...
 
