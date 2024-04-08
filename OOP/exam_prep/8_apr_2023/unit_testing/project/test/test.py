@@ -52,5 +52,15 @@ class TestTennisPlayer(TestCase):
         result = 'Ewcia is a top seeded player and he/she is better than Alex'
         self.assertEqual(self.player.__lt__(self.other_player), result)
 
+    def test_return_correct_string(self):
+        self.player.add_new_win("Wimbeldon")
+
+        result = f"Tennis Player: Alex\n" \
+                 f"Age: 31\n" \
+                 f"Points: 400.0\n" \
+                 f"Tournaments won: Wimbeldon"
+        self.assertEqual(self.player.__str__(), result)
+
+
 if __name__ == "__main__":
     main()
