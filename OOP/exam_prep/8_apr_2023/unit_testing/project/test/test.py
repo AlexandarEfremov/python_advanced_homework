@@ -42,5 +42,15 @@ class TestTennisPlayer(TestCase):
         self.player.add_new_win("Wimbeldon")
         self.assertEqual(["Wimbeldon"], self.player.wins)
 
+    def test_if_im_better_expect_yes(self):
+        self.player.points = 600
+        result = 'Alex is a better player than Ewcia'
+
+        self.assertEqual(self.player.__lt__(self.other_player), result)
+
+    def test_if_im_better_expect_no(self):
+        result = 'Ewcia is a top seeded player and he/she is better than Alex'
+        self.assertEqual(self.player.__lt__(self.other_player), result)
+
 if __name__ == "__main__":
     main()
