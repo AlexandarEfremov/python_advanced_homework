@@ -54,11 +54,20 @@ class TestTennisPlayer(TestCase):
 
     def test_return_correct_string(self):
         self.player.add_new_win("Wimbeldon")
+        self.player.add_new_win("Australian Open")
 
         result = f"Tennis Player: Alex\n" \
                  f"Age: 31\n" \
                  f"Points: 400.0\n" \
-                 f"Tournaments won: Wimbeldon"
+                 f"Tournaments won: Wimbeldon, Australian Open"
+        self.assertEqual(self.player.__str__(), result)
+
+    def test_return_string_with_no_tournaments(self):
+        result = f"Tennis Player: Alex\n" \
+                 f"Age: 31\n" \
+                 f"Points: 400.0\n" \
+                 f"Tournaments won: "
+
         self.assertEqual(self.player.__str__(), result)
 
 
