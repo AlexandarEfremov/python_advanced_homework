@@ -31,33 +31,33 @@ class ConcertTrackerApp:
 
     @staticmethod
     def __type_concert(concert, band):
-        conditions_met = True
+        cond = True
         if concert.genre == "Rock":
             for member in band.members:
                 if member.__class__.__name__ == "Drummer" and "play the drums with drumsticks" not in member.skills:
-                    conditions_met = False
+                    cond = False
                 if member.__class__.__name__ == "Singer" and "sing high pitch notes" not in member.skills:
-                    conditions_met = False
+                    cond = False
                 if member.__class__.__name__ == "Guitarist" and "play rock" not in member.skills:
-                    conditions_met = False
+                    cond = False
         elif concert.genre == "Metal":
             for member in band.members:
                 if member.__class__.__name__ == "Drummer" and "play the drums with drumsticks" not in member.skills:
-                    conditions_met = False
+                    cond = False
                 if member.__class__.__name__ == "Singer" and "sing low pitch notes" not in member.skills:
-                    conditions_met = False
+                    cond = False
                 if member.__class__.__name__ == "Guitarist" and "play metal" not in member.skills:
-                    conditions_met = False
+                    cond = False
         elif concert.genre == "Jazz":
             for member in band.members:
                 if member.__class__.__name__ == "Drummer" and "play the drums with drum brushes" not in member.skills:
-                    conditions_met = False
-                if (member.__class__.__name__ == "Singer" and "sing high pitch notes" not in member.skills
-                        and "sing low pitch notes" not in member.skills):
-                    conditions_met = False
+                    cond = False
+                if member.__class__.__name__ == "Singer"\
+                        and ("sing high pitch notes" not in member.skills or "sing low pitch notes" not in member.skills):
+                    cond = False
                 if member.__class__.__name__ == "Guitarist" and "play jazz" not in member.skills:
-                    conditions_met = False
-        return conditions_met
+                    cond = False
+        return cond
 
     def create_musician(self, musician_type: str, name: str, age: int):
         if musician_type not in self.VALID_MUSICIAN_TYPES:
@@ -81,7 +81,7 @@ class ConcertTrackerApp:
     def create_concert(self, genre: str, audience: int, ticket_price: float, expenses: float, place: str):
         same_place = next((p for p in self.concerts if p.place == place), None)
         if same_place:
-            raise Exception(f"{place} is already registered for {Concert.genre} concert!")
+            raise Exception(f"{place} is already registered for {same_place.genre} concert!")
         new_concert = Concert(genre, audience, ticket_price, expenses, place)
         self.concerts.append(new_concert)
         return f"{new_concert.genre} concert in {new_concert.place} was added."
