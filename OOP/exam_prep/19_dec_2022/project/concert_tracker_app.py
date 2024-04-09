@@ -20,6 +20,45 @@ class ConcertTrackerApp:
         self.musicians: List[Musician] = []
         self.concerts: List[Concert] = []
 
+    @staticmethod
+    def __check_members(band):
+        singer = next((s for s in band.members if s.__class__.__name__ == "Singer"), None)
+        drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
+        guitarist = next((g for g in band.members if g.__class__.__name__ == "Guitarist"), None)
+        if singer and drummer and guitarist:
+            return True
+        return False
+
+    @staticmethod
+    def __type_concert(concert, band):
+        conditions_met = True
+        if concert.genre == "Rock":
+            for member in band.members:
+                if member.__class__.__name__ == "Drummer" and "play the drums with drumsticks" not in member.skills:
+                    conditions_met = False
+                if member.__class__.__name__ == "Singer" and "sing high pitch notes" not in member.skills:
+                    conditions_met = False
+                if member.__class__.__name__ == "Guitarist" and "play rock" not in member.skills:
+                    conditions_met = False
+        elif concert.genre == "Metal":
+            for member in band.members:
+                if member.__class__.__name__ == "Drummer" and "play the drums with drumsticks" not in member.skills:
+                    conditions_met = False
+                if member.__class__.__name__ == "Singer" and "sing low pitch notes" not in member.skills:
+                    conditions_met = False
+                if member.__class__.__name__ == "Guitarist" and "play metal" not in member.skills:
+                    conditions_met = False
+        elif concert.genre == "Jazz":
+            for member in band.members:
+                if member.__class__.__name__ == "Drummer" and "play the drums with drum brushes" not in member.skills:
+                    conditions_met = False
+                if (member.__class__.__name__ == "Singer" and "sing high pitch notes" not in member.skills
+                        and "sing low pitch notes" not in member.skills):
+                    conditions_met = False
+                if member.__class__.__name__ == "Guitarist" and "play jazz" not in member.skills:
+                    conditions_met = False
+        return conditions_met
+
     def create_musician(self, musician_type: str, name: str, age: int):
         if musician_type not in self.VALID_MUSICIAN_TYPES:
             raise ValueError("Invalid musician type!")
@@ -69,56 +108,12 @@ class ConcertTrackerApp:
 
     def start_concert(self, concert_place: str, band_name: str):
         band = next((b for b in self.bands if b.name == band_name), None)
-        if self.check_members(band) is False:
+        if self.__check_members(band) is False:
             raise Exception(f"{band.name} can't start the concert because it doesn't have enough members!")
         concert_event = next((c for c in self.concerts if c.place == concert_place), None)
-        if self.type_concert(concert_event, band) is False:
+        if self.__type_concert(concert_event, band) is False:
             raise Exception(f"The {band.name} band is not ready to play at the concert!")
-        else:
-            profits = (concert_event.ticket_price * concert_event.audience) - concert_event.expenses
-            return f"{band_name} gained {profits:.2f}$ from the {concert_event.genre} concert in {concert_place}."
 
-    @staticmethod
-    def check_members(band):
-        all_members = False
-        singer = next((s for s in band.members if s.__class__.__name__ == "Singer"), None)
-        drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
-        guitarist = next((g for g in band.members if g.__class__.__name__ == "Guitarist"), None)
-        if singer and drummer and guitarist:
-            all_members = True
-        return all_members
+        profits = (concert_event.ticket_price * concert_event.audience) - concert_event.expenses
+        return f"{band_name} gained {profits:.2f}$ from the {concert_event.genre} concert in {concert_place}."
 
-    @staticmethod
-    def type_concert(concert, band):
-        conditions_met = True
-        if concert.genre == "Rock":
-            drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
-            if "play the drums with drumsticks" not in drummer.skills:
-                conditions_met = False
-            singer = next((d for d in band.members if d.__class__.__name__ == "Singer"), None)
-            if "sing high pitch notes" not in singer.skills:
-                conditions_met = False
-            guitarist = next((d for d in band.members if d.__class__.__name__ == "Guitarist"), None)
-            if "play rock" not in guitarist.skills:
-                conditions_met = False
-        elif concert.genre == "Metal":
-            drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
-            if "play the drums with drumsticks" not in drummer.skills:
-                conditions_met = False
-            singer = next((d for d in band.members if d.__class__.__name__ == "Singer"), None)
-            if "sing low pitch notes" not in singer.skills:
-                conditions_met = False
-            guitarist = next((d for d in band.members if d.__class__.__name__ == "Guitarist"), None)
-            if "play metal" not in guitarist.skills:
-                conditions_met = False
-        elif concert.genre == "Jazz":
-            drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
-            if "play the drums with drum brushes" not in drummer.skills:
-                conditions_met = False
-            singer = next((d for d in band.members if d.__class__.__name__ == "Singer"), None)
-            if "sing low pitch notes" not in singer.skills and "sing high pitch notes" not in singer.skills:
-                conditions_met = False
-            guitarist = next((d for d in band.members if d.__class__.__name__ == "Guitarist"), None)
-            if "play jazz" not in guitarist.skills:
-                conditions_met = False
-        return conditions_met
