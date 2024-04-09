@@ -1,6 +1,5 @@
 from typing import List
 
-from project import concert
 from project.band import Band
 from project.band_members.musician import Musician
 from project.concert import Concert
@@ -28,7 +27,7 @@ class ConcertTrackerApp:
         if musician:
             raise Exception(f"{name} is already a musician!")
         else:
-            new_musician = Musician(name, age)
+            new_musician = self.VALID_MUSICIAN_TYPES[musician_type](name, age)
             self.musicians.append(new_musician)
             return f"{name} is now a {musician_type}."
 
@@ -41,10 +40,12 @@ class ConcertTrackerApp:
         return f"{name} was created."
 
     def create_concert(self, genre: str, audience: int, ticket_price: float, expenses: float, place: str):
-        if place in Concert.place:
+        same_place = next((p for p in self.concerts if p.place == place), None)
+        if same_place:
             raise Exception(f"{place} is already registered for {Concert.genre} concert!")
         new_concert = Concert(genre, audience, ticket_price, expenses, place)
         self.concerts.append(new_concert)
+        return f"{new_concert.genre} concert in {new_concert.place} was added."
 
     def add_musician_to_band(self, musician_name: str, band_name: str):
         m_name = next((m for m in self.musicians if m.name == musician_name), None)
@@ -66,3 +67,58 @@ class ConcertTrackerApp:
         b_name.members.remove(desired_musician)
         return f"{musician_name} was removed from {band_name}."
 
+    def start_concert(self, concert_place: str, band_name: str):
+        band = next((b for b in self.bands if b.name == band_name), None)
+        if self.check_members(band) is False:
+            raise Exception(f"{band.name} can't start the concert because it doesn't have enough members!")
+        concert_event = next((c for c in self.concerts if c.place == concert_place), None)
+        if self.type_concert(concert_event, band) is False:
+            raise Exception(f"The {band.name} band is not ready to play at the concert!")
+        else:
+            profits = (concert_event.ticket_price * concert_event.audience) - concert_event.expenses
+            return f"{band_name} gained {profits:.2f}$ from the {concert_event.genre} concert in {concert_place}."
+
+    @staticmethod
+    def check_members(band):
+        all_members = False
+        singer = next((s for s in band.members if s.__class__.__name__ == "Singer"), None)
+        drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
+        guitarist = next((g for g in band.members if g.__class__.__name__ == "Guitarist"), None)
+        if singer and drummer and guitarist:
+            all_members = True
+        return all_members
+
+    @staticmethod
+    def type_concert(concert, band):
+        conditions_met = True
+        if concert.genre == "Rock":
+            drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
+            if "play the drums with drumsticks" not in drummer.skills:
+                conditions_met = False
+            singer = next((d for d in band.members if d.__class__.__name__ == "Singer"), None)
+            if "sing high pitch notes" not in singer.skills:
+                conditions_met = False
+            guitarist = next((d for d in band.members if d.__class__.__name__ == "Guitarist"), None)
+            if "play rock" not in guitarist.skills:
+                conditions_met = False
+        elif concert.genre == "Metal":
+            drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
+            if "play the drums with drumsticks" not in drummer.skills:
+                conditions_met = False
+            singer = next((d for d in band.members if d.__class__.__name__ == "Singer"), None)
+            if "sing low pitch notes" not in singer.skills:
+                conditions_met = False
+            guitarist = next((d for d in band.members if d.__class__.__name__ == "Guitarist"), None)
+            if "play metal" not in guitarist.skills:
+                conditions_met = False
+        elif concert.genre == "Jazz":
+            drummer = next((d for d in band.members if d.__class__.__name__ == "Drummer"), None)
+            if "play the drums with drum brushes" not in drummer.skills:
+                conditions_met = False
+            singer = next((d for d in band.members if d.__class__.__name__ == "Singer"), None)
+            if "sing low pitch notes" not in singer.skills and "sing high pitch notes" not in singer.skills:
+                conditions_met = False
+            guitarist = next((d for d in band.members if d.__class__.__name__ == "Guitarist"), None)
+            if "play jazz" not in guitarist.skills:
+                conditions_met = False
+        return conditions_met
