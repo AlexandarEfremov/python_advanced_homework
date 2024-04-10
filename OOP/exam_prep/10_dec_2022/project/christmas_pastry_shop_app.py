@@ -4,12 +4,13 @@ from project.booths.booth import Booth
 from project.booths.open_booth import OpenBooth
 from project.booths.private_booth import PrivateBooth
 from project.delicacies.delicacy import Delicacy
+from project.delicacies.gingerbread import Gingerbread
 from project.delicacies.stolen import Stolen
 
 
 class ChristmasPastryShopApp:
     DELICACY_TYPES = {
-        "Gingerbread": Delicacy,
+        "Gingerbread": Gingerbread,
         "Stolen": Stolen,
     }
 
@@ -47,25 +48,28 @@ class ChristmasPastryShopApp:
         reserved_boot = next((b for b in self.booths if not b.is_reserved and b.capacity >= number_of_people), None)
         if reserved_boot is None:
             raise Exception(f"No available booth for {number_of_people} people!")
-        reserved_boot.is_reserved = True
+        reserved_boot.reserve(number_of_people)
         return f"Booth {reserved_boot.booth_number} has been reserved for {number_of_people} people."
 
     def order_delicacy(self, booth_number: int, delicacy_name: str):
         needed_booth = next((b for b in self.booths if b.booth_number == booth_number), None)
-        needed_deli_in_booth = next((d for d in needed_booth.delicacy_orders if d.name == delicacy_name), None)
+        needed_deli = next((d for d in self.delicacies if d.name == delicacy_name), None)
         if needed_booth is None:
             raise Exception(f"Could not find booth {booth_number}!")
-        if needed_deli_in_booth is None:
+        if needed_deli is None:
             raise Exception(f"No {delicacy_name} in the pastry shop!")
         else:
+            needed_booth.delicacy_orders.append(needed_deli)
             return f"Booth {booth_number} ordered {delicacy_name}."
 
     def leave_booth(self, booth_number: int):
         wanted_booth = next((b for b in self.booths if b.booth_number == booth_number), None)
-        total_bill = wanted_booth.price_for_reservation + sum((d.price for d in wanted_booth.delicacy_orders))
+        total_bill = wanted_booth.price_for_reservation + sum([d.price for d in wanted_booth.delicacy_orders])
         self.income += total_bill
         wanted_booth.delicacy_orders = []
         wanted_booth.is_reserved = False
         wanted_booth.price_for_reservation = 0
         return f"Booth {booth_number}:\nBill: {total_bill:.2f}lv."
 
+    def get_income(self):
+        return f"Income: {self.income:.2f}lv."
