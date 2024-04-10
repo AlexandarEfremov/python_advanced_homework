@@ -43,3 +43,29 @@ class ChristmasPastryShopApp:
         self.booths.append(new_booth)
         return f"Added booth number {booth_number} in the pastry shop."
 
+    def reserve_booth(self, number_of_people: int):
+        reserved_boot = next((b for b in self.booths if not b.is_reserved and b.capacity >= number_of_people), None)
+        if reserved_boot is None:
+            raise Exception(f"No available booth for {number_of_people} people!")
+        reserved_boot.is_reserved = True
+        return f"Booth {reserved_boot.booth_number} has been reserved for {number_of_people} people."
+
+    def order_delicacy(self, booth_number: int, delicacy_name: str):
+        needed_booth = next((b for b in self.booths if b.booth_number == booth_number), None)
+        needed_deli_in_booth = next((d for d in needed_booth.delicacy_orders if d.name == delicacy_name), None)
+        if needed_booth is None:
+            raise Exception(f"Could not find booth {booth_number}!")
+        if needed_deli_in_booth is None:
+            raise Exception(f"No {delicacy_name} in the pastry shop!")
+        else:
+            return f"Booth {booth_number} ordered {delicacy_name}."
+
+    def leave_booth(self, booth_number: int):
+        wanted_booth = next((b for b in self.booths if b.booth_number == booth_number), None)
+        total_bill = wanted_booth.price_for_reservation + sum((d.price for d in wanted_booth.delicacy_orders))
+        self.income += total_bill
+        wanted_booth.delicacy_orders = []
+        wanted_booth.is_reserved = False
+        wanted_booth.price_for_reservation = 0
+        return f"Booth {booth_number}:\nBill: {total_bill:.2f}lv."
+
