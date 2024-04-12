@@ -42,3 +42,21 @@ class InfluencerManagerApp:
         self.campaigns.append(new_campaign)
         return f"Campaign ID {campaign_id} for {brand} is successfully created as a {campaign_type}."
 
+    def participate_in_campaign(self, influencer_username: str, campaign_id: int):
+        inf = next((i for i in self.influencers if i.username == influencer_username), None)
+        if inf is None:
+            return f"Influencer '{influencer_username}' not found."
+        camp = next((c for c in self.campaigns if c.campaign_id == campaign_id), None)
+        if camp is None:
+            return f"Campaign with ID {campaign_id} not found."
+        eligible_influencer = camp.check_eligibility(inf.engagement_rate)
+        if eligible_influencer is False:
+            return (f"Influencer '{influencer_username}' does not meet the eligibility criteria "
+                    f"for the campaign with ID {campaign_id}.")
+        payment_for_influencer = inf.calculate_payment(camp)
+        if payment_for_influencer > 0.0:
+            camp.approved_influencers.append(inf)
+            camp.budget -= payment_for_influencer
+            inf.campaigns_participated.append(camp)
+            return (f"Influencer '{influencer_username}' has successfully "
+                    f"participated in the campaign with ID {campaign_id}.")
