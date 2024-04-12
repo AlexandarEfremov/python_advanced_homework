@@ -26,12 +26,28 @@ class TestSocialMedia(TestCase):
             self.playa.followers = -1
         self.assertEqual("Followers cannot be negative.", str(ex.exception))
 
-    def test_a_post_creation(self):
-        res = self.playa.create_post("get ready")
-        new_post = {'content': "get ready", 'likes': 0, 'comments': []}
-        ex_res = "New get ready created by Alex on Instagram"
-        self.assertEqual(new_post, self.playa._posts)
-        self.assertEqual(res, ex_res)
+    def test_a_post_creation_if_in_list(self):
+        self.playa.create_post("marketing")
+        self.assertEqual([{'content': 'marketing', 'likes': 0, 'comments': []}], self.playa._posts)
+
+    def test_actual_post_creation(self):
+        expect = "New anime post created by Alex on Instagram."
+        self.assertEqual(expect, self.playa.create_post("marketing"))
+
+    def test_post_like_with_invalid_index(self):
+        self.playa.create_post("marketing")
+        self.assertEqual("Invalid post index.", self.playa.like_post(3))
+
+    def test_post_like_with_max_amount_of_likes(self):
+        self.playa.create_post("marketing")
+        self.playa._posts[0]["likes"] = 10
+        self.assertEqual("Post has reached the maximum number of likes.", self.playa.like_post(0))
+
+    def test_normal_post_like(self):
+        self.playa.create_post("marketing")
+        self.playa.like_post(0)
+        self.assertEqual("Post liked by Alex.", self.playa.like_post(0))
+
 
 if __name__ == "__main__":
     main()
