@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 from project.animals.animal import Bird
 from project.food import Meat, Seed, Vegetable, Fruit
 

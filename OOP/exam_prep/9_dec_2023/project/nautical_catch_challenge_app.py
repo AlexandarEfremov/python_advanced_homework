@@ -1,7 +1,5 @@
-from project.divers.base_diver import BaseDiver
 from project.divers.free_diver import FreeDiver
 from project.divers.scuba_diver import ScubaDiver
-from project.fish.base_fish import BaseFish
 from project.fish.predatory_fish import PredatoryFish
 from project.fish.deep_sea_fish import DeepSeaFish
 

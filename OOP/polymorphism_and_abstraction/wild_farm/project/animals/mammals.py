@@ -1,7 +1,5 @@
-from abc import ABC, abstractmethod
-
 from project.animals.animal import Mammal
-from project.food import Meat, Seed, Vegetable, Fruit
+from project.food import Meat, Vegetable, Fruit
 
 
 class Mouse(Mammal):

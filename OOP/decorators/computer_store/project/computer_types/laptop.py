@@ -1,5 +1,4 @@
 from project.computer_types.computer import Computer
-import math
 
 
 class Laptop(Computer):

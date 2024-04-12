@@ -48,6 +48,29 @@ class TestSocialMedia(TestCase):
         self.playa.like_post(0)
         self.assertEqual("Post liked by Alex.", self.playa.like_post(0))
 
+    def test_if_after_like_post_likes_increase_by_one(self):
+        self.playa.create_post("marketing")
+        self.playa._posts[0]["likes"] = 8
+        self.playa.like_post(0)
+        self.assertEqual(9, self.playa._posts[0]["likes"])
+
+    def test_comment_on_post_with_less_than_10_len(self):
+        self.playa.create_post("marketing")
+        ex = "Comment should be more than 10 characters."
+        self.assertEqual(ex, self.playa.comment_on_post(0, "abc"))
+
+    def test_if_can_find_comment_in_list(self):
+        self.playa.create_post("marketing")
+        self.playa.comment_on_post(0, "Amazing content")
+        ex = [{'content': "marketing", 'likes': 0, 'comments': [{'user': 'Alex', 'comment': 'Amazing content'}]}]
+        self.assertEqual(ex, self.playa._posts)
+
+    def test_adding_the_comment_expect_message(self):
+        self.playa.create_post("marketing")
+        result = self.playa.comment_on_post(0, "Amazing content")
+
+        self.assertEqual("Comment added by Alex on the post.", result)
+
 
 if __name__ == "__main__":
     main()
