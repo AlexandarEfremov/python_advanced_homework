@@ -55,12 +55,12 @@ class HorseRaceApp:
         if horse is None:
             raise Exception(f"Horse breed {horse_type} could not be found!")
         if horse and jockey.horse:
-            raise Exception(f"Jockey {jockey_name} already has a horse.")
+            return f"Jockey {jockey_name} already has a horse."
         jockey.horse = horse
         return f"Jockey {jockey_name} will ride the horse {horse.name}."
 
     def add_jockey_to_horse_race(self, race_type: str, jockey_name: str):
-        wanted_race = next((r for r in self.horse_races if r.__class__.__name__ == race_type), None)
+        wanted_race = next((r for r in self.horse_races if r.race_type== race_type), None)
         if wanted_race is None:
             raise Exception(f"Race {race_type} could not be found!")
         jockey = next((j for j in self.jockeys if j.name == jockey_name), None)
@@ -69,7 +69,7 @@ class HorseRaceApp:
         if jockey.horse is None:
             raise Exception(f"Jockey {jockey_name} cannot race without a horse!")
         if jockey in wanted_race.jockeys:
-            raise Exception(f"Jockey {jockey_name} has been already added to the {race_type} race.")
+            return f"Jockey {jockey_name} has been already added to the {race_type} race."
         wanted_race.jockeys.append(jockey)
         return f"Jockey {jockey_name} added to the {race_type} race."
 
