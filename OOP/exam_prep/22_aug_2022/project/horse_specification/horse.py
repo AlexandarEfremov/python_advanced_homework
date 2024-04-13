@@ -10,16 +10,6 @@ class Horse(ABC):
         self.is_taken = False
 
     @property
-    def speed(self):
-        return self.__speed
-
-    @speed.setter
-    def speed(self, value):
-        if value > self.MAX_SPEED:
-            raise ValueError("Horse speed is too high!")
-        self.__speed = value
-
-    @property
     def name(self):
         return self.__name
 
@@ -28,6 +18,16 @@ class Horse(ABC):
         if len(value) < 4:
             raise ValueError(f"Horse name {value} is less than 4 symbols!")
         self.__name = value
+
+    @property
+    def speed(self):
+        return self.__speed
+
+    @speed.setter
+    def speed(self, value):
+        if value > self.MAX_SPEED:
+            raise ValueError("Horse speed is too high!")
+        self.__speed = value
 
     @abstractmethod
     def train(self):
