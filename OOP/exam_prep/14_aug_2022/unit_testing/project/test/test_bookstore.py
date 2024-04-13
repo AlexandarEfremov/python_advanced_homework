@@ -12,6 +12,12 @@ class TestBookstore(TestCase):
         self.assertEqual({}, self.bookstore.availability_in_store_by_book_titles)
         self.assertEqual(0, self.bookstore.total_sold_books)
 
+    def test_total_sold_books(self):
+        self.bookstore.receive_book("Alex", 10)
+        self.bookstore.sell_book("Alex", 2)
+
+        self.assertEqual(2, self.bookstore.total_sold_books)
+
     def test_negative_book_limit_or_zero(self):
         with self.assertRaises(Exception) as ex:
             self.bookstore.books_limit = -1
@@ -34,11 +40,34 @@ class TestBookstore(TestCase):
 
         self.assertEqual(30, self.bookstore.__len__())
 
+    def test_len(self):
+        self.bookstore.receive_book("Alex", 10)
+        self.assertEqual(10, self.bookstore.__len__())
+
+    def test_len_with_two_dicts(self):
+        self.bookstore.receive_book("Alex", 10)
+        self.bookstore.receive_book("Ewa", 5)
+        self.assertEqual(15, self.bookstore.__len__())
+
     def test_if_book_capacity_is_over(self):
         with self.assertRaises(Exception) as ex:
             self.bookstore.receive_book("Alex", 101)
 
         self.assertEqual("Books limit is reached. Cannot receive more books!", str(ex.exception))
+
+    def test_receive_up_to_full_cap(self):
+        self.bookstore.receive_book("Alex", 100)
+        self.assertEqual({"Alex": 100}, self.bookstore.availability_in_store_by_book_titles)
+
+    def test_receive_up_to_full_cap_2(self):
+        ex = self.bookstore.receive_book("Alex", 100)
+        self.assertEqual("100 copies of Alex are available in the bookstore.", ex)
+
+    def test_a_couple_of_transactions(self):
+        res = self.bookstore.receive_book("Man", 5)
+        self.assertEqual("5 copies of Man are available in the bookstore.", res)
+        res_2 = self.bookstore.receive_book("Man", 4)
+        self.assertEqual("9 copies of Man are available in the bookstore.", res_2)
 
     def test_receive_existing_book_extra_copies(self):
         self.bookstore.receive_book("Alex", 10)
@@ -66,6 +95,24 @@ class TestBookstore(TestCase):
             self.bookstore.sell_book("Alex", 15)
 
         self.assertEqual("Alex has not enough copies to sell. Left: 10", str(ex.exception))
+
+    def test_sell_down_to_zero_1(self):
+        self.bookstore.receive_book("Alex", 10)
+        ex = self.bookstore.sell_book("Alex", 10)
+
+        self.assertEqual("Sold 10 copies of Alex", ex)
+
+    def test_sell_down_to_zero_2(self):
+        self.bookstore.receive_book("Alex", 10)
+        self.bookstore.sell_book("Alex", 10)
+
+        self.assertEqual(0, self.bookstore.availability_in_store_by_book_titles["Alex"])
+
+    def test_sell_down_to_zero_3(self):
+        self.bookstore.receive_book("Alex", 10)
+        self.bookstore.sell_book("Alex", 10)
+
+        self.assertEqual(10, self.bookstore.total_sold_books)
 
     def test_successful_sell_1_3(self):
         self.bookstore.receive_book("Alex", 10)
