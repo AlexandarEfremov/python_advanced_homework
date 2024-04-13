@@ -8,6 +8,8 @@ from project.jockey import Jockey
 
 
 class HorseRaceApp:
+    AVAILABLE_RACES = ["Winter", "Spring", "Autumn", "Summer"]
+
     HORSE_TYPES = {
         "Appaloosa": Appaloosa,
         "Thoroughbred": Thoroughbred,
@@ -35,3 +37,12 @@ class HorseRaceApp:
             new_jockey = Jockey(jockey_name, age)
             self.jockeys.append(new_jockey)
             return f"Jockey {jockey_name} is added."
+
+    def create_horse_race(self, race_type: str):
+        if race_type not in self.AVAILABLE_RACES:
+            return f"Race {race_type} has been already created!"
+        else:
+            race = HorseRace(race_type)
+            self.AVAILABLE_RACES.remove(race_type)
+            self.horse_races.append(race)
+            return f"Race {race_type} is created."
