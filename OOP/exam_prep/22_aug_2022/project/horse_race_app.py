@@ -72,3 +72,13 @@ class HorseRaceApp:
             raise Exception(f"Jockey {jockey_name} has been already added to the {race_type} race.")
         wanted_race.jockeys.append(jockey)
         return f"Jockey {jockey_name} added to the {race_type} race."
+
+    def start_horse_race(self, race_type: str):
+        wanted_race = next((r for r in self.horse_races if r.__class__.__name__ == race_type), None)
+        if wanted_race is None:
+            raise Exception(f"Race {race_type} could not be found!")
+        if len(wanted_race.jockeys) < 2:
+            raise Exception(f"Horse race {race_type} needs at least two participants!")
+        winner = sorted(wanted_race.jockeys, key=lambda j: (-j.horse.speed))[0]
+        return (f"The winner of the {race_type} race, with a speed of {winner.horse.speed}km/h is "
+                f"{winner.name}! Winner's horse: {winner.horse.name}.")
