@@ -10,8 +10,7 @@ class Jockey:
 
     @name.setter
     def name(self, value):
-        name_len = len([l for l in value if l.isalpha()])
-        if name_len <= 0:
+        if value.strip() == "":
             raise ValueError("Name should contain at least one character!")
         self.__name = value
 
