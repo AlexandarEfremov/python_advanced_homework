@@ -21,13 +21,16 @@ class HorseRaceApp:
         self.horse_races: List[HorseRace] = []
 
     def add_horse(self, horse_type: str, horse_name: str, horse_speed: int):
-        horse = next((h for h in self.horses if h.name == horse_name), None)
-        if horse:
-            raise Exception(f"Horse {horse_name} has been already added!")
+        if horse_type in self.HORSE_TYPES:
+            horse = next((h for h in self.horses if h.name == horse_name), None)
+            if horse:
+                raise Exception(f"Horse {horse_name} has been already added!")
+            else:
+                new_horse = self.HORSE_TYPES[horse_type](horse_name, horse_speed)
+                self.horses.append(new_horse)
+                return f"{horse_type} horse {horse_name} is added."
         else:
-            new_horse = self.HORSE_TYPES[horse_type](horse_name, horse_speed)
-            self.horses.append(new_horse)
-            return f"{horse_type} horse {horse_name} is added."
+            pass
 
     def add_jockey(self, jockey_name: str, age: int):
         jockey = next((j for j in self.jockeys if j.name == jockey_name), None)
@@ -40,7 +43,7 @@ class HorseRaceApp:
 
     def create_horse_race(self, race_type: str):
         if race_type not in self.AVAILABLE_RACES:
-            return f"Race {race_type} has been already created!"
+            raise Exception(f"Race {race_type} has been already created!")
         else:
             race = HorseRace(race_type)
             self.AVAILABLE_RACES.remove(race_type)
@@ -51,16 +54,16 @@ class HorseRaceApp:
         jockey = next((j for j in self.jockeys if j.name == jockey_name), None)
         if jockey is None:
             raise Exception(f"Jockey {jockey_name} could not be found!")
-        horse = next((h for h in self.horses if h.__class__.__name__ == horse_type and h.is_taken is False), None)
-        if horse is None:
+        horse_list = [h for h in self.horses if h.__class__.__name__ == horse_type and not h.is_taken]
+        if not horse_list:
             raise Exception(f"Horse breed {horse_type} could not be found!")
-        if horse and jockey.horse:
+        if horse_list and jockey.horse:
             return f"Jockey {jockey_name} already has a horse."
-        jockey.horse = horse
-        return f"Jockey {jockey_name} will ride the horse {horse.name}."
+        jockey.horse = horse_list[-1]
+        return f"Jockey {jockey_name} will ride the horse {horse_list[-1].name}."
 
     def add_jockey_to_horse_race(self, race_type: str, jockey_name: str):
-        wanted_race = next((r for r in self.horse_races if r.race_type== race_type), None)
+        wanted_race = next((r for r in self.horse_races if r.race_type == race_type), None)
         if wanted_race is None:
             raise Exception(f"Race {race_type} could not be found!")
         jockey = next((j for j in self.jockeys if j.name == jockey_name), None)
@@ -74,7 +77,7 @@ class HorseRaceApp:
         return f"Jockey {jockey_name} added to the {race_type} race."
 
     def start_horse_race(self, race_type: str):
-        wanted_race = next((r for r in self.horse_races if r.__class__.__name__ == race_type), None)
+        wanted_race = next((r for r in self.horse_races if r.race_type == race_type), None)
         if wanted_race is None:
             raise Exception(f"Race {race_type} could not be found!")
         if len(wanted_race.jockeys) < 2:
