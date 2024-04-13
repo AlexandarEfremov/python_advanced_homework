@@ -57,9 +57,10 @@ class HorseRaceApp:
         horse_list = [h for h in self.horses if h.__class__.__name__ == horse_type and not h.is_taken]
         if not horse_list:
             raise Exception(f"Horse breed {horse_type} could not be found!")
-        if horse_list and jockey.horse:
+        if horse_list and jockey.horse is not None:
             return f"Jockey {jockey_name} already has a horse."
         jockey.horse = horse_list[-1]
+        horse_list[-1].is_taken = True
         return f"Jockey {jockey_name} will ride the horse {horse_list[-1].name}."
 
     def add_jockey_to_horse_race(self, race_type: str, jockey_name: str):
