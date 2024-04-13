@@ -60,3 +60,25 @@ class InfluencerManagerApp:
             inf.campaigns_participated.append(camp)
             return (f"Influencer '{influencer_username}' has successfully "
                     f"participated in the campaign with ID {campaign_id}.")
+
+    def calculate_total_reached_followers(self):
+        camp_with_approved_inf = [camp for camp in self.campaigns if camp.approved_influencers]
+        follower_dict = {}
+        for camp in camp_with_approved_inf:
+            for inf in camp.approved_influencers:
+                follower_dict[camp] = inf.reached_followers(camp.__class__.__name__)
+        return follower_dict
+
+    def influencer_campaign_report(self, username: str):
+        influencer = next((i for i in self.influencers if i.username == username), None)
+        return influencer.display_campaigns_participated()
+
+    def campaign_statistics(self):
+        result = ["$$ Campaign Statistics $$"]
+        sorted_campaigns = sorted(self.campaigns, key=lambda c: (len(c.approved_influencers), (-c.budget)))
+        [result.append(f"  * Brand: {c.brand}, Total influencers: {len(c.approved_influencers)}, "
+                       f"Total budget: ${c.budget:.2f}, Total reached followers: "
+                       f"{sum([inf.reached_followers(c.__class__.__name__) for inf in c.approved_influencers])}") for c in sorted_campaigns]
+        return "\n".join(result)
+
+
