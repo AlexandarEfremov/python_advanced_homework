@@ -6,6 +6,7 @@ from project.client import Client
 
 class FoodOrdersApp:
     MEAL_TYPES = ["Starter", "MainDish", "Dessert"]
+    RECEIPT_NUMBER = 0
 
     def __init__(self):
         self.menu: List[Meal] = []
@@ -61,6 +62,18 @@ class FoodOrdersApp:
             wanted_client.bill = 0
             return f"Client {client_phone_number} successfully canceled his order."
 
+    def finish_order(self, client_phone_number: str):
+        wanted_client = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
+        if not wanted_client.shopping_list:
+            raise Exception("There are no ordered meals!")
+        else:
+            total_amount = sum([p.price for p in wanted_client.shopping_list])
+            receipt_id = self.RECEIPT_NUMBER + 1
+            return (f"Receipt #{receipt_id} with total amount of {total_amount:.2f} "
+                    f"was successfully paid for {client_phone_number}.")
+
+    def __str__(self):
+        return f"Food Orders App has {len(self.menu)} meals on the menu and {len(self.clients_list)} clients."
 
 
 
