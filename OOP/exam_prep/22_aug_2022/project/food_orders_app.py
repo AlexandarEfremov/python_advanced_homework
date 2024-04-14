@@ -13,65 +13,42 @@ class FoodOrdersApp:
         self.clients_list: List[Client] = []
 
     def register_client(self, client_phone_number: str):
-        client = Client(client_phone_number)
-        client_num = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
-        if client_num:
-            return "The client has already been registered!"
-        else:
-            self.clients_list.append(client)
-            return f"Client {client_phone_number} registered successfully."
+        find_if_client_exists = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
+        if find_if_client_exists:
+            raise Exception("The client has already been registered!")
+        new_client = Client(client_phone_number)
+        self.clients_list.append(new_client)
 
     def add_meals_to_menu(self, *meals: Meal):
-        [self.menu.append(m) for m in meals if m.__class__.__name__ in self.MEAL_TYPES]
+        for meal in meals:
+            if type(meal).__name__ not in self.MEAL_TYPES:
+                continue
+            self.menu.append(meal)
 
     def show_menu(self):
+        result = []
+
         if len(self.menu) < 5:
             raise Exception("The menu is not ready!")
-        result = []
-        [result.append(m.details()) for m in self.menu]
+        for m in self.menu:
+            result.append(m.details())
+
         return "\n".join(result)
 
     def add_meals_to_shopping_cart(self, client_phone_number: str, **meal_names_and_quantities):
         if len(self.menu) < 5:
             raise Exception("The menu is not ready!")
-        client_num = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
-        if client_num is None:
+        client = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
+        if client is None:
             self.register_client(client_phone_number)
         for meal, quantity in meal_names_and_quantities.items():
-            m_name = next((mn for mn in self.menu if mn.name == meal), None)
-            if m_name is None:
+            desired_meal = next((m for m in self.menu if m.name == meal), None)
+            if desired_meal is None:
                 raise Exception(f"{meal} is not on the menu!")
-            if quantity > m_name.quantity:
-                raise Exception(f"Not enough quantity of {m_name.__class__.__name__}: {meal}!")
-            else:
-                client_num.shopping_list.append(m_name)
-                bill_price = m_name.price * quantity
-                client_num.bill += bill_price
-                m_name.quantity -= quantity
-        return f"Client {client_phone_number} successfully ordered {', '.join([m.name for m in client_num.shopping_list])} for {client_num.bill:.2f}lv."
-
-    def cancel_order(self, client_phone_number: str):
-        wanted_client = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
-        if not wanted_client.shopping_list:
-            raise Exception("There are no ordered meals!")
-        else:
-            for meal in wanted_client.shopping_list:
-                self.menu[meal].quantity += meal.quantity
-            wanted_client.shopping_list = []
-            wanted_client.bill = 0
-            return f"Client {client_phone_number} successfully canceled his order."
-
-    def finish_order(self, client_phone_number: str):
-        wanted_client = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
-        if not wanted_client.shopping_list:
-            raise Exception("There are no ordered meals!")
-        else:
-            receipt_id = self.RECEIPT_NUMBER + 1
-            return (f"Receipt #{receipt_id} with total amount of {wanted_client.bill:.2f} "
-                    f"was successfully paid for {client_phone_number}.")
-
-    def __str__(self):
-        return f"Food Orders App has {len(self.menu)} meals on the menu and {len(self.clients_list)} clients."
-
-
-
+            if quantity > desired_meal.quantity:
+                raise Exception(f"Not enough quantity of {type(desired_meal).__name__}: {desired_meal.name}!")
+            client.shopping_cart.append(meal)
+            client.bill += desired_meal.price * quantity
+            desired_meal.quantity -= quantity
+        return (f"Client {client_phone_number} successfully ordered {', '.join(m.name for m in client.shopping_cart)} "
+                f"for {client.bill}lv.")
