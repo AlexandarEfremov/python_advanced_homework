@@ -37,7 +37,6 @@ class FoodOrdersApp:
         client_num = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
         if client_num is None:
             self.register_client(client_phone_number)
-
         for meal, quantity in meal_names_and_quantities.items():
             m_name = next((mn for mn in self.menu if mn.name == meal), None)
             if m_name is None:
@@ -49,7 +48,7 @@ class FoodOrdersApp:
                 bill_price = m_name.price * quantity
                 client_num.bill += bill_price
                 m_name.quantity -= quantity
-                return f"Client {client_phone_number} successfully ordered {meal} for {bill_price}lv."
+        return f"Client {client_phone_number} successfully ordered {', '.join([m.name for m in client_num.shopping_list])} for {client_num.bill:.2f}lv."
 
     def cancel_order(self, client_phone_number: str):
         wanted_client = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
@@ -67,9 +66,8 @@ class FoodOrdersApp:
         if not wanted_client.shopping_list:
             raise Exception("There are no ordered meals!")
         else:
-            total_amount = sum([p.price for p in wanted_client.shopping_list])
             receipt_id = self.RECEIPT_NUMBER + 1
-            return (f"Receipt #{receipt_id} with total amount of {total_amount:.2f} "
+            return (f"Receipt #{receipt_id} with total amount of {wanted_client.bill:.2f} "
                     f"was successfully paid for {client_phone_number}.")
 
     def __str__(self):
