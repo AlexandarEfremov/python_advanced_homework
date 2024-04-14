@@ -50,8 +50,16 @@ class FoodOrdersApp:
                 m_name.quantity -= quantity
                 return f"Client {client_phone_number} successfully ordered {meal} for {bill_price}lv."
 
-
-
+    def cancel_order(self, client_phone_number: str):
+        wanted_client = next((c for c in self.clients_list if c.phone_number == client_phone_number), None)
+        if not wanted_client.shopping_list:
+            raise Exception("There are no ordered meals!")
+        else:
+            for meal in wanted_client.shopping_list:
+                self.menu[meal].quantity += meal.quantity
+            wanted_client.shopping_list = []
+            wanted_client.bill = 0
+            return f"Client {client_phone_number} successfully canceled his order."
 
 
 
