@@ -4,7 +4,7 @@ from project.meals.dessert import Dessert
 from project.meals.main_dish import MainDish
 
 food_orders_app = FoodOrdersApp()
-print(food_orders_app.register_client("0%99999999"))
+print(food_orders_app.register_client("0899999999"))
 french_toast = Starter("French toast", 6.50, 5)
 hummus_and_avocado_sandwich = Starter("Hummus and Avocado Sandwich", 7.90)
 tortilla_with_beef_and_pork = MainDish("Tortilla with Beef and Pork", 12.50, 12)
