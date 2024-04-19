@@ -1,0 +1,1 @@
+class Fantasy(Movie):
