@@ -49,7 +49,14 @@ class MovieApp:
         return f"{username} successfully deleted {movie.title} movie."
 
     def like_movie(self, username: str, movie: Movie):
-        pass
+        user = next((u for u in self.users_collection if u.username == username), None)
+        if movie.owner == user:
+            raise Exception(f"{username} is the owner of the movie {movie.title}!")
+        if movie in user.movies_liked:
+            raise Exception(f"{username} already liked the movie {movie.title}!")
+        movie.likes += 1
+        user.movies_liked.append(movie)
+        return f"{username} liked {movie.title} movie."
 
     def dislike_movie(self, username: str, movie: Movie):
         pass
