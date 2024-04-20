@@ -6,8 +6,8 @@ class Movie(ABC):
         self.title = title
         self.year = year
         self.owner = owner
-        self.object = object
         self.age_restriction = age_restriction
+        self.likes = 0
 
     @property
     def title(self):
