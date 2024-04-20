@@ -3,7 +3,7 @@ from project.user import User
 
 
 class Fantasy(Movie):
-    def __init__(self, title: str, year: int, owner: object, age_restriction):
+    def __init__(self, title: str, year: int, owner: object, age_restriction=6):
         super().__init__(title, year, owner, age_restriction)
 
     @property
