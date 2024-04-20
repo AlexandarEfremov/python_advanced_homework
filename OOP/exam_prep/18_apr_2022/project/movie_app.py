@@ -10,7 +10,12 @@ class MovieApp:
         self.users_collection: List[User] = []
 
     def register_user(self, username: str, age: int):
-        pass
+        user = next((u for u in self.users_collection if u.username == username), None)
+        if user:
+            raise Exception("User already exists!")
+        new_user = User(username, age)
+        self.users_collection.append(new_user)
+        return f"{username} registered successfully."
 
     def upload_movie(self, username: str, movie: Movie):
         pass
