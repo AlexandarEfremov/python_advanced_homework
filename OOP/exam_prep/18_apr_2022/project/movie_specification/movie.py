@@ -39,7 +39,6 @@ class Movie(ABC):
             raise ValueError("The owner must be an object of type User!")
         self.__owner = value
 
-
     @abstractmethod
     def details(self):
         ...

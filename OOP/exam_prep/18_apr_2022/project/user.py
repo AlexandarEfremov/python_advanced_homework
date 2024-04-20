@@ -1,9 +1,14 @@
+from typing import List
+
+from project.movie_specification.movie import Movie
+
+
 class User:
     def __init__(self, username: str, age: int):
         self.username = username
         self.age = age
-        self.movies_liked = []
-        self.movies_owned = []
+        self.movies_liked: List[Movie] = []
+        self.movies_owned: List[Movie] = []
 
     @property
     def username(self):
