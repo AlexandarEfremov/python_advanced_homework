@@ -1,9 +1,10 @@
 from project.movie_specification.movie import Movie
+from project.user import User
 
 
 class Action(Movie):
     def __init__(self, title: str, year: int, owner: object, age_restriction):
-        super().__init__(title, year, owner, age_restriction=12)
+        super().__init__(title, year, owner, age_restriction)
 
     @property
     def age_restriction(self):
@@ -17,4 +18,4 @@ class Action(Movie):
 
     def details(self):
         return (f"Action - Title:{self.title}, Year:{self.year}, Age restriction:{self.age_restriction},"
-                f" Likes:{self.likes}, Owned by:{self.owner.name}")
+                f" Likes:{self.likes}, Owned by:{self.owner.username}")

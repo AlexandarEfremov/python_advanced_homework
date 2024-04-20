@@ -1,9 +1,10 @@
 from project.movie_specification.movie import Movie
+from project.user import User
 
 
 class Thriller(Movie):
     def __init__(self, title: str, year: int, owner: object, age_restriction):
-        super().__init__(title, year, owner, age_restriction=16)
+        super().__init__(title, year, owner, age_restriction)
 
     @property
     def age_restriction(self):
@@ -17,4 +18,4 @@ class Thriller(Movie):
 
     def details(self):
         return (f"Thriller - Title:{self.title}, Year:{self.year}, Age restriction:{self.age_restriction},"
-                f" Likes:{self.likes}, Owned by:{self.owner.name}")
+                f" Likes:{self.likes}, Owned by:{self.owner.username}")

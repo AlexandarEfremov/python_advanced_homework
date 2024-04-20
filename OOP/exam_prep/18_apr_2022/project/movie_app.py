@@ -26,6 +26,7 @@ class MovieApp:
         if movie in self.movies_collection:
             raise Exception(f"Movie already added to the collection!")
         self.movies_collection.append(movie)
+        user.movies_owned.append(movie)
         return f"{username} successfully added {movie.title} movie."
 
     def edit_movie(self, username: str, movie: Movie, **kwargs):
@@ -35,7 +36,12 @@ class MovieApp:
         if movie.owner != user:
             raise Exception(f"{username} is not the owner of the movie {movie.title}!")
         for attribute, new_attribute in kwargs.items():
-            movie.attribute = new_attribute
+            if attribute == "title":
+                movie.title = new_attribute
+            elif attribute == "year":
+                movie.year = new_attribute
+            else:
+                movie.age_restriction = new_attribute
         return f"{username} successfully edited {movie.title} movie."
 
     def delete_movie(self, username: str, movie: Movie):
@@ -78,11 +84,11 @@ class MovieApp:
     def __str__(self):
         result = []
         if self.users_collection:
-            result.append(f"All users: {', '.join(u.username for u in self.users_collection)}")
+            result.append(f"All users: {', '.join([u.username for u in self.users_collection])}")
         else:
             result.append("All users: No users.")
         if self.movies_collection:
-            result.append(f"All movies: {', '.join(m.title for m in self.movies_collection)}")
+            result.append(f"All movies: {', '.join([m.title for m in self.movies_collection])}")
         else:
             result.append("All movies: No movies.")
         return "\n".join(result)
