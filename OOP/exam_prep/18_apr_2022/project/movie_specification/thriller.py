@@ -2,7 +2,7 @@ from project.movie_specification.movie import Movie
 
 
 class Thriller(Movie):
-    def __init__(self, title: str, year: int, owner: object):
+    def __init__(self, title: str, year: int, owner: object, age_restriction):
         super().__init__(title, year, owner, age_restriction=16)
 
     @property

@@ -18,8 +18,16 @@ class MovieApp:
         return f"{username} registered successfully."
 
     def upload_movie(self, username: str, movie: Movie):
-        pass
-
+        user = next((u for u in self.users_collection if u.username == username), None)
+        if user is None:
+            raise Exception("This user does not exist!")
+        if movie.owner != user:
+            raise Exception(f"{username} is not the owner of the movie {movie.title}!")
+        if movie in self.movies_collection:
+            raise Exception(f"Movie already added to the collection!")
+        self.movies_collection.append(movie)
+        return f"{username} successfully added {movie.title} movie."
+    
     def edit_movie(self, username: str, movie: Movie, **kwargs):
         pass
 
