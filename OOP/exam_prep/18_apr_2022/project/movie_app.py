@@ -27,9 +27,18 @@ class MovieApp:
             raise Exception(f"Movie already added to the collection!")
         self.movies_collection.append(movie)
         return f"{username} successfully added {movie.title} movie."
-    
+
     def edit_movie(self, username: str, movie: Movie, **kwargs):
-        pass
+        user = next((u for u in self.users_collection if u.username == username), None)
+        if movie not in self.movies_collection:
+            raise Exception(f"The movie {movie.title} is not uploaded!")
+        if movie.owner != user:
+            raise Exception(f"{username} is not the owner of the movie {movie.title}!")
+        for attribute, new_attribute in kwargs.items():
+            movie.attribute = new_attribute
+        return f"{username} successfully edited {movie.title} movie."
+
+
 
     def delete_movie(self, username: str, movie: Movie):
         pass
