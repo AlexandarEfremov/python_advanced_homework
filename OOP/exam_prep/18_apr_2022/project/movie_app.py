@@ -38,10 +38,15 @@ class MovieApp:
             movie.attribute = new_attribute
         return f"{username} successfully edited {movie.title} movie."
 
-
-
     def delete_movie(self, username: str, movie: Movie):
-        pass
+        user = next((u for u in self.users_collection if u.username == username), None)
+        if movie not in self.movies_collection:
+            raise Exception(f"The movie {movie.title} is not uploaded!")
+        if movie.owner != user:
+            raise Exception(f"{username} is not the owner of the movie {movie.title}!")
+        self.movies_collection.remove(movie)
+        user.movies_owned.remove(movie)
+        return f"{username} successfully deleted {movie.title} movie."
 
     def like_movie(self, username: str, movie: Movie):
         pass
