@@ -21,7 +21,7 @@ class MovieApp:
         user = next((u for u in self.users_collection if u.username == username), None)
         if user is None:
             raise Exception("This user does not exist!")
-        if movie.owner != user:
+        if movie.owner.username != user.username:
             raise Exception(f"{username} is not the owner of the movie {movie.title}!")
         if movie in self.movies_collection:
             raise Exception(f"Movie already added to the collection!")
@@ -33,7 +33,7 @@ class MovieApp:
         user = next((u for u in self.users_collection if u.username == username), None)
         if movie not in self.movies_collection:
             raise Exception(f"The movie {movie.title} is not uploaded!")
-        if movie.owner != user:
+        if movie.owner.username != user.username:
             raise Exception(f"{username} is not the owner of the movie {movie.title}!")
         for attribute, new_attribute in kwargs.items():
             setattr(movie, attribute, new_attribute)
@@ -43,7 +43,7 @@ class MovieApp:
         user = next((u for u in self.users_collection if u.username == username), None)
         if movie not in self.movies_collection:
             raise Exception(f"The movie {movie.title} is not uploaded!")
-        if movie.owner != user:
+        if movie.owner.username != user.username:
             raise Exception(f"{username} is not the owner of the movie {movie.title}!")
         self.movies_collection.remove(movie)
         user.movies_owned.remove(movie)
@@ -51,7 +51,7 @@ class MovieApp:
 
     def like_movie(self, username: str, movie: Movie):
         user = next((u for u in self.users_collection if u.username == username), None)
-        if movie.owner == user:
+        if movie.owner.username == user.username:
             raise Exception(f"{username} is the owner of the movie {movie.title}!")
         if movie in user.movies_liked:
             raise Exception(f"{username} already liked the movie {movie.title}!")
