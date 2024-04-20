@@ -36,12 +36,7 @@ class MovieApp:
         if movie.owner != user:
             raise Exception(f"{username} is not the owner of the movie {movie.title}!")
         for attribute, new_attribute in kwargs.items():
-            if attribute == "title":
-                movie.title = new_attribute
-            elif attribute == "year":
-                movie.year = new_attribute
-            else:
-                movie.age_restriction = new_attribute
+            setattr(movie, attribute, new_attribute)
         return f"{username} successfully edited {movie.title} movie."
 
     def delete_movie(self, username: str, movie: Movie):
