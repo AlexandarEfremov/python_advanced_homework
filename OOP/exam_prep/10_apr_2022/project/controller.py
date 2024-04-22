@@ -34,9 +34,10 @@ class Controller:
                     if food_available is None:
                         raise Exception("There are no food supplies left!")
                     else:
-                        player.stamina += food_available.energy
-                        self.supplies.remove(food_available)
-                        if player.stamina > 100:
+                        if player.stamina + food_available.energy < 100:
+                            player.stamina += food_available.energy
+                            self.supplies.remove(food_available)
+                        else:
                             player.stamina = 100
                         return f"{player_name} sustained successfully with {food_available.name}."
                 elif sustenance_type == "Drink":
@@ -44,9 +45,10 @@ class Controller:
                     if drink_available is None:
                         raise Exception("There are no drink supplies left!")
                     else:
-                        player.stamina += drink_available.energy
-                        self.supplies.remove(drink_available)
-                        if player.stamina > 100:
+                        if player.stamina + drink_available.energy < 100:
+                            player.stamina += drink_available.energy
+                            self.supplies.remove(drink_available)
+                        else:
                             player.stamina = 100
                         return f"{player_name} sustained successfully with {drink_available.name}."
 
