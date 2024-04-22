@@ -71,34 +71,29 @@ class Controller:
             return f"Player {second_player_name} does not have enough stamina."
 
         if player_one.stamina < player_two.stamina:
-            winner = None
             player_two.stamina -= 0.5 * player_one.stamina
             if player_two.stamina <= 0:
                 player_two.stamina = 0
-                winner = player_one.name
+                return f"Winner: {player_one.name}"
             else:
                 player_one.stamina -= 0.5 * player_two.stamina
                 if player_one.stamina <= 0:
                     player_one.stamina = 0
-                    winner = player_two.name
+                    return f"Winner: {player_two.name}"
                 else:
-                    winner = player_one.name if player_one.stamina > player_two.stamina else player_two.name
-            return f"Winner: {winner}"
-
+                    return f"Winner: {player_one.name if player_one.stamina > player_two.stamina else player_two.name}"
         else:
-            winner = None
             player_one.stamina -= 0.5 * player_two.stamina
             if player_one.stamina <= 0:
                 player_one.stamina = 0
-                winner = player_two.name
+                return f"Winner: {player_two.name}"
             else:
                 player_two.stamina -= 0.5 * player_one.stamina
                 if player_two.stamina <= 0:
                     player_two.stamina = 0
-                    winner = player_one.name
+                    return f"Winner: {player_one.name}"
                 else:
-                    winner = player_one.name if player_one.stamina > player_two.stamina else player_two.name
-            return f"Winner: {winner}"
+                    return f"Winner: {player_one.name if player_one.stamina > player_two.stamina else player_two.name}"
 
     def next_day(self):
         for p in self.players:
