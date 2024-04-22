@@ -93,16 +93,14 @@ class Controller:
                     winner = player_one.name if player_one.stamina > player_two.stamina else player_two.name
             return f"Winner: {winner}"
 
-
-
-
-
-
-    def duel(self, first_player_name: str, second_player_name: str):
-        pass
-
     def next_day(self):
-        pass
+        for p in self.players:
+            p.stamina -= p.age * 2
+            if p.stamina < 0:
+                p.stamina = 0
+            self.sustain(p.name, "Food")
+            self.sustain(p.name, "Drink")
+
 
     def __str__(self):
         pass
