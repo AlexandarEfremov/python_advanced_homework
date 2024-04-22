@@ -40,6 +40,8 @@ class Controller:
                             self.supplies.remove(food_available)
                         else:
                             player.stamina = 100
+                            self.supplies.remove(food_available)
+
                         return f"{player_name} sustained successfully with {food_available.name}."
                 elif sustenance_type == "Drink":
                     drink_available = next((d for d in reversed(self.supplies) if d.__class__.__name__ == "Drink"), None)
@@ -51,6 +53,8 @@ class Controller:
                             self.supplies.remove(drink_available)
                         else:
                             player.stamina = 100
+                            self.supplies.remove(drink_available)
+
                         return f"{player_name} sustained successfully with {drink_available.name}."
 
     def duel(self, first_player_name: str, second_player_name: str):
