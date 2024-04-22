@@ -50,6 +50,50 @@ class Controller:
                             player.stamina = 100
                         return f"{player_name} sustained successfully with {drink_available.name}."
 
+    def duel(self, first_player_name: str, second_player_name: str):
+        player_one = next((p for p in self.players if p.name == first_player_name), None)
+        player_two = next((p for p in self.players if p.name == second_player_name), None)
+        if player_one.stamina <= 0 and player_two.stamina <= 0:
+            res = [f"Player {first_player_name} does not have enough stamina.",
+                   f"Player {second_player_name} does not have enough stamina."]
+            return "\n".join(res)
+
+        if player_one.stamina <= 0:
+            return f"Player {first_player_name} does not have enough stamina."
+        if player_two.stamina <= 0:
+            return f"Player {second_player_name} does not have enough stamina."
+
+        if player_one.stamina < player_two.stamina:
+            winner = None
+            player_two.stamina -= 0.5 * player_one.stamina
+            if player_two.stamina <= 0:
+                player_two.stamina = 0
+                winner = player_one.name
+            else:
+                player_one.stamina -= 0.5 * player_two.stamina
+                if player_one.stamina <= 0:
+                    player_one.stamina = 0
+                    winner = player_two.name
+                else:
+                    winner = player_one.name if player_one.stamina > player_two.stamina else player_two.name
+            return f"Winner: {winner}"
+
+        else:
+            winner = None
+            player_one.stamina -= 0.5 * player_two.stamina
+            if player_one.stamina <= 0:
+                player_one.stamina = 0
+                winner = player_two.name
+            else:
+                player_two.stamina -= 0.5 * player_one.stamina
+                if player_two.stamina <= 0:
+                    player_two.stamina = 0
+                    winner = player_one.name
+                else:
+                    winner = player_one.name if player_one.stamina > player_two.stamina else player_two.name
+            return f"Winner: {winner}"
+
+
 
 
 
