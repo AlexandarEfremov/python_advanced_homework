@@ -5,7 +5,7 @@ class Player:
         self.name = name
         self.age = age
         self.stamina = stamina
-        self.need_sustenance = True if self.stamina < 100 else False
+        self.need_sustenance: bool
 
     @property
     def name(self):
@@ -41,4 +41,4 @@ class Player:
         self.__stamina = value
 
     def __str__(self):
-        return f"Player: {self.name}, {self.age}, {self.stamina}, {self.need_sustenance}"
+        return f"Player: {self.name}, {self.age}, {self.stamina}, {True if self.stamina < 100 else False}"

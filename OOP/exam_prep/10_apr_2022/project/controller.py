@@ -95,8 +95,9 @@ class Controller:
 
     def next_day(self):
         for p in self.players:
-            p.stamina -= p.age * 2
-            if p.stamina < 0:
+            if p.stamina - (p.age * 2) > 0:
+                p.stamina -= p.age * 2
+            else:
                 p.stamina = 0
             self.sustain(p.name, "Food")
             self.sustain(p.name, "Drink")
@@ -104,5 +105,5 @@ class Controller:
     def __str__(self):
         result = []
         [result.append(p.__str__()) for p in self.players]
-        [result.append(s.__str__()) for s in self.supplies]
+        [result.append(s.details()) for s in self.supplies]
         return "\n".join(result)
