@@ -101,6 +101,8 @@ class Controller:
             self.sustain(p.name, "Food")
             self.sustain(p.name, "Drink")
 
-
     def __str__(self):
-        pass
+        result = []
+        [result.append(p.__str__()) for p in self.players]
+        [result.append(s.__str__()) for s in self.supplies]
+        return "\n".join(result)
