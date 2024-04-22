@@ -13,10 +13,11 @@ class Controller:
         add_list = []
         for item in args:
             player = next((p for p in self.players if p.name == item.name), None)
-            if player:
+            if player is None:
+                self.players.append(item)
+                add_list.append(item.name)
+            else:
                 continue
-            self.players.append(item)
-            add_list.append(item.name)
         return f"Successfully added: {', '.join(add_list)}"
 
     def add_supply(self, *args: Supply):
