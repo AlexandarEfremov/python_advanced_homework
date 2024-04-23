@@ -23,36 +23,29 @@ class Controller:
     def add_supply(self, *args: Supply):
         self.supplies.extend(args)
 
+    def __take_last_supply(self, supply_type: str):
+        for i in range(len(self.supplies) - 1, 0, -1):
+            if type(self.supplies[i]).__name__ == supply_type:
+                return self.supplies.pop(i)
+        if supply_type == "Food":
+            raise Exception("There are no food supplies left!")
+        if supply_type == "Drink":
+            raise Exception("There are no drink supplies left!")
+
     def sustain(self, player_name: str, sustenance_type: str):
         if sustenance_type == "Food" or sustenance_type == "Drink":
             player = next((p for p in self.players if p.name == player_name), None)
             if player:
                 if player.stamina == 100:
                     return f"{player_name} have enough stamina."
-                if sustenance_type == "Food":
-                    food_available = [f for f in self.supplies if f.__class__.__name__ == "Food"]
-                    if not food_available:
-                        raise Exception("There are no food supplies left!")
+                supply = self.__take_last_supply(sustenance_type)
+                if supply:
+                    if player.stamina + supply.energy < 100:
+                        player.stamina += supply.energy
+                        return f"{player_name} sustained successfully with {supply.name}."
                     else:
-                        required_food = food_available.pop()
-                        self.supplies.pop(self.supplies.index(required_food))
-                        if player.stamina + required_food.energy < 100:
-                            player.stamina += required_food.energy
-                        else:
-                            player.stamina = 100
-                        return f"{player_name} sustained successfully with {required_food.name}."
-                elif sustenance_type == "Drink":
-                    drink_available = [d for d in self.supplies if d.__class__.__name__ == "Drink"]
-                    if not drink_available:
-                        raise Exception("There are no drink supplies left!")
-                    else:
-                        required_drink = drink_available.pop()
-                        self.supplies.pop(self.supplies.index(required_drink))
-                        if player.stamina + required_drink.energy < 100:
-                            player.stamina += required_drink.energy
-                        else:
-                            player.stamina = 100
-                        return f"{player_name} sustained successfully with {required_drink.name}."
+                        player.stamina = 100
+                        return f"{player_name} sustained successfully with {supply.name}."
 
     def duel(self, first_player_name: str, second_player_name: str):
         player_one = next((p for p in self.players if p.name == first_player_name), None)
