@@ -15,9 +15,9 @@ class Player:
     def name(self, value):
         if value.strip() == "":
             raise ValueError("Name not valid!")
-        if value in self.PLAYER_UNIQUE_NAMES:
+        if value in Player.PLAYER_UNIQUE_NAMES:
             raise Exception(f"Name {value} is already used!")
-        self.PLAYER_UNIQUE_NAMES.append(value)
+        Player.PLAYER_UNIQUE_NAMES.append(value)
         self.__name = value
 
     @property
