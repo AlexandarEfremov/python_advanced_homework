@@ -50,6 +50,15 @@ class TestMovie(TestCase):
         ex_res = f'"{self.movie.name}" is better than "{self.other.name}"'
         self.assertEqual(self.movie.__gt__(self.other), ex_res)
 
+    def test_correct_repr_without_actors(self):
+        ex_res = "Name: Alex\nYear of Release: 1993\nRating: 5.00\nCast: "
+        self.assertEqual(self.movie.__repr__(), ex_res)
 
+    def test_correct_repr_with_actors(self):
+        self.movie.add_actor("John")
+        self.movie.add_actor("Michael")
+
+        ex_res = "Name: Alex\nYear of Release: 1993\nRating: 5.00\nCast: John, Michael"
+        self.assertEqual(self.movie.__repr__(), ex_res)
 if __name__ == "__main__":
     main()
