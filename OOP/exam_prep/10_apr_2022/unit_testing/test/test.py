@@ -13,6 +13,7 @@ class TestMovie(TestCase):
         self.assertEqual(1990, self.other.year)
         self.assertEqual(6, self.other.rating)
         self.assertEqual([], self.other.actors)
+
     def test_correct_init(self):
         self.assertEqual("Alex", self.movie.name)
         self.assertEqual(1993, self.movie.year)
@@ -39,6 +40,15 @@ class TestMovie(TestCase):
     def test_add_actor_not_in_list(self):
         self.movie.add_actor("John")
         self.assertEqual(["John"], self.movie.actors)
+
+    def test_ewcia_beter_than_alex(self):
+        ex_res = f'"{self.other.name}" is better than "{self.movie.name}"'
+        self.assertEqual(self.movie.__gt__(self.other), ex_res)
+
+    def test_alex_is_better_than_ewcia(self):
+        self.movie.rating = 7
+        ex_res = f'"{self.movie.name}" is better than "{self.other.name}"'
+        self.assertEqual(self.movie.__gt__(self.other), ex_res)
 
 
 if __name__ == "__main__":
