@@ -13,7 +13,16 @@ class TestMovie(TestCase):
         self.assertEqual(5, self.movie.rating)
         self.assertEqual([], self.movie.actors)
 
+    def test_name_setter_expect_error(self):
+        with self.assertRaises(Exception) as ex:
+            self.movie.name = ""
 
+        self.assertEqual("Name cannot be an empty string!", str(ex.exception))
+
+    def test_year_setter_expect_error(self):
+        with self.assertRaises(Exception) as ex:
+            self.movie.year = 1500
+        self.assertEqual("Year is not valid!", str(ex.exception))
 
 
 if __name__ == "__main__":
