@@ -24,6 +24,15 @@ class TestMovie(TestCase):
             self.movie.year = 1500
         self.assertEqual("Year is not valid!", str(ex.exception))
 
+    def test_add_actor_in_list_expect_error(self):
+        self.movie.add_actor("John")
+        res = self.movie.add_actor("John")
+
+        self.assertEqual("John is already added in the list of actors!", res)
+
+    def test_add_actor_not_in_list(self):
+        self.movie.add_actor("John")
+        self.assertEqual(["John"], self.movie.actors)
 
 if __name__ == "__main__":
     main()
