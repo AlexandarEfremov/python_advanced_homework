@@ -21,8 +21,7 @@ class Controller:
         return f"Successfully added: {', '.join(add_list)}"
 
     def add_supply(self, *args: Supply):
-        for supp in args:
-            self.supplies.append(supp)
+        self.supplies.extend(args)
 
     def sustain(self, player_name: str, sustenance_type: str):
         if sustenance_type == "Food" or sustenance_type == "Drink":
