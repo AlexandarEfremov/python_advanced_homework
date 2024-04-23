@@ -6,7 +6,13 @@ from project.movie import Movie
 class TestMovie(TestCase):
     def setUp(self):
         self.movie = Movie("Alex", 1993, 5)
+        self.other = Movie("Ewcia", 1990, 6)
 
+    def test_other_correct_init(self):
+        self.assertEqual("Ewcia", self.other.name)
+        self.assertEqual(1990, self.other.year)
+        self.assertEqual(6, self.other.rating)
+        self.assertEqual([], self.other.actors)
     def test_correct_init(self):
         self.assertEqual("Alex", self.movie.name)
         self.assertEqual(1993, self.movie.year)
@@ -33,6 +39,7 @@ class TestMovie(TestCase):
     def test_add_actor_not_in_list(self):
         self.movie.add_actor("John")
         self.assertEqual(["John"], self.movie.actors)
+
 
 if __name__ == "__main__":
     main()
