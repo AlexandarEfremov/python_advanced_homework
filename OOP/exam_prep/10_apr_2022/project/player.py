@@ -40,5 +40,9 @@ class Player:
             raise ValueError("Stamina not valid!")
         self.__stamina = value
 
+    @property
+    def need_sustenance(self):
+        return self.__stamina < 100
+
     def __str__(self):
-        return f"Player: {self.name}, {self.age}, {self.stamina}, {True if self.stamina < 100 else False}"
+        return f"Player: {self.name}, {self.age}, {self.stamina}, {self.need_sustenance}"
