@@ -60,5 +60,7 @@ class TestMovie(TestCase):
 
         ex_res = "Name: Alex\nYear of Release: 1993\nRating: 5.00\nCast: John, Michael"
         self.assertEqual(self.movie.__repr__(), ex_res)
+
+
 if __name__ == "__main__":
     main()
