@@ -47,18 +47,22 @@ class Controller:
                         player.stamina = 100
                         return f"{player_name} sustained successfully with {supply.name}."
 
+    @staticmethod
+    def __check_if_players_can_duel(*players):
+        result = []
+        for p in players:
+            if p.stamina <= 0:
+                result.append(f"Player {p.name} does not have enough stamina.")
+        if result:
+            return "\n".join(result)
+
     def duel(self, first_player_name: str, second_player_name: str):
         player_one = next((p for p in self.players if p.name == first_player_name), None)
         player_two = next((p for p in self.players if p.name == second_player_name), None)
-        if player_one.stamina <= 0 and player_two.stamina <= 0:
-            res = [f"Player {first_player_name} does not have enough stamina.",
-                   f"Player {second_player_name} does not have enough stamina."]
-            return "\n".join(res)
 
-        if player_one.stamina <= 0:
-            return f"Player {first_player_name} does not have enough stamina."
-        if player_two.stamina <= 0:
-            return f"Player {second_player_name} does not have enough stamina."
+        result = self.__check_if_players_can_duel(player_one, player_two)
+        if result:
+            return result
 
         if player_one.stamina < player_two.stamina:
             player_two.stamina -= 0.5 * player_one.stamina
@@ -88,7 +92,7 @@ class Controller:
     def next_day(self):
         for p in self.players:
             if p.stamina - (p.age * 2) > 0:
-                p.stamina -= p.age * 2
+                p.stamina -= (p.age * 2)
             else:
                 p.stamina = 0
             self.sustain(p.name, "Food")
