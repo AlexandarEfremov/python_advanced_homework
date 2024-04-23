@@ -56,6 +56,19 @@ class Controller:
         if result:
             return "\n".join(result)
 
+    @staticmethod
+    def __attack(p1, p2):
+        p2.stamina -= (0.5 * p1.stamina)
+        if p1.stamina - (0.5 * p2.stamina) > 0:
+            p1.stamina -= (0.5 * p2.stamina)
+        else:
+            p1.stamina = 0
+
+        if p1.stamina > p2.stamina:
+            return f"Winner: {p1.name}"
+        else:
+            return f"Winner: {p2.name}"
+
     def duel(self, first_player_name: str, second_player_name: str):
         player_one = next((p for p in self.players if p.name == first_player_name), None)
         player_two = next((p for p in self.players if p.name == second_player_name), None)
@@ -65,29 +78,9 @@ class Controller:
             return result
 
         if player_one.stamina < player_two.stamina:
-            player_two.stamina -= 0.5 * player_one.stamina
-            if player_two.stamina <= 0:
-                player_two.stamina = 0
-                return f"Winner: {player_one.name}"
-            else:
-                player_one.stamina -= 0.5 * player_two.stamina
-                if player_one.stamina <= 0:
-                    player_one.stamina = 0
-                    return f"Winner: {player_two.name}"
-                else:
-                    return f"Winner: {player_one.name if player_one.stamina > player_two.stamina else player_two.name}"
+            return self.__attack(player_one, player_two)
         else:
-            player_one.stamina -= 0.5 * player_two.stamina
-            if player_one.stamina <= 0:
-                player_one.stamina = 0
-                return f"Winner: {player_two.name}"
-            else:
-                player_two.stamina -= 0.5 * player_one.stamina
-                if player_two.stamina <= 0:
-                    player_two.stamina = 0
-                    return f"Winner: {player_one.name}"
-                else:
-                    return f"Winner: {player_one.name if player_one.stamina > player_two.stamina else player_two.name}"
+            return self.__attack(player_two, player_one)
 
     def next_day(self):
         for p in self.players:
