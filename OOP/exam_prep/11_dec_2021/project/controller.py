@@ -55,6 +55,12 @@ class Controller:
         else:
             raise Exception(f"Car {car_type} could not be found!")
 
+    def __check_if_race_exists(self, name):
+        race_match = next((r for r in self.races if r.name == name), None)
+        if race_match is None:
+            raise Exception(f"Race {name} could not be found!")
+        return race_match
+
     def add_car_to_driver(self, driver_name: str, car_type: str):
         driver_object = self.__check_if_driver_exists(driver_name)
         car_object = self.__check_if_car_is_available(car_type)
@@ -69,9 +75,19 @@ class Controller:
         car_object.is_taken = True
         return f"Driver {driver_object.name} chose the car {car_object.model}."
 
-
     def add_driver_to_race(self, race_name: str, driver_name: str):
-        pass
+        race_object = self.__check_if_race_exists(race_name)
+        driver_object = self.__check_if_driver_exists(driver_name)
+
+        if driver_object.car is None:
+            raise Exception(f"Driver {driver_object.name} could not participate in the race!")
+
+        if driver_object not in race_object.drivers:
+            race_object.drivers.append(driver_object)
+            return f"Driver {driver_object.name} added in {race_object.name} race."
+
+        return f"Driver {driver_object.name} is already added in {race_object.name} race."
+
 
     def start_race(self, race_name: str):
         pass
