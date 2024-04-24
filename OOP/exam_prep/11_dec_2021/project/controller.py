@@ -35,7 +35,12 @@ class Controller:
         return f"Driver {driver_name} is created."
 
     def create_race(self, race_name: str):
-        pass
+        race_match = next((r for r in self.races if r.name == race_name), None)
+        if race_match:
+            raise Exception(f"Race {race_name} is already created!")
+        race = Race(race_name)
+        self.races.append(race)
+        return f"Race {race_name} is created."
 
     def add_car_to_driver(self, driver_name: str, car_type: str):
         pass
