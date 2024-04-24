@@ -49,9 +49,9 @@ class Controller:
         return driver_match
 
     def __check_if_car_is_available(self, car_type):
-        for i in range(len(self.cars) - 1, 0, -1):
+        for i in range(len(self.cars) - 1, -1, -1):
             if type(self.cars[i]).__name__ == car_type and self.cars[i].is_taken is False:
-                return self.cars.pop(i)
+                return self.cars[i]
         else:
             raise Exception(f"Car {car_type} could not be found!")
 
@@ -67,6 +67,7 @@ class Controller:
 
         if driver_object.car:
             old_model = driver_object.car.model
+            driver_object.car.is_taken = False
             driver_object.car = car_object
             car_object.is_taken = True
             return f"Driver {driver_object.name} changed his car from {old_model} to {car_object.model}."
@@ -88,6 +89,15 @@ class Controller:
 
         return f"Driver {driver_object.name} is already added in {race_object.name} race."
 
-
     def start_race(self, race_name: str):
-        pass
+        race_object = self.__check_if_race_exists(race_name)
+        if len(race_object.drivers) < 3:
+            raise Exception(f"Race {race_name} cannot start with less than 3 participants!")
+        fastest_cars = sorted(race_object.drivers, key=lambda x: (-x.car.speed_limit))
+        result = []
+        for c in fastest_cars:
+            result.append(f"Driver {c.name} wins the {race_name} race with a speed of {c.car.speed_limit}.")
+            c.number_of_wins += 1
+            if len(result) == 3:
+                break
+        return "\n".join(result)
