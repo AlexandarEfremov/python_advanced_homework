@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class Car(ABC):
+    MIN_SPEED = None
+    MAX_SPEED = None
 
     def __init__(self, model: str, speed_limit: int):
         self.model = model
@@ -24,13 +26,8 @@ class Car(ABC):
 
     @speed_limit.setter
     def speed_limit(self, value):
-        if ((type(value).__name__ == "MuscleCar" and 250 <= value <= 450) or
-                (type(value).__name__ == "SportsCar" and 400 <= value <= 600)):
-            self.__speed_limit = value
-        else:
-            if type(value).__name__ == "MuscleCar":
-                raise ValueError(f"Invalid speed limit! Must be between {250} and {450}!")
-            else:
-                raise ValueError(f"Invalid speed limit! Must be between {400} and {600}!")
+        if not self.MIN_SPEED <= value <= self.MAX_SPEED:
+            raise ValueError(f"Invalid speed limit! Must be between {self.MIN_SPEED} and {self.MAX_SPEED}!")
+        self.__speed_limit = value
 
 
