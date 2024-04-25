@@ -54,5 +54,15 @@ class TestTeam(TestCase):
         self.assertEqual("AlexEwcia", new_team.name)
         self.assertEqual({"mike": 20, "john": 21, "peter": 33}, new_team.members)
 
+    def test_correct_str(self):
+        self.team.members = {"mike": 20, "john": 21}
+        res = "Team name: Alex\nMember: john - 21-years old\nMember: mike - 20-years old"
+        self.assertEqual(res, self.team.__str__())
+
+    def test_correct_str_two(self):
+        res = "Team name: Alex"
+        self.assertEqual(res, self.team.__str__())
+
+
 if __name__ == "__main__":
     main()
