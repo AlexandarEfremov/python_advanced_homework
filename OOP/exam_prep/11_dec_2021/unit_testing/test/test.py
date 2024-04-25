@@ -5,6 +5,7 @@ from unittest import TestCase, main
 class TestTeam(TestCase):
     def setUp(self):
         self.team = Team("Alex")
+        self.other = Team("Ewcia")
 
     def test_correct_init(self):
         self.assertEqual("Alex", self.team.name)
@@ -32,6 +33,13 @@ class TestTeam(TestCase):
 
         self.assertEqual("Member mike removed", res)
         self.assertEqual({"john": 21}, self.team.members)
+
+    def test_greater_than(self):
+        self.team.members = {"mike": 20, "john": 21}
+        self.other.members = {"mike": 20, "john": 21, "peter": 33}
+
+        self.assertFalse(self.team.__gt__(self.other))
+        self.assertTrue(self.other.__gt__(self.team))
 
 if __name__ == "__main__":
     main()
