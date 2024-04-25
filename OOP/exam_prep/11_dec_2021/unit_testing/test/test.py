@@ -17,6 +17,15 @@ class TestTeam(TestCase):
         message = "Team Name can contain only letters!"
         self.assertEqual(message, str(ex.exception))
 
+    def test_adding_members_with_repeating_names(self):
+        self.team.members = {"mike": 20, "john": 21}
+        second_members = {"alex": 20, "john": 21}
+        res = self.team.add_member(**second_members)
+
+        ex_mes = f"Successfully added: alex"
+        self.assertEqual(ex_mes, res)
+        self.assertEqual({"mike": 20, "john": 21, "alex": 20}, self.team.members)
+
 
 if __name__ == "__main__":
     main()
