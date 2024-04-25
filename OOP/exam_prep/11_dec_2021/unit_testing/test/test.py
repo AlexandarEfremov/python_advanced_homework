@@ -62,6 +62,16 @@ class TestTeam(TestCase):
         self.assertFalse(self.team.__gt__(self.other))
         self.assertTrue(self.other.__gt__(self.team))
 
+    def test_greater_than_when_equal(self):
+        self.assertFalse(self.team.__gt__(self.other))
+
+    def test_greater_than_with_equal_length(self):
+        self.team.members = {"mike": 20, "john": 21}
+        self.other.members = {"peter": 33, "alex": 20}
+
+        self.assertFalse(self.team.__gt__(self.other))
+        self.assertFalse(self.other.__gt__(self.team))
+
     def test_len(self):
         self.team.members = {"mike": 20, "john": 21}
         self.assertEqual(2, self.team.__len__())
