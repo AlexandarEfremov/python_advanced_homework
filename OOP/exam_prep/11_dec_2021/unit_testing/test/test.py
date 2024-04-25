@@ -49,6 +49,12 @@ class TestTeam(TestCase):
         self.assertEqual("Member mike removed", res)
         self.assertEqual({"john": 21}, self.team.members)
 
+    def test_member_who_doesnt_exist(self):
+        self.team.members = {"mike": 20, "john": 21}
+        res = self.team.remove_member("Petyo")
+        self.assertEqual("Member with name Petyo does not exist", res)
+        self.assertEqual({"mike": 20, "john": 21}, self.team.members)
+
     def test_greater_than(self):
         self.team.members = {"mike": 20, "john": 21}
         self.other.members = {"mike": 20, "john": 21, "peter": 33}
