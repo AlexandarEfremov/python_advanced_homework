@@ -45,6 +45,14 @@ class TestTeam(TestCase):
         self.team.members = {"mike": 20, "john": 21}
         self.assertEqual(2, self.team.__len__())
 
+    def test_creating_a_new_team(self):
+        self.team.members = {"mike": 20, "john": 21}
+        self.other.members = {"mike": 20, "john": 21, "peter": 33}
+
+        new_team = self.team.__add__(self.other)
+
+        self.assertEqual("AlexEwcia", new_team.name)
+        self.assertEqual({"mike": 20, "john": 21, "peter": 33}, new_team.members)
 
 if __name__ == "__main__":
     main()
