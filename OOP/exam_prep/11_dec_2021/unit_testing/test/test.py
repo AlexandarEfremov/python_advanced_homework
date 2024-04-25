@@ -41,5 +41,10 @@ class TestTeam(TestCase):
         self.assertFalse(self.team.__gt__(self.other))
         self.assertTrue(self.other.__gt__(self.team))
 
+    def test_len(self):
+        self.team.members = {"mike": 20, "john": 21}
+        self.assertEqual(2, self.team.__len__())
+
+
 if __name__ == "__main__":
     main()
