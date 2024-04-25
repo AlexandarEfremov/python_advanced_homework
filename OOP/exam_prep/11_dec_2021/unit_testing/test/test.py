@@ -18,6 +18,21 @@ class TestTeam(TestCase):
         message = "Team Name can contain only letters!"
         self.assertEqual(message, str(ex.exception))
 
+    def test_invalid_team_name(self):
+        with self.assertRaises(ValueError) as ex:
+            Team("123Team")
+
+        message = "Team Name can contain only letters!"
+        self.assertEqual(message, str(ex.exception))
+
+    def test_adding_multiple_members(self):
+        members_to_add = {"john": 21, "mike": 20, "peter": 25}
+        res = self.team.add_member(**members_to_add)
+
+        expected_message = "Successfully added: john, mike, peter"
+        self.assertEqual(expected_message, res)
+        self.assertEqual(members_to_add, self.team.members)
+
     def test_adding_members_with_repeating_names(self):
         self.team.members = {"mike": 20, "john": 21}
         second_members = {"alex": 20, "john": 21}
