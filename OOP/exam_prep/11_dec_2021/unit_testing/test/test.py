@@ -26,6 +26,12 @@ class TestTeam(TestCase):
         self.assertEqual(ex_mes, res)
         self.assertEqual({"mike": 20, "john": 21, "alex": 20}, self.team.members)
 
+    def test_deleting_member_in_dict(self):
+        self.team.members = {"mike": 20, "john": 21}
+        res = self.team.remove_member("mike")
+
+        self.assertEqual("Member mike removed", res)
+        self.assertEqual({"john": 21}, self.team.members)
 
 if __name__ == "__main__":
     main()
