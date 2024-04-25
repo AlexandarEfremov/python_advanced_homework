@@ -84,6 +84,14 @@ class TestTeam(TestCase):
 
         self.assertEqual("AlexEwcia", new_team.name)
         self.assertEqual({"mike": 20, "john": 21, "peter": 33}, new_team.members)
+        self.assertTrue(isinstance(new_team, Team))
+
+    def test_gt_if_return_true(self):
+        other = Team("Other")
+        other.members = {"Lili": 28}
+        self.team.members = {"Ivan": 18, "Gosho": 15}
+
+        self.assertEqual(True, self.team.__gt__(other))
 
     def test_correct_str(self):
         self.team.members = {"mike": 20, "john": 21}
