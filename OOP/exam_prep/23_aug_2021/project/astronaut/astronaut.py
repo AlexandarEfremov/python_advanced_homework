@@ -15,13 +15,15 @@ class Astronaut(ABC):
 
     @name.setter
     def name(self, value):
-        if value.strip() == "":
+        if not value or value.isspace():
             raise ValueError("Astronaut name cannot be empty string or whitespace!")
         self.__name = value
+
+    def increase_oxygen(self, amount: int):
+        self.oxygen += amount
 
     @abstractmethod
     def breathe(self):
         self.oxygen -= self.UNIT
 
-    def increase_oxygen(self, amount: int):
-        self.oxygen += amount
+

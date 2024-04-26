@@ -11,8 +11,7 @@ class PlanetRepository:
         self.planets.append(planet)
 
     def remove(self, planet: Planet):
-        if planet in self.planets:
-            self.planets.remove(planet)
+        self.planets.remove(planet)
 
     def find_by_name(self, name: str):
         planet = next((p for p in self.planets if p.name == name), None)
