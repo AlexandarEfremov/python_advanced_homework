@@ -47,10 +47,17 @@ class SpaceStation:
         return f"Successfully added Planet: {new_pla.name}."
 
     def retire_astronaut(self, name: str):
-        pass
+        for repos in self.astronaut_repository:
+            for astr in repos.astronauts:
+                if astr.name == name:
+                    repos.astronauts.remove(astr)
+                    return f"Astronaut {name} was retired!"
+        raise Exception(f"Astronaut {name} doesn't exist!")
 
     def recharge_oxygen(self):
-        pass
+        for repo in self.astronaut_repository:
+            for astr in repo.astronauts:
+                astr.increase_oxygen(10)
 
     def send_on_mission(self, planet_name: str):
         pass
