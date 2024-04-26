@@ -11,7 +11,11 @@ class TestLibrary(TestCase):
         self.assertEqual({}, self.library.books_by_authors)
         self.assertEqual({}, self.library.readers)
 
-
+    def test_wrong_name_setter(self):
+        with self.assertRaises(Exception) as ex:
+            self.library.name = ""
+        ex_res = "Name cannot be empty string!"
+        self.assertEqual(ex_res, str(ex.exception))
 
 
 if __name__ == "__main__":
