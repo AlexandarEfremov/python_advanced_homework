@@ -27,5 +27,22 @@ class TestLibrary(TestCase):
 
         self.assertEqual({"Ewcia": ["Poland", "Bulgaria"]}, self.library.books_by_authors)
 
+    def test_author_in_list_try_same_book_twice(self):
+        self.library.add_book("Ewcia", "Poland")
+        self.library.add_book("Ewcia", "Poland")
+
+        self.assertEqual({"Ewcia": ["Poland"]}, self.library.books_by_authors)
+
+    def test_if_reader_not_already_in_list(self):
+        self.library.add_reader("Jon")
+        res = self.library.add_reader("Jon")
+        ex_res = "Jon is already registered in the Alex library."
+        self.assertEqual(ex_res, res)
+
+    def test_successfully_add_new_reader(self):
+        self.library.add_reader("Jon")
+        self.assertEqual({"Jon": []}, self.library.readers)
+
+
 if __name__ == "__main__":
     main()
