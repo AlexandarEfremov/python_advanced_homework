@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class Astronaut(ABC):
+    UNIT = 10
+
     def __init__(self, name: str, oxygen: int):
         self.name = name
         self.oxygen = oxygen
@@ -19,7 +21,7 @@ class Astronaut(ABC):
 
     @abstractmethod
     def breathe(self):
-        self.oxygen -= 10
+        self.oxygen -= self.UNIT
 
     def increase_oxygen(self, amount: int):
         self.oxygen += amount
