@@ -6,4 +6,4 @@ class Geodesist(Astronaut):
         super().__init__(name, oxygen)
 
     def breathe(self):
-        pass
+        self.oxygen -= 10
