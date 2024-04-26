@@ -11,7 +11,8 @@ class AstronautRepository:
         self.astronauts.append(astronaut)
 
     def remove(self, astronaut: Astronaut):
-        self.astronauts.remove(astronaut)
+        if astronaut in self.astronauts:
+            self.astronauts.remove(astronaut)
 
     def find_by_name(self, name: str):
         astr = next((a for a in self.astronauts if a.name == name), None)
