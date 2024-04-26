@@ -43,6 +43,38 @@ class TestLibrary(TestCase):
         self.library.add_reader("Jon")
         self.assertEqual({"Jon": []}, self.library.readers)
 
+    def test_renting_a_book_for_unregistered_reader(self):
+        self.library.add_book("Ewcia", "Poland")
+        res = self.library.rent_book("Mike", "Ewcia", "Poland")
+
+        ex_res = "Mike is not registered in the Alex Library."
+        self.assertEqual(ex_res, res)
+
+    def test_renting_a_book_for_none_author(self):
+        self.library.add_reader("Jon")
+        res = self.library.rent_book("Jon", "BBB", "MMM")
+
+        ex_res = "Alex Library does not have any BBB's books."
+        self.assertEqual(ex_res, res)
+
+    def test_renting_a_none_book(self):
+        self.library.add_reader("Jon")
+        self.library.add_book("Ewcia", "Poland")
+        res = self.library.rent_book("Jon", "Ewcia", "BG")
+        ex_res = "Alex Library does not have Ewcia's \"BG\"."
+
+        self.assertEqual(ex_res, res)
+
+    def test_successful_book_rent(self):
+        self.library.add_reader("Jon")
+        self.library.add_book("Ewcia", "Poland")
+        self.library.add_book("Ewcia", "BG")
+
+        self.library.rent_book("Jon", "Ewcia", "BG")
+
+        self.assertEqual({"Ewcia": ["Poland"]}, self.library.books_by_authors)
+        self.assertEqual({"Jon": [{"Ewcia": "BG"}]}, self.library.readers)
+
 
 if __name__ == "__main__":
     main()
