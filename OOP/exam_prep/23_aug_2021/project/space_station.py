@@ -16,48 +16,39 @@ class SpaceStation:
     }
 
     def __init__(self):
-        self.planet_repository: List[PlanetRepository] = []
-        self.astronaut_repository: List[AstronautRepository] = []
+        self.planet_repository = PlanetRepository()
+        self.astronaut_repository = AstronautRepository()
 
     def add_astronaut(self, astronaut_type: str, name: str):
         if astronaut_type not in self.ASTRONAUT_TYPES:
             raise Exception("Astronaut type is not valid!")
-        for item in self.astronaut_repository:
-            for astr in item.astronauts:
-                if astr.name == name:
-                    return f"{name} is already added."
 
-        new_astro = self.ASTRONAUT_TYPES[astronaut_type](name)
-        new_astr_repo = AstronautRepository()
-        new_astr_repo.add(new_astro)
-        self.astronaut_repository.append(new_astr_repo)
-        return f"Successfully added {astronaut_type}: {name}."
+        if self.astronaut_repository.find_by_name(name):
+            return f"{name} is already added."
+
+        new_astronaut = self.ASTRONAUT_TYPES[astronaut_type](name)
+        self.astronaut_repository.add(new_astronaut)
 
     def add_planet(self, name: str, items: str):
-        for item in self.planet_repository:
-            for pla in item.planets:
-                if pla.name == name:
-                    return f"{name} is already added."
+        if self.planet_repository.find_by_name(name):
+            return f"{name} is already added."
 
-        new_pla = Planet(name)
-        new_pla.items.extend(items)
-        new_pla_repo = PlanetRepository()
-        new_pla_repo.add(new_pla)
-        self.planet_repository.append(new_pla_repo)
-        return f"Successfully added Planet: {new_pla.name}."
+        planet = Planet(name)
+        planet.items = items.split(", ")
+        self.planet_repository.add(planet)
+
+        return f"Successfully added Planet: {planet.name}."
 
     def retire_astronaut(self, name: str):
-        for repos in self.astronaut_repository:
-            for astr in repos.astronauts:
-                if astr.name == name:
-                    repos.astronauts.remove(astr)
-                    return f"Astronaut {name} was retired!"
+        for astronaut in self.astronaut_repository.astronauts:
+            if astronaut.name == name:
+                self.astronaut_repository.astronauts.remove(astronaut)
+                return f"Astronaut {name} was retired!"
         raise Exception(f"Astronaut {name} doesn't exist!")
 
     def recharge_oxygen(self):
-        for repo in self.astronaut_repository:
-            for astr in repo.astronauts:
-                astr.increase_oxygen(10)
+        for astronaut in self.astronaut_repository.astronauts:
+            astronaut.increase_oxygen(10)
 
     def send_on_mission(self, planet_name: str):
         pass
