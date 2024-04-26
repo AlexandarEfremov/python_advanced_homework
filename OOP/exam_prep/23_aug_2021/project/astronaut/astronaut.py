@@ -17,3 +17,9 @@ class Astronaut(ABC):
             raise ValueError("Astronaut name cannot be empty string or whitespace!")
         self.__name = value
 
+    @abstractmethod
+    def breathe(self):
+        self.oxygen -= 10
+
+    def increase_oxygen(self, amount: int):
+        self.oxygen += amount
