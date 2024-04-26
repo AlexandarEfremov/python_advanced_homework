@@ -15,12 +15,11 @@ class SpaceStation:
         "Meteorologist": Meteorologist,
     }
 
-    number_of_successful_missions = 0
-    number_of_not_completed_missions = 0
-
     def __init__(self):
         self.planet_repository = PlanetRepository()
         self.astronaut_repository = AstronautRepository()
+        self.number_of_successful_missions = 0
+        self.number_of_not_completed_missions = 0
 
     def add_astronaut(self, astronaut_type: str, name: str):
         if astronaut_type not in self.ASTRONAUT_TYPES:
@@ -37,27 +36,23 @@ class SpaceStation:
             return f"{name} is already added."
 
         planet = Planet(name)
-        planet.items = items.split(", ")
+        planet.items.extend(items.split(", "))
         self.planet_repository.add(planet)
 
         return f"Successfully added Planet: {planet.name}."
 
     def retire_astronaut(self, name: str):
-        for astronaut in self.astronaut_repository.astronauts:
-            if astronaut.name == name:
-                self.astronaut_repository.astronauts.remove(astronaut)
-                return f"Astronaut {name} was retired!"
-        raise Exception(f"Astronaut {name} doesn't exist!")
+        astronaut = self.astronaut_repository.find_by_name(name)
+
+        if astronaut is None:
+            raise Exception(f"Astronaut {name} doesn't exist!")
+
+        self.astronaut_repository.remove(astronaut)
+        return f'Astronaut {name} was retired!'
 
     def recharge_oxygen(self):
         for astronaut in self.astronaut_repository.astronauts:
             astronaut.increase_oxygen(10)
-
-    def __check_if_planet_in_repo(self, name):
-        planet = next((p for p in self.planet_repository.planets if p.name == name))
-        if not planet:
-            raise Exception(f"Invalid planet name!")
-        return planet
 
     def __astronaut_list(self):
         available_to_go = []
@@ -69,24 +64,32 @@ class SpaceStation:
         raise Exception("You need at least one astronaut to explore the planet!")
 
     def send_on_mission(self, planet_name: str):
-        planet = self.__check_if_planet_in_repo(planet_name)
-        astronaut_team = self.__astronaut_list()
+        planet = self.planet_repository.find_by_name(planet_name)
 
-        count_astronauts = 0
-        for astronaut in astronaut_team:
-            if not planet.items:
+        if planet is None:
+            raise Exception('Invalid planet name!')
+
+        astronauts = self.astronaut_repository.find_astronauts_for_mission(5, 30)
+
+        if len(astronauts) == 0:
+            raise Exception('You need at least one astronaut to explore the planet!')
+
+        participated_astronauts = 0
+
+        for astronaut in astronauts:
+            if len(planet.items) == 0:
                 break
-            while astronaut.oxygen > 0 and planet.items:
+            while astronaut.oxygen > 0 and len(planet.items) > 0:
                 astronaut.backpack.append(planet.items.pop())
                 astronaut.breathe()
-            count_astronauts += 1
+            participated_astronauts += 1
 
-        if not planet.items:
+        if len(planet.items) == 0:
             self.number_of_successful_missions += 1
-            return f"Planet: {planet_name} was explored. {count_astronauts} astronauts participated in collecting items."
+            return f'Planet: {planet_name} was explored. {participated_astronauts} astronauts participated in collecting items.'
         else:
             self.number_of_not_completed_missions += 1
-            return "Mission is not completed."
+            return f'Mission is not completed.'
 
     def report(self):
         output = [f"{self.number_of_successful_missions} successful missions!",
