@@ -1,3 +1,5 @@
+# INCOMPLETE
+
 class HashTable:
     def __init__(self):
         self.__keys = [None, None, None, None]
