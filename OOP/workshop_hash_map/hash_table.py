@@ -21,6 +21,20 @@ class HashTable:
         self.__keys[index] = key
         self.__values[index] = value
 
+    def __getitem__(self, item):
+        try:
+            index = self.__keys.index(item)
+            return self.__values[index]
+        except ValueError:
+            raise KeyError("Key does not exist")
+
+    def get(self, key, return_default_value=None):
+        try:
+            index = self.__keys.index(key)
+            return self.__values[index]
+        except ValueError:
+            return return_default_value
+
     def hash(self, key: str):
         return sum([ord(el) for el in key]) % self.__length
 
